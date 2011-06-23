@@ -1,0 +1,28 @@
+file 1515 1308041003                                            
+version 2
+run ChordDht-0-20110614-16:34:57-3455
+attr configname ChordDht
+attr datetime 20110614-16:34:57
+attr experiment ChordDht
+attr inifile /Users/hill/sim/OverSim-20101103/simulations/omnetpp.ini
+attr iterationvars ""
+attr iterationvars2 $repetition=0
+attr measurement ""
+attr network oversim.underlay.simpleunderlay.SimpleUnderlayNetwork
+attr processid 3455
+attr repetition 0
+attr replication #0
+attr resultdir results
+attr runnumber 0
+attr seedset 0
+
+vector 1  SimpleUnderlayNetwork.globalObserver.globalStatistics  "GlobalDhtTestMap: Number of stored DHT entries"  ETV
+vector 2  SimpleUnderlayNetwork.globalObserver.globalStatistics  "LifetimeChurn: Session Time"  ETV
+vector 3  SimpleUnderlayNetwork.globalObserver.globalStatistics  "LifetimeChurn: Time between creates"  ETV
+vector 4  SimpleUnderlayNetwork.globalObserver.globalStatistics  "GlobalNodeList: Number of nodes"  ETV
+vector 5  SimpleUnderlayNetwork.globalObserver.globalStatistics  "LifetimeChurn: Time between deletes"  ETV
+1	996 251 63117 172074 110 250 15 108 370 3664 977332
+2	1247 75 77271 135547 124.932502085 211.901281461 2 140.465912423 13442.452721523 13582.918633946 180719265.84293
+3	1322 71 77271 135547 124.932502085 211.901281461 2 22.102258305 86.968779376 109.071037681 8052.0784083323
+4	1393 51 101235 172073 150 250 3 101 102 304 30806
+5	1444 71 120995 128198 184.63535223 198.175995473 2 13.540643243 92.249728273 105.790371516 8693.3613858765
