@@ -1,0 +1,37 @@
+package oversim.applications.dxps;
+
+import oversim.common.BaseApp;
+import oversim.common.ITier;
+
+
+simple Dxps extends BaseApp
+{
+    parameters:
+        @class(Dxps);
+        double childTimeout @unit(s); //seconds until a node assumes that a particular child has failed
+        double parentTimeout @unit(s); //seconds until a node assumes that a particular parent has failed
+}
+
+module MulticastDxps like ITier
+{
+    gates:
+        input udpIn;
+        input from_lowerTier;
+        input from_upperTier;
+        input tcpIn;
+        output tcpOut;
+        output udpOut;
+        output to_lowerTier;
+        output to_upperTier;
+
+    submodules:
+        dxps: Dxps;
+    connections allowunconnected:
+        from_lowerTier --> dxps.from_lowerTier;
+        to_lowerTier <-- dxps.to_lowerTier;
+        from_upperTier --> dxps.from_upperTier;
+        to_upperTier <-- dxps.to_upperTier;
+        udpIn --> dxps.udpIn;
+        udpOut <-- dxps.udpOut;
+
+}
