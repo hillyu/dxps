@@ -2,7 +2,7 @@
 # OMNeT++/OMNEST Makefile for OverSim
 #
 # This file was generated with the command:
-#  opp_makemake -f --deep -O out -I../../INET-OverSim-20101019/src/networklayer/rsvp_te -I../../INET-OverSim-20101019/src/networklayer/common -I../../INET-OverSim-20101019/src/networklayer/icmpv6 -I../../INET-OverSim-20101019/src/transport/tcp -I../../INET-OverSim-20101019/src/networklayer/mpls -I../../INET-OverSim-20101019/src/networklayer/ted -I../../INET-OverSim-20101019/src/networklayer/contract -I../../INET-OverSim-20101019/src/util -I../../INET-OverSim-20101019/src/transport/contract -I../../INET-OverSim-20101019/src/linklayer/mfcore -I../../INET-OverSim-20101019/src/networklayer/ldp -I../../INET-OverSim-20101019/src/applications/udpapp -I../../INET-OverSim-20101019/src/networklayer/ipv4 -I../../INET-OverSim-20101019/src/base -I../../INET-OverSim-20101019/src/util/headerserializers -I../../INET-OverSim-20101019/src/networklayer/ipv6 -I../../INET-OverSim-20101019/src/transport/sctp -I../../INET-OverSim-20101019/src/world -I../../INET-OverSim-20101019/src/applications/pingapp -I../../INET-OverSim-20101019/src/linklayer/contract -I../../INET-OverSim-20101019/src/networklayer/arp -I../../INET-OverSim-20101019/src/transport/udp -I../../INET-OverSim-20101019/src/networklayer/autorouting -L/usr/lib -L../../INET-OverSim-20101019/out/$(CONFIGNAME)/src -linet -KINET_PROJ=../../INET-OverSim-20101019 -- -lgmp
+#  opp_makemake -f --deep -O out -I../../INET-OverSim-20101019/src/networklayer/common -I../../INET-OverSim-20101019/src/networklayer/rsvp_te -I../../INET-OverSim-20101019/src/networklayer/icmpv6 -I../../INET-OverSim-20101019/src/transport/tcp -I../../INET-OverSim-20101019/src/networklayer/mpls -I../../INET-OverSim-20101019/src/networklayer/ted -I../../INET-OverSim-20101019/src/networklayer/contract -I../../INET-OverSim-20101019/src/util -I../../INET-OverSim-20101019/src/transport/contract -I../../INET-OverSim-20101019/src/linklayer/mfcore -I../../INET-OverSim-20101019/src/networklayer/ldp -I../../INET-OverSim-20101019/src/applications/udpapp -I../../INET-OverSim-20101019/src/networklayer/ipv4 -I../../INET-OverSim-20101019/src/base -I../../INET-OverSim-20101019/src/util/headerserializers -I../../INET-OverSim-20101019/src/networklayer/ipv6 -I../../INET-OverSim-20101019/src/transport/sctp -I../../INET-OverSim-20101019/src/world -I../../INET-OverSim-20101019/src/applications/pingapp -I../../INET-OverSim-20101019/src/linklayer/contract -I../../INET-OverSim-20101019/src/networklayer/arp -I../../INET-OverSim-20101019/src/transport/udp -I../../INET-OverSim-20101019/src/networklayer/autorouting -L/usr/lib -L../../INET-OverSim-20101019/out/$(CONFIGNAME)/src -linet -KINET_PROJ=../../INET-OverSim-20101019 -- -lgmp
 #
 
 # Name of target to be created (-o option)
@@ -15,8 +15,8 @@ USERIF_LIBS = $(ALL_ENV_LIBS) # that is, $(TKENV_LIBS) $(CMDENV_LIBS)
 
 # C++ include paths (with -I)
 INCLUDE_PATH = \
-    -I../../INET-OverSim-20101019/src/networklayer/rsvp_te \
     -I../../INET-OverSim-20101019/src/networklayer/common \
+    -I../../INET-OverSim-20101019/src/networklayer/rsvp_te \
     -I../../INET-OverSim-20101019/src/networklayer/icmpv6 \
     -I../../INET-OverSim-20101019/src/transport/tcp \
     -I../../INET-OverSim-20101019/src/networklayer/mpls \
@@ -42,6 +42,7 @@ INCLUDE_PATH = \
     -Iapplications \
     -Iapplications/almtest \
     -Iapplications/dht \
+    -Iapplications/dxps \
     -Iapplications/giasearchapp \
     -Iapplications/i3 \
     -Iapplications/i3/i3Apps \
@@ -104,6 +105,8 @@ OBJS = \
     $O/applications/almtest/MessageObserver.o \
     $O/applications/dht/DHT.o \
     $O/applications/dht/DHTDataStorage.o \
+    $O/applications/dxps/Dxps.o \
+    $O/applications/dxps/DxpsGroup.o \
     $O/applications/giasearchapp/GIASearchApp.o \
     $O/applications/giasearchapp/SearchMsgBookkeeping.o \
     $O/applications/i3/I3.o \
@@ -276,6 +279,7 @@ OBJS = \
     $O/underlay/singlehostunderlay/stun/udp.o \
     $O/applications/almtest/ALMTestTracedMessage_m.o \
     $O/applications/dht/DHTMessage_m.o \
+    $O/applications/dxps/DxpsMessage_m.o \
     $O/applications/i3/I3Message_m.o \
     $O/applications/i3/i3Apps/I3SessionMessage_m.o \
     $O/applications/i3/i3Apps/I3TriggersMessage_m.o \
@@ -312,6 +316,7 @@ OBJS = \
 MSGFILES = \
     applications/almtest/ALMTestTracedMessage.msg \
     applications/dht/DHTMessage.msg \
+    applications/dxps/DxpsMessage.msg \
     applications/i3/I3Message.msg \
     applications/i3/i3Apps/I3SessionMessage.msg \
     applications/i3/i3Apps/I3TriggersMessage.msg \
@@ -414,6 +419,7 @@ clean:
 	-rm -f applications/*_m.cc applications/*_m.h
 	-rm -f applications/almtest/*_m.cc applications/almtest/*_m.h
 	-rm -f applications/dht/*_m.cc applications/dht/*_m.h
+	-rm -f applications/dxps/*_m.cc applications/dxps/*_m.h
 	-rm -f applications/giasearchapp/*_m.cc applications/giasearchapp/*_m.h
 	-rm -f applications/i3/*_m.cc applications/i3/*_m.h
 	-rm -f applications/i3/i3Apps/*_m.cc applications/i3/i3Apps/*_m.h
@@ -462,7 +468,7 @@ cleanall: clean
 	-rm -rf $(PROJECT_OUTPUT_DIR)
 
 depend:
-	$(MAKEDEPEND) $(INCLUDE_PATH) -f Makefile -P\$$O/ -- $(MSG_CC_FILES)  ./*.cc applications/*.cc applications/almtest/*.cc applications/dht/*.cc applications/giasearchapp/*.cc applications/i3/*.cc applications/i3/i3Apps/*.cc applications/kbrtestapp/*.cc applications/myapplication/*.cc applications/realworldtestapp/*.cc applications/scribe/*.cc applications/simplegameclient/*.cc applications/tcpexampleapp/*.cc applications/tierdummy/*.cc common/*.cc common/cbr/*.cc overlay/*.cc overlay/bamboo/*.cc overlay/broose/*.cc overlay/chord/*.cc overlay/gia/*.cc overlay/kademlia/*.cc overlay/koorde/*.cc overlay/myoverlay/*.cc overlay/nice/*.cc overlay/ntree/*.cc overlay/pastry/*.cc overlay/pubsubmmog/*.cc overlay/quon/*.cc overlay/vast/*.cc tier2/*.cc tier2/dhttestapp/*.cc tier2/p2pns/*.cc tier2/simmud/*.cc tier3/*.cc tier3/xmlrpcinterface/*.cc tier3/xmlrpcinterface/xmlrpc++/*.cc underlay/*.cc underlay/inetunderlay/*.cc underlay/inetunderlay/ipv6/*.cc underlay/reaseunderlay/*.cc underlay/reaseunderlay/topologies/*.cc underlay/reaseunderlay/topologies/topology_example/*.cc underlay/reaseunderlay/topologies/topology_tiny_oversim/*.cc underlay/simpleunderlay/*.cc underlay/singlehostunderlay/*.cc underlay/singlehostunderlay/stun/*.cc
+	$(MAKEDEPEND) $(INCLUDE_PATH) -f Makefile -P\$$O/ -- $(MSG_CC_FILES)  ./*.cc applications/*.cc applications/almtest/*.cc applications/dht/*.cc applications/dxps/*.cc applications/giasearchapp/*.cc applications/i3/*.cc applications/i3/i3Apps/*.cc applications/kbrtestapp/*.cc applications/myapplication/*.cc applications/realworldtestapp/*.cc applications/scribe/*.cc applications/simplegameclient/*.cc applications/tcpexampleapp/*.cc applications/tierdummy/*.cc common/*.cc common/cbr/*.cc overlay/*.cc overlay/bamboo/*.cc overlay/broose/*.cc overlay/chord/*.cc overlay/gia/*.cc overlay/kademlia/*.cc overlay/koorde/*.cc overlay/myoverlay/*.cc overlay/nice/*.cc overlay/ntree/*.cc overlay/pastry/*.cc overlay/pubsubmmog/*.cc overlay/quon/*.cc overlay/vast/*.cc tier2/*.cc tier2/dhttestapp/*.cc tier2/p2pns/*.cc tier2/simmud/*.cc tier3/*.cc tier3/xmlrpcinterface/*.cc tier3/xmlrpcinterface/xmlrpc++/*.cc underlay/*.cc underlay/inetunderlay/*.cc underlay/inetunderlay/ipv6/*.cc underlay/reaseunderlay/*.cc underlay/reaseunderlay/topologies/*.cc underlay/reaseunderlay/topologies/topology_example/*.cc underlay/reaseunderlay/topologies/topology_tiny_oversim/*.cc underlay/simpleunderlay/*.cc underlay/singlehostunderlay/*.cc underlay/singlehostunderlay/stun/*.cc
 
 # DO NOT DELETE THIS LINE -- make depend depends on it.
 $O/applications/almtest/MessageObserver.o: applications/almtest/MessageObserver.cc \
@@ -585,6 +591,82 @@ $O/applications/dht/DHTMessage_m.o: applications/dht/DHTMessage_m.cc \
 	$(INET_PROJ)/src/networklayer/contract/IPvXAddress.h \
 	$(INET_PROJ)/src/networklayer/contract/IPv6Address.h \
 	$(INET_PROJ)/src/networklayer/contract/IPAddress.h \
+	common/NodeHandle.h
+$O/applications/dxps/Dxps.o: applications/dxps/Dxps.cc \
+	common/PeerInfo.h \
+	$(INET_PROJ)/src/base/INETDefs.h \
+	$(INET_PROJ)/src/base/INotifiable.h \
+	common/OverSimMessage_m.h \
+	common/RecursiveLookup.h \
+	common/oversim_mapset.h \
+	$(INET_PROJ)/src/transport/contract/TCPSocket.h \
+	common/OverSimMessage.h \
+	common/AbstractLookup.h \
+	common/GlobalNodeList.h \
+	common/RpcListener.h \
+	$(INET_PROJ)/src/networklayer/contract/IPvXAddress.h \
+	common/ExtTCPSocketMap.h \
+	common/PeerStorage.h \
+	$(INET_PROJ)/src/networklayer/contract/IPAddress.h \
+	common/ChurnGenerator.h \
+	common/HashFunc.h \
+	common/NodeVector.h \
+	common/RpcState.h \
+	common/GlobalStatistics.h \
+	common/CommonMessages_m.h \
+	common/BaseApp.h \
+	common/InitStages.h \
+	$(INET_PROJ)/src/transport/contract/TCPCommand_m.h \
+	common/TopologyVis.h \
+	common/BinaryValue.h \
+	common/Vector2D.h \
+	common/TransportAddress.h \
+	applications/dxps/DxpsMessage_m.h \
+	common/IterativeLookupConfiguration.h \
+	applications/dxps/Dxps.h \
+	common/OverlayKey.h \
+	common/oversim_byteswap.h \
+	common/BaseTcpSupport.h \
+	common/Comparator.h \
+	common/BaseOverlay.h \
+	common/BaseRpc.h \
+	$(INET_PROJ)/src/networklayer/contract/IPv6Address.h \
+	$(INET_PROJ)/src/transport/contract/TCPSocketMap.h \
+	common/ProxNodeHandle.h \
+	applications/dxps/DxpsGroup.h \
+	common/NodeHandle.h \
+	common/RpcMacros.h
+$O/applications/dxps/DxpsGroup.o: applications/dxps/DxpsGroup.cc \
+	common/CommonMessages_m.h \
+	$(INET_PROJ)/src/base/INETDefs.h \
+	common/OverSimMessage_m.h \
+	common/oversim_mapset.h \
+	common/Vector2D.h \
+	common/BinaryValue.h \
+	common/TransportAddress.h \
+	applications/dxps/DxpsMessage_m.h \
+	common/OverSimMessage.h \
+	common/OverlayKey.h \
+	$(INET_PROJ)/src/networklayer/contract/IPvXAddress.h \
+	$(INET_PROJ)/src/networklayer/contract/IPv6Address.h \
+	$(INET_PROJ)/src/networklayer/contract/IPAddress.h \
+	applications/dxps/DxpsGroup.h \
+	common/NodeHandle.h
+$O/applications/dxps/DxpsMessage_m.o: applications/dxps/DxpsMessage_m.cc \
+	common/CommonMessages_m.h \
+	$(INET_PROJ)/src/base/INETDefs.h \
+	common/OverSimMessage_m.h \
+	common/oversim_mapset.h \
+	common/Vector2D.h \
+	common/BinaryValue.h \
+	common/TransportAddress.h \
+	applications/dxps/DxpsMessage_m.h \
+	common/OverSimMessage.h \
+	common/OverlayKey.h \
+	$(INET_PROJ)/src/networklayer/contract/IPvXAddress.h \
+	$(INET_PROJ)/src/networklayer/contract/IPv6Address.h \
+	$(INET_PROJ)/src/networklayer/contract/IPAddress.h \
+	applications/dxps/DxpsGroup.h \
 	common/NodeHandle.h
 $O/applications/giasearchapp/SearchMsgBookkeeping.o: applications/giasearchapp/SearchMsgBookkeeping.cc \
 	common/OverlayKey.h \
