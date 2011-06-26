@@ -1,4 +1,4 @@
-file 1081 1308734300                                            
+file 1081 1308901381                                            
 version 2
 run Scribe-0-20110622-17:14:38-6304
 attr configname Scribe
@@ -15,10 +15,9 @@ attr replication #0
 attr resultdir results
 attr runnumber 0
 attr seedset 0
-
 vector 1  SimpleUnderlayNetwork.globalObserver.globalStatistics  "GlobalNodeList: Number of nodes"  ETV
-vector 2  SimpleUnderlayNetwork.globalObserver.globalStatistics  "LifetimeChurn: Session Time"  ETV
-vector 3  SimpleUnderlayNetwork.globalObserver.globalStatistics  "LifetimeChurn: Time between creates"  ETV
 1	763 8 1 1 0 0 1 0 0 0 0
+vector 2  SimpleUnderlayNetwork.globalObserver.globalStatistics  "LifetimeChurn: Session Time"  ETV
 2	771 163 2 304 0.217829337 4.114792731 5 4599.003449987 38457.757481104 84793.236996397 2303386701.8802
+vector 3  SimpleUnderlayNetwork.globalObserver.globalStatistics  "LifetimeChurn: Time between creates"  ETV
 3	934 147 2 304 0.217829337 4.114792731 5 0.217829337 1.346999034 4.114792731 4.2059239829883

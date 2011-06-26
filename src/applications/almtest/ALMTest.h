@@ -36,7 +36,7 @@ class ALMTest : public BaseApp {
         ALMTest();
         ~ALMTest();
 
-        void initializeApp(int stage);
+      virtual  void initializeApp(int stage);
 	void finishApp();
     protected:
 	// Handlers for message types
@@ -48,16 +48,16 @@ class ALMTest : public BaseApp {
 	void handleTransportAddressChangedNotification();
 	void handleUDPMessage(cMessage* msg);
 	void handleUpperMessage(cMessage* msg);
-	void handleTimerEvent(cMessage* msg);
+	virtual void handleTimerEvent(cMessage* msg);
 
         void joinGroup(int i);
         void leaveGroup(int i);
-        void sendDataToGroup(int i);
+        virtual void sendDataToGroup(int i);
         void handleMCast( ALMMulticastMessage* mcast );
         cMessage* timer;
         int groupNum;
 
-    private:
+    protected:
         // Controls if we'll try joining groups other than 1.
         // True by default.
         // Set to false for multicast protocols that do not support
