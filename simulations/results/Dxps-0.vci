@@ -1,0 +1,24 @@
+file 1393 1309099884                                            
+version 2
+run Dxps-0-20110626-22:45:15-9005
+attr configname Dxps
+attr datetime 20110626-22:45:15
+attr experiment Dxps
+attr inifile /Users/hill/sim/repos/simulations/dxps.ini
+attr iterationvars ""
+attr iterationvars2 $repetition=0
+attr measurement ""
+attr network oversim.underlay.simpleunderlay.SimpleUnderlayNetwork
+attr processid 9005
+attr repetition 0
+attr replication #0
+attr resultdir results
+attr runnumber 0
+attr seedset 0
+
+vector 1  SimpleUnderlayNetwork.globalObserver.globalStatistics  "GlobalNodeList: Number of nodes"  ETV
+vector 2  SimpleUnderlayNetwork.globalObserver.globalStatistics  "LifetimeChurn: Session Time"  ETV
+vector 3  SimpleUnderlayNetwork.globalObserver.globalStatistics  "LifetimeChurn: Time between creates"  ETV
+1	743 21 1 5094 0 50 2 0 10 10 100
+2	764 331 2 1869 0.217829337 9.654567193 10 191.400360331 38457.757481104 132249.14804836 3298724721.1475
+3	1095 298 2 1869 0.217829337 9.654567193 10 0.217829337 1.87263332 9.654567193 11.633633714226
