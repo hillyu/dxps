@@ -32,5 +32,14 @@ protected:
 private:
 	std::list<int> subscribeList;
 };
-
+class SubGen {
+	public:
+		SubGen();
+		//TODO SubGen(string xpe)
+		int getBloom();
+		std::string getXpe();
+	private:
+		int bloom;
+		std::string xpe;
+}
 #endif /* XMLPSAPP_H_ */

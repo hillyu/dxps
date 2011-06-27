@@ -51,41 +51,64 @@ void XmlPsApp::initializeApp(int stage)
 
 void XmlPsApp::handleTimerEvent( cMessage* msg )
 {
-    if( msg == timer ) {
-        double random = uniform( 0, 1 );
-        if( (random < subRate && joinGroups) || subscribeList.empty() ) {
-            joinGroup( ++groupNum );
-            subscribeList.push_back (groupNum);
-            std::list<int>::iterator it;
-            it=subscribeList.end();
-            it=--it;
-//            EV<<"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"<<*it<<"groupNum is:"<<groupNum;
-        }
-//        else if( random < subRate+unsubRate && joinGroups ) {
-//            leaveGroup( groupNum-- );
-//        }
-        else if ( sendMessages ) {
-            sendDataToGroup( intuniform( 1, groupNum ));
-        }
-        scheduleAt( simTime() + 10, timer );
-    }
+	if( msg == timer ) {
+		double random = uniform( 0, 1 );
+		if( (random < subRate && joinGroups) || subscribeList.empty() ) {
+			joinGroup(int groupNum=SubGen().bloom());
+			subscribeList.push_back (groupNum);
+			//            std::list<int>::iterator it;
+			//            it=subscribeList.end();
+			//            it=--it;
+			//            EV<<"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"<<*it<<"groupNum is:"<<groupNum;
+		}
+		else if( random < subRate+unsubRate && joinGroups ) {
+			std::list<int>::iterator it;
+			it=subscribeList.begin();
+			int random=intuniform(1, subscribeList.size());
+			for (i = 0; i < random; i++) {
+				it++;
+			}
+			leaveGroup( *it);
+			subscribeList.erase(i);//randomly delete a subscription
+		}
+		else if ( sendMessages ) {
+			sendDataToGroup( intuniform( 1, groupNum ));
+		}
+		scheduleAt( simTime() + 10, timer );
+	}
 }
-//void XmlPsApp::sendDataToGroup( int i )
-//{
+void XmlPsApp::sendDataToGroup( int i )
+{
 
-//    ALMMulticastMessage* msg = new ALMMulticastMessage("Multicast message");
-//    msg->setGroupId(OverlayKey(i));
-//
-//    ALMTestTracedMessage* traced = new ALMTestTracedMessage("Traced message");
-//    traced->setTimestamp();
-//    traced->setGroupId(OverlayKey(i));
-//    traced->setMcastId(traced->getId());
-//    traced->setSenderId(getId());
-//    traced->setByteLength(msglen);
-//
-//    msg->encapsulate(traced);
-//
-//    send(msg, "to_lowerTier");
-//
-//    observer->sentMessage(traced);
-//}
+	ALMMulticastMessage* msg = new ALMMulticastMessage("Multicast message");
+	msg->setGroupId(OverlayKey(i));
+
+	ALMTestTracedMessage* traced = new ALMTestTracedMessage("Traced message");
+	traced->setTimestamp();
+	traced->setGroupId(OverlayKey(i));
+	traced->setMcastId(traced->getId());
+	traced->setSenderId(getId());
+	traced->setByteLength(msglen);
+
+	msg->encapsulate(traced);
+
+	send(msg, "to_lowerTier");
+
+	observer->sentMessage(traced);
+}
+void SubGen::SubGen(){
+	//reading from a subscription pool
+	string SUBFILE;
+	ifstream subFile (SUBFILE);
+	BloomFilter.bloomfy
+	string random_line( ifstream subFile )
+	{
+		string line ;
+		string selected_line ; // added
+		int nlines = 0 ;
+		while( getline( file, line ) )
+			if(  ( rand() % ++nlines  ) == 0 ) // break ;
+		selected_line = line ;      
+		return selected_line ;
+	}	
+}
