@@ -4738,8 +4738,8 @@ $O/tier2/xmlpsapp/XmlPsApp.o: tier2/xmlpsapp/XmlPsApp.cc \
 	$(INET_PROJ)/src/base/INETDefs.h \
 	$(INET_PROJ)/src/base/INotifiable.h \
 	common/OverSimMessage_m.h \
-	common/oversim_mapset.h \
 	common/RecursiveLookup.h \
+	common/oversim_mapset.h \
 	applications/almtest/ALMTest.h \
 	$(INET_PROJ)/src/transport/contract/TCPSocket.h \
 	applications/almtest/MessageObserver.h \
@@ -4768,6 +4768,7 @@ $O/tier2/xmlpsapp/XmlPsApp.o: tier2/xmlpsapp/XmlPsApp.cc \
 	$(INET_PROJ)/src/networklayer/contract/IPv6Address.h \
 	common/BaseRpc.h \
 	$(INET_PROJ)/src/transport/contract/TCPSocketMap.h \
+	tier2/xmlpsapp/subgen.h \
 	common/ProxNodeHandle.h \
 	common/NodeHandle.h \
 	common/RpcMacros.h

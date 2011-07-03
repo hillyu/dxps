@@ -18,6 +18,9 @@
 
 #include "ALMTest.h"
 #include <list>
+#include "bloom_filter.hpp"
+#include <iostream>
+#include <fstream>
 
 class XmlPsApp: public ALMTest {
 public:
@@ -28,18 +31,13 @@ public:
 	void initializeApp(int stage);
 protected:
 	void handleTimerEvent( cMessage* msg );
+        void joinGroup(const unsigned char *buffer, uint32_t size);
+        void leaveGroup(const unsigned char *buffer, uint32_t size);
 	void handleMCast( ALMMulticastMessage* mcast );
+
+//void sendDataToGroup( int i );
 private:
-	std::list<int> subscribeList;
+	std::list<bloom_filter> subscribeList;
 };
-class SubGen {
-	public:
-		SubGen();
-		//TODO SubGen(string xpe)
-		int getBloom();
-		std::string getXpe();
-	private:
-		int bloom;
-		std::string xpe;
-}
+
 #endif /* XMLPSAPP_H_ */

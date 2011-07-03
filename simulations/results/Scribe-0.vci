@@ -1,23 +1,26 @@
-file 1081 1308901381                                            
+file 4228 1309521170                                            
 version 2
-run Scribe-0-20110622-17:14:38-6304
+run Scribe-0-20110701-19:42:57-11019
 attr configname Scribe
-attr datetime 20110622-17:14:38
+attr datetime 20110701-19:42:57
 attr experiment Scribe
 attr inifile /Users/hill/sim/OverSim-20101103/simulations/omnetpp.ini
 attr iterationvars ""
 attr iterationvars2 $repetition=0
 attr measurement ""
 attr network oversim.underlay.simpleunderlay.SimpleUnderlayNetwork
-attr processid 6304
+attr processid 11019
 attr repetition 0
 attr replication #0
 attr resultdir results
 attr runnumber 0
 attr seedset 0
+
 vector 1  SimpleUnderlayNetwork.globalObserver.globalStatistics  "GlobalNodeList: Number of nodes"  ETV
-1	763 8 1 1 0 0 1 0 0 0 0
 vector 2  SimpleUnderlayNetwork.globalObserver.globalStatistics  "LifetimeChurn: Session Time"  ETV
-2	771 163 2 304 0.217829337 4.114792731 5 4599.003449987 38457.757481104 84793.236996397 2303386701.8802
 vector 3  SimpleUnderlayNetwork.globalObserver.globalStatistics  "LifetimeChurn: Time between creates"  ETV
-3	934 147 2 304 0.217829337 4.114792731 5 0.217829337 1.346999034 4.114792731 4.2059239829883
+vector 4  SimpleUnderlayNetwork.globalObserver.globalStatistics  "LifetimeChurn: Time between deletes"  ETV
+1	873 2070 1 1551853 0 6150 124 0 11 1251 12829
+2	2943 564 2 1511809 0.217829337 5987.460768184 16 191.400360331 38457.757481104 173233.48061237 3721805064.9721
+3	3507 528 2 1511809 0.217829337 5987.460768184 16 0.217829337 2915.172294913 5987.460768184 10751784.11922
+4	4035 193 17296 1282820 184.182294204 5022.390223668 5 140.989763991 2530.590912266 5022.390223668 10051525.256138
