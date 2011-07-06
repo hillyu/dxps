@@ -17,6 +17,7 @@
 #define XMLPSAPP_H_
 
 #include "ALMTest.h"
+#include "subgen.h"
 #include <vector>
 #include "bloom_filter.hpp"
 #include <iostream>
@@ -37,7 +38,7 @@ protected:
 
 void sendDataToGroup(const unsigned char *buffer, uint32_t size);
 private:
-	std::list<SubGen> subscribeList;
+	std::vector<SubGen> subscribeList;
     //std::vector<bloom_filter *> subscribeList;
 
 };

@@ -14,11 +14,12 @@
 // 
 #include "./tinyxpath/xpath_static.h"
 #include "XmlPsApp.h"
-#include "subgen.h"
+
 #include "ALMTestTracedMessage_m.h"
 Define_Module(XmlPsApp);
 const int BLOOM_L=4;
 const int BLOOM_K=1;
+
 
 XmlPsApp::XmlPsApp() {
     // TODO Auto-generated constructor stub
@@ -61,11 +62,11 @@ void XmlPsApp::handleTimerEvent( cMessage* msg )
         if( (random < subRate && joinGroups) || subscribeList.empty() ) {
             bloom_filter bloomfilter (BLOOM_L,BLOOM_K);
             SubGen sub (bloomfilter);
-            TiXmlDocument  XDp_doc;
-            XDp_doc.LoadFile ("/Users/hill/work/bib_0.xml");
-            TIXML_STRING S_res;
+            //TiXmlDocument  XDp_doc;
+            //XDp_doc.LoadFile ("/Users/hill/work/bib_0.xml");
+            //TIXML_STRING S_res;
             //int i_res;//int is not working.
-            S_res = TinyXPath::S_xpath_string (XDp_doc.RootElement (), sub.getXpe().c_str());
+            //S_res = TinyXPath::S_xpath_string (XDp_doc.RootElement (), sub.getXpe().c_str());
             //i_res = TinyXPath::i_xpath_int (XDp_doc.RootElement (), "/bib");
             //groupNum=sub.getBloom();
 
@@ -73,25 +74,29 @@ void XmlPsApp::handleTimerEvent( cMessage* msg )
             EV <<"the bloom filter is:"<<(unsigned long)*bloomfilter.table()<<"\n";
             EV <<"the overlaykey is:" <<OverlayKey(bloomfilter.table(),bloomfilter.size()/8).toString()<<"\n";
             EV <<"the xpe is:"<<sub.getXpe().c_str()<<"\n";
-            EV <<"the result string is:"<<S_res<<"\n";
+          //  EV <<"the result string is:"<<S_res<<"\n";
             //joinGroup(16);
-            joinGroup(bloomfilter.table(),bloomfilter.size()/8);
+            joinGroup(bloomfilter.table(),bloomfilter.size()/bits_per_char);
+
             subscribeList.push_back (sub);
+            EV <<"the bloom filter from list is:"<<(unsigned long)*(subscribeList.back().getBloom())<<"\n";
         }
-//        else if( random < subRate+unsubRate && joinGroups ) {
-//            int i=(intuniform(1, subscribeList.size())-1);
-////            leaveGroup( subscribeList[i]->table(),subscribeList[i]->size()/8);
-//            EV<<"the size of sublist is"<<subscribeList.size()<<"\n";
-//            bloom_filter* bll=subscribeList.back();
-//            //subscribeList.erase (subscribeList.begin()+i);
-//            EV <<"unsubscribe to"<<(unsigned long)*bll->table()<<"\n";
-//        }
-//        else if ( sendMessages ) {
-//            int i=(intuniform(1, subscribeList.size())-1);
-//            sendDataToGroup( subscribeList[i]->table(),subscribeList[i]->size()/8);
-//            EV <<"data send to"<<(unsigned long)*subscribeList[i]->table()<<"\n";
+        else if( random < subRate+unsubRate && joinGroups ) {
+            int i=intuniform(1, subscribeList.size());
+            leaveGroup( subscribeList[i].getBloom(),subscribeList[i].getSize());
+           EV<<"the size of sublist is"<<subscribeList.size()<<"\n";
+           //EV<<"the xpe of sublist is"<<subscribeList[i].getXpe()<<"\n";
+           EV <<"unsubscribe to"<<(unsigned long)*(subscribeList[i].getBloom())<<"\n";
+
+            subscribeList.erase (subscribeList.begin()+i);
+
+        }
+        else if ( sendMessages ) {
+            int i=(intuniform(1, subscribeList.size())-1);
+            sendDataToGroup( subscribeList[i].getBloom(),subscribeList[i].getSize());
+            EV <<"data send to"<<(unsigned long)*subscribeList[i].getBloom()<<"\n";
 //
-//        }
+        }
         scheduleAt( simTime() + 10, timer );
     }
 
@@ -140,9 +145,14 @@ SubGen::SubGen(bloom_filter& filter){
     xpe+="/";
     int i=0;
     parseXpe(xpe,&filter,"",i);
-    bloom=filter.table();
+    size=filter.size()/bits_per_char;
+    std::copy(filter.table(),filter.table() + (filter.size() / bits_per_char),bloom);
+    //bloom = (unsigned char*) filter.table();
+
+
 
 }
+
 void SubGen::parseXpe(std::string xpstr, bloom_filter* bl,std::string parent, int &i){
     std::string current;
     //vector<string> rps;
