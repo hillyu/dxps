@@ -57,8 +57,8 @@ void XmlPsApp::handleTimerEvent( cMessage* msg )
 {
     if( msg == timer ) {
         double random = uniform( 0, 1 );
-        subRate=0.5;//test purpose
-        unsubRate=0.5;
+        subRate=0.3;//test purpose
+        unsubRate=0.3;
         if( (random < subRate && joinGroups) || subscribeList.empty() ) {
             bloom_filter bloomfilter (BLOOM_L,BLOOM_K);
             SubGen sub (bloomfilter);
@@ -76,39 +76,43 @@ void XmlPsApp::handleTimerEvent( cMessage* msg )
             EV <<"the xpe is:"<<sub.getXpe().c_str()<<"\n";
           //  EV <<"the result string is:"<<S_res<<"\n";
             //joinGroup(16);
-            joinGroup(bloomfilter.table(),bloomfilter.size()/bits_per_char);
+            joinGroup(sub.getBloom());
 
             subscribeList.push_back (sub);
-            EV <<"the bloom filter from list is:"<<(unsigned long)*(subscribeList.back().getBloom())<<"\n";
+            EV <<"the bloom filter from list is:"<<subscribeList.back().getBloom().toString()<<"\n";
         }
         else if( random < subRate+unsubRate && joinGroups ) {
             int i=intuniform(1, subscribeList.size());
-            leaveGroup( subscribeList[i].getBloom(),subscribeList[i].getSize());
-           EV<<"the size of sublist is"<<subscribeList.size()<<"\n";
-           //EV<<"the xpe of sublist is"<<subscribeList[i].getXpe()<<"\n";
-           EV <<"unsubscribe to"<<(unsigned long)*(subscribeList[i].getBloom())<<"\n";
+            i=i-1;
+            leaveGroup( subscribeList[i].getBloom());
 
+           EV<<"the size of sublist is"<<subscribeList.size()<<"\n";
+           EV<<"the xpe of sublist is"<<subscribeList[i].getXpe()<<"\n";
+           //EV <<"unsubscribe to"<<(unsigned long)*(subscribeList[i].getBloom())<<"\n";
+           EV <<"unsubscribe to: "<<subscribeList[i].getBloom().toString()<<"\n";
             subscribeList.erase (subscribeList.begin()+i);
 
         }
         else if ( sendMessages ) {
             int i=(intuniform(1, subscribeList.size())-1);
-            sendDataToGroup( subscribeList[i].getBloom(),subscribeList[i].getSize());
-            EV <<"data send to"<<(unsigned long)*subscribeList[i].getBloom()<<"\n";
+            sendDataToGroup( subscribeList[i].getBloom());
+            //EV <<"data send to"<<(unsigned long)*subscribeList[i].getBloom()<<"\n";
 //
         }
         scheduleAt( simTime() + 10, timer );
     }
 
 }
-void XmlPsApp::sendDataToGroup(const unsigned char *buffer, uint32_t size){
+//void XmlPsApp::sendDataToGroup(const unsigned char *buffer, uint32_t size){
+void XmlPsApp::sendDataToGroup(OverlayKey ovkey){
 
     ALMMulticastMessage* msg = new ALMMulticastMessage("Multicast message");
-    msg->setGroupId(OverlayKey (buffer, size));
+    //msg->setGroupId(OverlayKey (buffer, size));
+    msg->setGroupId(ovkey);
     //TODO maybe have something to do with the ned file definition of the msg type.
     ALMTestTracedMessage* traced = new ALMTestTracedMessage("Traced message");
     traced->setTimestamp();
-    traced->setGroupId(OverlayKey (buffer, size));
+    traced->setGroupId(ovkey);
     traced->setMcastId(traced->getId());
     traced->setSenderId(getId());
     traced->setByteLength(msglen);
@@ -119,23 +123,26 @@ void XmlPsApp::sendDataToGroup(const unsigned char *buffer, uint32_t size){
 
     observer->sentMessage(traced);
 }
-void XmlPsApp::joinGroup(const unsigned char *buffer, uint32_t size)
+//void XmlPsApp::joinGroup(const unsigned char *buffer, uint32_t size)
+void XmlPsApp::joinGroup(OverlayKey ovkey)
 {
 
     ALMSubscribeMessage* msg = new ALMSubscribeMessage;
-    msg->setGroupId(OverlayKey (buffer, size));
+    msg->setGroupId(ovkey);
     send(msg, "to_lowerTier");
 
-    observer->joinedGroup(getId(), OverlayKey (buffer, size));
+    observer->joinedGroup(getId(), ovkey);
 }
 
-void XmlPsApp::leaveGroup(const unsigned char *buffer, uint32_t size)
+//void XmlPsApp::leaveGroup(const unsigned char *buffer, uint32_t size)
+void XmlPsApp::leaveGroup(OverlayKey ovkey)
 {
     ALMLeaveMessage* msg = new ALMLeaveMessage;
-    msg->setGroupId(OverlayKey (buffer, size));
+    //msg->setGroupId(OverlayKey (buffer, size));
+    msg->setGroupId(ovkey);
     send(msg, "to_lowerTier");
 
-    observer->leftGroup(getId(), OverlayKey (buffer, size));
+    observer->leftGroup(getId(), ovkey);
 }
 
 SubGen::SubGen(bloom_filter& filter){
@@ -146,7 +153,8 @@ SubGen::SubGen(bloom_filter& filter){
     int i=0;
     parseXpe(xpe,&filter,"",i);
     size=filter.size()/bits_per_char;
-    std::copy(filter.table(),filter.table() + (filter.size() / bits_per_char),bloom);
+    bloom=OverlayKey (filter.table(), size);
+    //std::copy(filter.table(),filter.table() + (filter.size() / bits_per_char),bloom);
     //bloom = (unsigned char*) filter.table();
 
 

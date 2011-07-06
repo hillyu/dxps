@@ -1,10 +1,4 @@
 # Partial Tkenv config file -- see $HOME/.tkenvrc as well
-inspector "SimpleUnderlayNetwork" "SimpleUnderlayNetwork" "2" "788x284+47+73:normal"
 inspector "SimpleUnderlayNetwork.overlayTerminal[0].tier2" "XmlPsAppModule" "3" "774x266+906+698:normal"
-inspector "SimpleUnderlayNetwork.overlayTerminal[2].tier2" "XmlPsAppModule" "3" "765x266+97+527:normal"
-inspector "SimpleUnderlayNetwork.overlayTerminal[3].tier2" "XmlPsAppModule" "3" "770x266+114+238:normal"
-inspector "SimpleUnderlayNetwork.overlayTerminal[13]" "SimpleOverlayHost" "2" "845x604+152+170:normal"
-inspector "SimpleUnderlayNetwork.overlayTerminal[13].tier2" "XmlPsAppModule" "2" "790x284+173+211:normal"
-inspector "SimpleUnderlayNetwork.overlayTerminal[13].tier2.xmlPsApp" "XmlPsApp" "1" "803x274+194+234:normal"
 inspector "SimpleUnderlayNetwork.overlayTerminal[9].tier2" "XmlPsAppModule" "3" "774x266+906+71:normal"
 

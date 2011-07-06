@@ -32,11 +32,15 @@ public:
 	void initializeApp(int stage);
 protected:
 	void handleTimerEvent( cMessage* msg );
-        void joinGroup(const unsigned char *buffer, uint32_t size);
-        void leaveGroup(const unsigned char *buffer, uint32_t size);
+//        void joinGroup(const unsigned char *buffer, uint32_t size);
+//        void leaveGroup(const unsigned char *buffer, uint32_t size);
+//        void sendDataToGroup(const unsigned char *buffer, uint32_t size);
+        void joinGroup(OverlayKey ovkey);
+                void leaveGroup(OverlayKey ovkey);
+                void sendDataToGroup(OverlayKey ovkey);
 	void handleMCast( ALMMulticastMessage* mcast );
 
-void sendDataToGroup(const unsigned char *buffer, uint32_t size);
+
 private:
 	std::vector<SubGen> subscribeList;
     //std::vector<bloom_filter *> subscribeList;
