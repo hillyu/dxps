@@ -12,11 +12,12 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
-
+#include "./tinyxpath/xpath_static.h"
 #include "XmlPsApp.h"
 #include "subgen.h"
+#include "ALMTestTracedMessage_m.h"
 Define_Module(XmlPsApp);
-const int BLOOM_L=32;
+const int BLOOM_L=4;
 const int BLOOM_K=1;
 
 XmlPsApp::XmlPsApp() {
@@ -55,58 +56,64 @@ void XmlPsApp::handleTimerEvent( cMessage* msg )
 {
     if( msg == timer ) {
         double random = uniform( 0, 1 );
-        if( (random < 1 && joinGroups) || subscribeList.empty() ) {
+        subRate=0.5;//test purpose
+        unsubRate=0.5;
+        if( (random < subRate && joinGroups) || subscribeList.empty() ) {
             bloom_filter bloomfilter (BLOOM_L,BLOOM_K);
             SubGen sub (bloomfilter);
+            TiXmlDocument  XDp_doc;
+            XDp_doc.LoadFile ("/Users/hill/work/bib_0.xml");
+            TIXML_STRING S_res;
+            //int i_res;//int is not working.
+            S_res = TinyXPath::S_xpath_string (XDp_doc.RootElement (), sub.getXpe().c_str());
+            //i_res = TinyXPath::i_xpath_int (XDp_doc.RootElement (), "/bib");
             //groupNum=sub.getBloom();
 
             //EV <<"the Xpath expression is:"<<sub.getXpe()<<"\n";
             EV <<"the bloom filter is:"<<(unsigned long)*bloomfilter.table()<<"\n";
-            EV <<"the overlaykey is:" <<OverlayKey(bloomfilter.table(),bloomfilter.size()/8).toString();
+            EV <<"the overlaykey is:" <<OverlayKey(bloomfilter.table(),bloomfilter.size()/8).toString()<<"\n";
+            EV <<"the xpe is:"<<sub.getXpe().c_str()<<"\n";
+            EV <<"the result string is:"<<S_res<<"\n";
             //joinGroup(16);
             joinGroup(bloomfilter.table(),bloomfilter.size()/8);
-            //    subscribeList.push_back (bloomfilter);
-            //            std::list<int>::iterator it;
-            //            it=subscribeList.end();
-            //            it=--it;
-            //            EV<<"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"<<*it<<"groupNum is:"<<groupNum;
+            subscribeList.push_back (sub);
         }
-        //        else if( random < subRate+unsubRate && joinGroups ) {
-        //            std::list<bloom_filter>::iterator it;
-        //            it=subscribeList.begin();
-        //            int random=intuniform(1, subscribeList.size()/8);
-        //            int i;
-        //            for (i = 0; i < random; i++) {
-        //                it++;
-        //            }
-        //            //leaveGroup( it->table(),it->size()/8);
-        //            subscribeList.erase(it);//randomly delete a subscription
-        //        }
-        else if ( sendMessages ) {
-            sendDataToGroup( intuniform( 1, groupNum ));
-        }
+//        else if( random < subRate+unsubRate && joinGroups ) {
+//            int i=(intuniform(1, subscribeList.size())-1);
+////            leaveGroup( subscribeList[i]->table(),subscribeList[i]->size()/8);
+//            EV<<"the size of sublist is"<<subscribeList.size()<<"\n";
+//            bloom_filter* bll=subscribeList.back();
+//            //subscribeList.erase (subscribeList.begin()+i);
+//            EV <<"unsubscribe to"<<(unsigned long)*bll->table()<<"\n";
+//        }
+//        else if ( sendMessages ) {
+//            int i=(intuniform(1, subscribeList.size())-1);
+//            sendDataToGroup( subscribeList[i]->table(),subscribeList[i]->size()/8);
+//            EV <<"data send to"<<(unsigned long)*subscribeList[i]->table()<<"\n";
+//
+//        }
         scheduleAt( simTime() + 10, timer );
     }
+
 }
-//void XmlPsApp::sendDataToGroup( int i )
-//{
-//
-//    ALMMulticastMessage* msg = new ALMMulticastMessage("Multicast message");
-//    msg->setGroupId(OverlayKey(i));
-//
-//    ALMTestTracedMessage* traced = new ALMTestTracedMessage("Traced message");
-//    traced->setTimestamp();
-//    traced->setGroupId(OverlayKey(i));
-//    traced->setMcastId(traced->getId());
-//    traced->setSenderId(getId());
-//    traced->setByteLength(msglen);
-//
-//    msg->encapsulate(traced);
-//
-//    send(msg, "to_lowerTier");
-//
-//    observer->sentMessage(traced);
-//}
+void XmlPsApp::sendDataToGroup(const unsigned char *buffer, uint32_t size){
+
+    ALMMulticastMessage* msg = new ALMMulticastMessage("Multicast message");
+    msg->setGroupId(OverlayKey (buffer, size));
+    //TODO maybe have something to do with the ned file definition of the msg type.
+    ALMTestTracedMessage* traced = new ALMTestTracedMessage("Traced message");
+    traced->setTimestamp();
+    traced->setGroupId(OverlayKey (buffer, size));
+    traced->setMcastId(traced->getId());
+    traced->setSenderId(getId());
+    traced->setByteLength(msglen);
+
+    msg->encapsulate(traced);
+
+    send(msg, "to_lowerTier");
+
+    observer->sentMessage(traced);
+}
 void XmlPsApp::joinGroup(const unsigned char *buffer, uint32_t size)
 {
 
@@ -133,7 +140,7 @@ SubGen::SubGen(bloom_filter& filter){
     xpe+="/";
     int i=0;
     parseXpe(xpe,&filter,"",i);
-    bloom=(unsigned int)*(const unsigned char*)filter.table();
+    bloom=filter.table();
 
 }
 void SubGen::parseXpe(std::string xpstr, bloom_filter* bl,std::string parent, int &i){

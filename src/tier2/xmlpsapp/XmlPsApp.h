@@ -17,7 +17,7 @@
 #define XMLPSAPP_H_
 
 #include "ALMTest.h"
-#include <list>
+#include <vector>
 #include "bloom_filter.hpp"
 #include <iostream>
 #include <fstream>
@@ -35,9 +35,11 @@ protected:
         void leaveGroup(const unsigned char *buffer, uint32_t size);
 	void handleMCast( ALMMulticastMessage* mcast );
 
-//void sendDataToGroup( int i );
+void sendDataToGroup(const unsigned char *buffer, uint32_t size);
 private:
-	std::list<bloom_filter> subscribeList;
+	std::list<SubGen> subscribeList;
+    //std::vector<bloom_filter *> subscribeList;
+
 };
 
 #endif /* XMLPSAPP_H_ */
