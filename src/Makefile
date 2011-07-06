@@ -2,7 +2,7 @@
 # OMNeT++/OMNEST Makefile for OverSim
 #
 # This file was generated with the command:
-#  opp_makemake -f --deep -O out -I../../INET-OverSim-20101019/src/networklayer/common -I../../INET-OverSim-20101019/src/networklayer/rsvp_te -I../../INET-OverSim-20101019/src/networklayer/icmpv6 -I../../INET-OverSim-20101019/src/transport/tcp -I../../INET-OverSim-20101019/src/networklayer/mpls -I../../INET-OverSim-20101019/src/networklayer/ted -I../../INET-OverSim-20101019/src/networklayer/contract -I../../INET-OverSim-20101019/src/util -I../../INET-OverSim-20101019/src/transport/contract -I../../INET-OverSim-20101019/src/linklayer/mfcore -I../../INET-OverSim-20101019/src/networklayer/ldp -I../../INET-OverSim-20101019/src/applications/udpapp -I../../INET-OverSim-20101019/src/networklayer/ipv4 -I../../INET-OverSim-20101019/src/base -I../../INET-OverSim-20101019/src/util/headerserializers -I../../INET-OverSim-20101019/src/networklayer/ipv6 -I../../INET-OverSim-20101019/src/transport/sctp -I../../INET-OverSim-20101019/src/world -I../../INET-OverSim-20101019/src/applications/pingapp -I../../INET-OverSim-20101019/src/linklayer/contract -I../../INET-OverSim-20101019/src/networklayer/arp -I../../INET-OverSim-20101019/src/transport/udp -I../../INET-OverSim-20101019/src/networklayer/autorouting -L/usr/lib -L../../INET-OverSim-20101019/out/$(CONFIGNAME)/src -linet -KINET_PROJ=../../INET-OverSim-20101019 -- -lgmp
+#  opp_makemake -f --deep -O out -I../../INET-OverSim-20101019/src/networklayer/common -I../../INET-OverSim-20101019/src/networklayer/rsvp_te -I../../INET-OverSim-20101019/src/networklayer/icmpv6 -I../../INET-OverSim-20101019/src/transport/tcp -I../../INET-OverSim-20101019/src/networklayer/mpls -I../../INET-OverSim-20101019/src/networklayer/ted -I../../INET-OverSim-20101019/src/networklayer/contract -I../../INET-OverSim-20101019/src/util -I../../INET-OverSim-20101019/src/transport/contract -I../../INET-OverSim-20101019/src/linklayer/mfcore -I../../INET-OverSim-20101019/src/networklayer/ldp -I../../INET-OverSim-20101019/src/applications/udpapp -I../../INET-OverSim-20101019/src/networklayer/ipv4 -I../../INET-OverSim-20101019/src/base -I../../INET-OverSim-20101019/src/util/headerserializers -I../../INET-OverSim-20101019/src/transport/sctp -I../../INET-OverSim-20101019/src/networklayer/ipv6 -I../../INET-OverSim-20101019/src/world -I../../INET-OverSim-20101019/src/applications/pingapp -I../../INET-OverSim-20101019/src/linklayer/contract -I../../INET-OverSim-20101019/src/networklayer/arp -I../../INET-OverSim-20101019/src/transport/udp -I../../INET-OverSim-20101019/src/networklayer/autorouting -L/usr/lib -L../../INET-OverSim-20101019/out/$(CONFIGNAME)/src -linet -KINET_PROJ=../../INET-OverSim-20101019 -- -lgmp
 #
 
 # Name of target to be created (-o option)
@@ -30,8 +30,8 @@ INCLUDE_PATH = \
     -I../../INET-OverSim-20101019/src/networklayer/ipv4 \
     -I../../INET-OverSim-20101019/src/base \
     -I../../INET-OverSim-20101019/src/util/headerserializers \
-    -I../../INET-OverSim-20101019/src/networklayer/ipv6 \
     -I../../INET-OverSim-20101019/src/transport/sctp \
+    -I../../INET-OverSim-20101019/src/networklayer/ipv6 \
     -I../../INET-OverSim-20101019/src/world \
     -I../../INET-OverSim-20101019/src/applications/pingapp \
     -I../../INET-OverSim-20101019/src/linklayer/contract \
@@ -74,6 +74,9 @@ INCLUDE_PATH = \
     -Itier2/p2pns \
     -Itier2/simmud \
     -Itier2/xmlpsapp \
+    -Itier2/xmlpsapp/tinyxpath \
+    -Itier2/xmlpsapp/tinyxpath/autom4te.cache \
+    -Itier2/xmlpsapp/tinyxpath/tinyxpath_lib \
     -Itier3 \
     -Itier3/xmlrpcinterface \
     -Itier3/xmlrpcinterface/xmlrpc++ \
@@ -241,6 +244,22 @@ OBJS = \
     $O/tier2/p2pns/P2pnsCache.o \
     $O/tier2/simmud/SimMud.o \
     $O/tier2/xmlpsapp/XmlPsApp.o \
+    $O/tier2/xmlpsapp/tinyxpath/action_store.o \
+    $O/tier2/xmlpsapp/tinyxpath/htmlutil.o \
+    $O/tier2/xmlpsapp/tinyxpath/lex_util.o \
+    $O/tier2/xmlpsapp/tinyxpath/node_set.o \
+    $O/tier2/xmlpsapp/tinyxpath/tinystr.o \
+    $O/tier2/xmlpsapp/tinyxpath/tinyxml.o \
+    $O/tier2/xmlpsapp/tinyxpath/tinyxmlerror.o \
+    $O/tier2/xmlpsapp/tinyxpath/tinyxmlparser.o \
+    $O/tier2/xmlpsapp/tinyxpath/tokenlist.o \
+    $O/tier2/xmlpsapp/tinyxpath/xml_util.o \
+    $O/tier2/xmlpsapp/tinyxpath/xpath_expression.o \
+    $O/tier2/xmlpsapp/tinyxpath/xpath_processor.o \
+    $O/tier2/xmlpsapp/tinyxpath/xpath_stack.o \
+    $O/tier2/xmlpsapp/tinyxpath/xpath_static.o \
+    $O/tier2/xmlpsapp/tinyxpath/xpath_stream.o \
+    $O/tier2/xmlpsapp/tinyxpath/xpath_syntax.o \
     $O/tier3/xmlrpcinterface/XmlRpcInterface.o \
     $O/tier3/xmlrpcinterface/xmlrpc++/XmlRpcClient.o \
     $O/tier3/xmlrpcinterface/xmlrpc++/XmlRpcDispatch.o \
@@ -453,6 +472,9 @@ clean:
 	-rm -f tier2/p2pns/*_m.cc tier2/p2pns/*_m.h
 	-rm -f tier2/simmud/*_m.cc tier2/simmud/*_m.h
 	-rm -f tier2/xmlpsapp/*_m.cc tier2/xmlpsapp/*_m.h
+	-rm -f tier2/xmlpsapp/tinyxpath/*_m.cc tier2/xmlpsapp/tinyxpath/*_m.h
+	-rm -f tier2/xmlpsapp/tinyxpath/autom4te.cache/*_m.cc tier2/xmlpsapp/tinyxpath/autom4te.cache/*_m.h
+	-rm -f tier2/xmlpsapp/tinyxpath/tinyxpath_lib/*_m.cc tier2/xmlpsapp/tinyxpath/tinyxpath_lib/*_m.h
 	-rm -f tier3/*_m.cc tier3/*_m.h
 	-rm -f tier3/xmlrpcinterface/*_m.cc tier3/xmlrpcinterface/*_m.h
 	-rm -f tier3/xmlrpcinterface/xmlrpc++/*_m.cc tier3/xmlrpcinterface/xmlrpc++/*_m.h
@@ -471,7 +493,7 @@ cleanall: clean
 	-rm -rf $(PROJECT_OUTPUT_DIR)
 
 depend:
-	$(MAKEDEPEND) $(INCLUDE_PATH) -f Makefile -P\$$O/ -- $(MSG_CC_FILES)  ./*.cc applications/*.cc applications/almtest/*.cc applications/dht/*.cc applications/dxps/*.cc applications/giasearchapp/*.cc applications/i3/*.cc applications/i3/i3Apps/*.cc applications/kbrtestapp/*.cc applications/myapplication/*.cc applications/realworldtestapp/*.cc applications/scribe/*.cc applications/simplegameclient/*.cc applications/tcpexampleapp/*.cc applications/tierdummy/*.cc common/*.cc common/cbr/*.cc overlay/*.cc overlay/bamboo/*.cc overlay/broose/*.cc overlay/chord/*.cc overlay/gia/*.cc overlay/kademlia/*.cc overlay/koorde/*.cc overlay/myoverlay/*.cc overlay/nice/*.cc overlay/ntree/*.cc overlay/pastry/*.cc overlay/pubsubmmog/*.cc overlay/quon/*.cc overlay/vast/*.cc tier2/*.cc tier2/dhttestapp/*.cc tier2/p2pns/*.cc tier2/simmud/*.cc tier2/xmlpsapp/*.cc tier3/*.cc tier3/xmlrpcinterface/*.cc tier3/xmlrpcinterface/xmlrpc++/*.cc underlay/*.cc underlay/inetunderlay/*.cc underlay/inetunderlay/ipv6/*.cc underlay/reaseunderlay/*.cc underlay/reaseunderlay/topologies/*.cc underlay/reaseunderlay/topologies/topology_example/*.cc underlay/reaseunderlay/topologies/topology_tiny_oversim/*.cc underlay/simpleunderlay/*.cc underlay/singlehostunderlay/*.cc underlay/singlehostunderlay/stun/*.cc
+	$(MAKEDEPEND) $(INCLUDE_PATH) -f Makefile -P\$$O/ -- $(MSG_CC_FILES)  ./*.cc applications/*.cc applications/almtest/*.cc applications/dht/*.cc applications/dxps/*.cc applications/giasearchapp/*.cc applications/i3/*.cc applications/i3/i3Apps/*.cc applications/kbrtestapp/*.cc applications/myapplication/*.cc applications/realworldtestapp/*.cc applications/scribe/*.cc applications/simplegameclient/*.cc applications/tcpexampleapp/*.cc applications/tierdummy/*.cc common/*.cc common/cbr/*.cc overlay/*.cc overlay/bamboo/*.cc overlay/broose/*.cc overlay/chord/*.cc overlay/gia/*.cc overlay/kademlia/*.cc overlay/koorde/*.cc overlay/myoverlay/*.cc overlay/nice/*.cc overlay/ntree/*.cc overlay/pastry/*.cc overlay/pubsubmmog/*.cc overlay/quon/*.cc overlay/vast/*.cc tier2/*.cc tier2/dhttestapp/*.cc tier2/p2pns/*.cc tier2/simmud/*.cc tier2/xmlpsapp/*.cc tier2/xmlpsapp/tinyxpath/*.cc tier2/xmlpsapp/tinyxpath/autom4te.cache/*.cc tier2/xmlpsapp/tinyxpath/tinyxpath_lib/*.cc tier3/*.cc tier3/xmlrpcinterface/*.cc tier3/xmlrpcinterface/xmlrpc++/*.cc underlay/*.cc underlay/inetunderlay/*.cc underlay/inetunderlay/ipv6/*.cc underlay/reaseunderlay/*.cc underlay/reaseunderlay/topologies/*.cc underlay/reaseunderlay/topologies/topology_example/*.cc underlay/reaseunderlay/topologies/topology_tiny_oversim/*.cc underlay/simpleunderlay/*.cc underlay/singlehostunderlay/*.cc underlay/singlehostunderlay/stun/*.cc
 
 # DO NOT DELETE THIS LINE -- make depend depends on it.
 $O/applications/almtest/MessageObserver.o: applications/almtest/MessageObserver.cc \
@@ -4751,14 +4773,15 @@ $O/tier2/xmlpsapp/XmlPsApp.o: tier2/xmlpsapp/XmlPsApp.cc \
 	common/ExtTCPSocketMap.h \
 	$(INET_PROJ)/src/networklayer/contract/IPAddress.h \
 	common/NodeVector.h \
+	applications/almtest/ALMTestTracedMessage_m.h \
 	common/RpcState.h \
 	common/CommonMessages_m.h \
 	common/BaseApp.h \
 	common/InitStages.h \
 	$(INET_PROJ)/src/transport/contract/TCPCommand_m.h \
 	common/TopologyVis.h \
-	common/BinaryValue.h \
 	common/Vector2D.h \
+	common/BinaryValue.h \
 	common/TransportAddress.h \
 	common/IterativeLookupConfiguration.h \
 	common/OverlayKey.h \
@@ -4768,10 +4791,122 @@ $O/tier2/xmlpsapp/XmlPsApp.o: tier2/xmlpsapp/XmlPsApp.cc \
 	$(INET_PROJ)/src/networklayer/contract/IPv6Address.h \
 	common/BaseRpc.h \
 	$(INET_PROJ)/src/transport/contract/TCPSocketMap.h \
-	tier2/xmlpsapp/subgen.h \
 	common/ProxNodeHandle.h \
+	tier2/xmlpsapp/subgen.h \
 	common/NodeHandle.h \
 	common/RpcMacros.h
+$O/tier2/xmlpsapp/tinyxpath/tinystr.o: tier2/xmlpsapp/tinyxpath/tinystr.cc \
+	tier2/xmlpsapp/tinyxpath/tinystr.h
+$O/tier2/xmlpsapp/tinyxpath/tinyxmlparser.o: tier2/xmlpsapp/tinyxpath/tinyxmlparser.cc \
+	tier2/xmlpsapp/tinyxpath/tinystr.h \
+	tier2/xmlpsapp/tinyxpath/tinyxml.h
+$O/tier2/xmlpsapp/tinyxpath/xpath_stack.o: tier2/xmlpsapp/tinyxpath/xpath_stack.cc \
+	tier2/xmlpsapp/tinyxpath/lex_token.h \
+	tier2/xmlpsapp/tinyxpath/byte_stream.h \
+	tier2/xmlpsapp/tinyxpath/xpath_syntax.h \
+	tier2/xmlpsapp/tinyxpath/tinyxpath_conf.h \
+	tier2/xmlpsapp/tinyxpath/tokenlist.h \
+	tier2/xmlpsapp/tinyxpath/xpath_stream.h \
+	tier2/xmlpsapp/tinyxpath/tinyxml.h \
+	tier2/xmlpsapp/tinyxpath/node_set.h \
+	tier2/xmlpsapp/tinyxpath/xpath_stack.h \
+	tier2/xmlpsapp/tinyxpath/tinystr.h \
+	tier2/xmlpsapp/tinyxpath/lex_util.h \
+	tier2/xmlpsapp/tinyxpath/action_store.h \
+	tier2/xmlpsapp/tinyxpath/xpath_processor.h \
+	tier2/xmlpsapp/tinyxpath/xpath_expression.h
+$O/tier2/xmlpsapp/tinyxpath/xpath_syntax.o: tier2/xmlpsapp/tinyxpath/xpath_syntax.cc \
+	tier2/xmlpsapp/tinyxpath/lex_token.h \
+	tier2/xmlpsapp/tinyxpath/xpath_syntax.h \
+	tier2/xmlpsapp/tinyxpath/tinyxpath_conf.h \
+	tier2/xmlpsapp/tinyxpath/tinystr.h \
+	tier2/xmlpsapp/tinyxpath/tokenlist.h \
+	tier2/xmlpsapp/tinyxpath/lex_util.h \
+	tier2/xmlpsapp/tinyxpath/tinyxml.h
+$O/tier2/xmlpsapp/tinyxpath/xpath_static.o: tier2/xmlpsapp/tinyxpath/xpath_static.cc \
+	tier2/xmlpsapp/tinyxpath/lex_token.h \
+	tier2/xmlpsapp/tinyxpath/byte_stream.h \
+	tier2/xmlpsapp/tinyxpath/xpath_syntax.h \
+	tier2/xmlpsapp/tinyxpath/tinyxpath_conf.h \
+	tier2/xmlpsapp/tinyxpath/tokenlist.h \
+	tier2/xmlpsapp/tinyxpath/xpath_static.h \
+	tier2/xmlpsapp/tinyxpath/xpath_stream.h \
+	tier2/xmlpsapp/tinyxpath/tinyxml.h \
+	tier2/xmlpsapp/tinyxpath/node_set.h \
+	tier2/xmlpsapp/tinyxpath/xpath_stack.h \
+	tier2/xmlpsapp/tinyxpath/tinystr.h \
+	tier2/xmlpsapp/tinyxpath/lex_util.h \
+	tier2/xmlpsapp/tinyxpath/action_store.h \
+	tier2/xmlpsapp/tinyxpath/xpath_processor.h \
+	tier2/xmlpsapp/tinyxpath/xpath_expression.h
+$O/tier2/xmlpsapp/tinyxpath/action_store.o: tier2/xmlpsapp/tinyxpath/action_store.cc \
+	tier2/xmlpsapp/tinyxpath/tinystr.h \
+	tier2/xmlpsapp/tinyxpath/action_store.h \
+	tier2/xmlpsapp/tinyxpath/tinyxml.h
+$O/tier2/xmlpsapp/tinyxpath/xpath_processor.o: tier2/xmlpsapp/tinyxpath/xpath_processor.cc \
+	tier2/xmlpsapp/tinyxpath/lex_token.h \
+	tier2/xmlpsapp/tinyxpath/byte_stream.h \
+	tier2/xmlpsapp/tinyxpath/xpath_syntax.h \
+	tier2/xmlpsapp/tinyxpath/tinyxpath_conf.h \
+	tier2/xmlpsapp/tinyxpath/tokenlist.h \
+	tier2/xmlpsapp/tinyxpath/xml_util.h \
+	tier2/xmlpsapp/tinyxpath/xpath_stream.h \
+	tier2/xmlpsapp/tinyxpath/tinyxml.h \
+	tier2/xmlpsapp/tinyxpath/node_set.h \
+	tier2/xmlpsapp/tinyxpath/xpath_stack.h \
+	tier2/xmlpsapp/tinyxpath/tinystr.h \
+	tier2/xmlpsapp/tinyxpath/lex_util.h \
+	tier2/xmlpsapp/tinyxpath/action_store.h \
+	tier2/xmlpsapp/tinyxpath/xpath_processor.h \
+	tier2/xmlpsapp/tinyxpath/xpath_expression.h
+$O/tier2/xmlpsapp/tinyxpath/node_set.o: tier2/xmlpsapp/tinyxpath/node_set.cc \
+	tier2/xmlpsapp/tinyxpath/node_set.h \
+	tier2/xmlpsapp/tinyxpath/tinyxpath_conf.h \
+	tier2/xmlpsapp/tinyxpath/tinystr.h \
+	tier2/xmlpsapp/tinyxpath/tinyxml.h
+$O/tier2/xmlpsapp/tinyxpath/htmlutil.o: tier2/xmlpsapp/tinyxpath/htmlutil.cc \
+	tier2/xmlpsapp/tinyxpath/tinystr.h \
+	tier2/xmlpsapp/tinyxpath/htmlutil.h \
+	tier2/xmlpsapp/tinyxpath/tinyxml.h
+$O/tier2/xmlpsapp/tinyxpath/tinyxmlerror.o: tier2/xmlpsapp/tinyxpath/tinyxmlerror.cc \
+	tier2/xmlpsapp/tinyxpath/tinystr.h \
+	tier2/xmlpsapp/tinyxpath/tinyxml.h
+$O/tier2/xmlpsapp/tinyxpath/lex_util.o: tier2/xmlpsapp/tinyxpath/lex_util.cc \
+	tier2/xmlpsapp/tinyxpath/tinyxpath_conf.h \
+	tier2/xmlpsapp/tinyxpath/tinystr.h \
+	tier2/xmlpsapp/tinyxpath/lex_util.h \
+	tier2/xmlpsapp/tinyxpath/tinyxml.h
+$O/tier2/xmlpsapp/tinyxpath/tokenlist.o: tier2/xmlpsapp/tinyxpath/tokenlist.cc \
+	tier2/xmlpsapp/tinyxpath/lex_token.h \
+	tier2/xmlpsapp/tinyxpath/tinyxpath_conf.h \
+	tier2/xmlpsapp/tinyxpath/tinystr.h \
+	tier2/xmlpsapp/tinyxpath/tokenlist.h \
+	tier2/xmlpsapp/tinyxpath/lex_util.h \
+	tier2/xmlpsapp/tinyxpath/tinyxml.h
+$O/tier2/xmlpsapp/tinyxpath/xml_util.o: tier2/xmlpsapp/tinyxpath/xml_util.cc \
+	tier2/xmlpsapp/tinyxpath/tinystr.h \
+	tier2/xmlpsapp/tinyxpath/xml_util.h \
+	tier2/xmlpsapp/tinyxpath/tinyxml.h
+$O/tier2/xmlpsapp/tinyxpath/xpath_expression.o: tier2/xmlpsapp/tinyxpath/xpath_expression.cc \
+	tier2/xmlpsapp/tinyxpath/node_set.h \
+	tier2/xmlpsapp/tinyxpath/tinyxpath_conf.h \
+	tier2/xmlpsapp/tinyxpath/tinystr.h \
+	tier2/xmlpsapp/tinyxpath/lex_util.h \
+	tier2/xmlpsapp/tinyxpath/xpath_expression.h \
+	tier2/xmlpsapp/tinyxpath/tinyxml.h
+$O/tier2/xmlpsapp/tinyxpath/tinyxml.o: tier2/xmlpsapp/tinyxpath/tinyxml.cc \
+	tier2/xmlpsapp/tinyxpath/tinystr.h \
+	tier2/xmlpsapp/tinyxpath/tinyxml.h
+$O/tier2/xmlpsapp/tinyxpath/xpath_stream.o: tier2/xmlpsapp/tinyxpath/xpath_stream.cc \
+	tier2/xmlpsapp/tinyxpath/lex_token.h \
+	tier2/xmlpsapp/tinyxpath/byte_stream.h \
+	tier2/xmlpsapp/tinyxpath/xpath_syntax.h \
+	tier2/xmlpsapp/tinyxpath/tinyxpath_conf.h \
+	tier2/xmlpsapp/tinyxpath/tinystr.h \
+	tier2/xmlpsapp/tinyxpath/tokenlist.h \
+	tier2/xmlpsapp/tinyxpath/lex_util.h \
+	tier2/xmlpsapp/tinyxpath/xpath_stream.h \
+	tier2/xmlpsapp/tinyxpath/tinyxml.h
 $O/tier3/xmlrpcinterface/XmlRpcInterface.o: tier3/xmlrpcinterface/XmlRpcInterface.cc \
 	tier3/xmlrpcinterface/xmlrpc++/XmlRpc.h \
 	tier3/xmlrpcinterface/xmlrpc++/XmlRpcClient.h \
