@@ -66,7 +66,7 @@ void ALMTest::handleTimerEvent( cMessage* msg )
         double random = uniform( 0, 1 );
         if( (random < 0.1 && joinGroups) || groupNum < 1 ) {
             joinGroup( ++groupNum );
-        } else if( random < 0.2 && joinGroups ) {
+        } else if( random < 0.1 && joinGroups ) {
             leaveGroup( groupNum-- );
         } else if ( sendMessages ) {
             sendDataToGroup( intuniform( 1, groupNum ));

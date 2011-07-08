@@ -22,6 +22,9 @@
 #include "bloom_filter.hpp"
 #include <iostream>
 #include <fstream>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
 
 class XmlPsApp: public ALMTest {
 public:
@@ -39,6 +42,7 @@ protected:
                 void leaveGroup(OverlayKey ovkey);
                 void sendDataToGroup(OverlayKey ovkey);
 	void handleMCast( ALMMulticastMessage* mcast );
+	std::string xmlGen();
 
 
 private:

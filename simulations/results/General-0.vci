@@ -1,0 +1,24 @@
+file 261042 1310122555                                          
+version 2
+run General-0-20110708-18:54:31-6571
+attr configname General
+attr datetime 20110708-18:54:31
+attr experiment General
+attr inifile /Users/hill/sim/repos/simulations/default.ini
+attr iterationvars ""
+attr iterationvars2 $repetition=0
+attr measurement ""
+attr network oversim.underlay.simpleunderlay.SimpleUnderlayNetwork
+attr processid 6571
+attr repetition 0
+attr replication #0
+attr resultdir results
+attr runnumber 0
+attr seedset 0
+
+vector 1  SimpleUnderlayNetwork.globalObserver.globalStatistics  "GlobalNodeList: Number of nodes"  ETV
+vector 2  SimpleUnderlayNetwork.globalObserver.globalStatistics  "KBRTestApp: One-way Hop Count"  ETV
+vector 3  SimpleUnderlayNetwork.globalObserver.globalStatistics  "KBRTestApp: One-way Latency"  ETV
+1	749 8545 2010 713732 50 24550 491 10 10 4910 49100
+2	9294 107721 2042 714323 50.961826549 24579.115370498 4097 0 3 9594 25932
+3	117015 144027 2042 714323 50.961826549 24579.115370498 4097 0 1.09941019 1410.348502246 705.92260757335

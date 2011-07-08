@@ -331,7 +331,8 @@ OBJS = \
     $O/overlay/vast/Vast_m.o \
     $O/tier2/dhttestapp/DHTTestAppMessages_m.o \
     $O/tier2/p2pns/P2pnsMessage_m.o \
-    $O/tier2/simmud/SimMud_m.o
+    $O/tier2/simmud/SimMud_m.o \
+    $O/tier2/xmlpsapp/XmlPsAppTracedMessage_m.o
 
 # Message files
 MSGFILES = \
@@ -368,7 +369,8 @@ MSGFILES = \
     overlay/vast/Vast.msg \
     tier2/dhttestapp/DHTTestAppMessages.msg \
     tier2/p2pns/P2pnsMessage.msg \
-    tier2/simmud/SimMud.msg
+    tier2/simmud/SimMud.msg \
+    tier2/xmlpsapp/XmlPsAppTracedMessage.msg
 
 # Other makefile variables (-K)
 INET_PROJ=../../INET-OverSim-20101019
@@ -4756,6 +4758,10 @@ $O/tier2/simmud/SimMud_m.o: tier2/simmud/SimMud_m.cc \
 	$(INET_PROJ)/src/networklayer/contract/IPv6Address.h \
 	$(INET_PROJ)/src/networklayer/contract/IPAddress.h \
 	common/NodeHandle.h
+$O/tier2/xmlpsapp/XmlPsAppTracedMessage_m.o: tier2/xmlpsapp/XmlPsAppTracedMessage_m.cc \
+	applications/almtest/ALMTestTracedMessage_m.h \
+	common/OverlayKey.h \
+	tier2/xmlpsapp/XmlPsAppTracedMessage_m.h
 $O/tier2/xmlpsapp/XmlPsApp.o: tier2/xmlpsapp/XmlPsApp.cc \
 	$(INET_PROJ)/src/base/INETDefs.h \
 	$(INET_PROJ)/src/base/INotifiable.h \
@@ -4763,6 +4769,7 @@ $O/tier2/xmlpsapp/XmlPsApp.o: tier2/xmlpsapp/XmlPsApp.cc \
 	common/RecursiveLookup.h \
 	common/oversim_mapset.h \
 	applications/almtest/ALMTest.h \
+	tier2/xmlpsapp/XmlPsAppTracedMessage_m.h \
 	$(INET_PROJ)/src/transport/contract/TCPSocket.h \
 	applications/almtest/MessageObserver.h \
 	tier2/xmlpsapp/XmlPsApp.h \
@@ -4778,20 +4785,20 @@ $O/tier2/xmlpsapp/XmlPsApp.o: tier2/xmlpsapp/XmlPsApp.cc \
 	common/CommonMessages_m.h \
 	common/BaseApp.h \
 	common/InitStages.h \
-	$(INET_PROJ)/src/transport/contract/TCPCommand_m.h \
 	common/TopologyVis.h \
+	$(INET_PROJ)/src/transport/contract/TCPCommand_m.h \
 	common/Vector2D.h \
 	common/BinaryValue.h \
 	common/TransportAddress.h \
 	common/IterativeLookupConfiguration.h \
 	common/OverlayKey.h \
 	common/BaseTcpSupport.h \
-	common/BaseOverlay.h \
 	common/Comparator.h \
+	common/BaseOverlay.h \
 	$(INET_PROJ)/src/networklayer/contract/IPv6Address.h \
 	common/BaseRpc.h \
-	$(INET_PROJ)/src/transport/contract/TCPSocketMap.h \
 	common/ProxNodeHandle.h \
+	$(INET_PROJ)/src/transport/contract/TCPSocketMap.h \
 	tier2/xmlpsapp/subgen.h \
 	common/NodeHandle.h \
 	common/RpcMacros.h

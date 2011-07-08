@@ -103,7 +103,7 @@ class MessageObserver : public cSimpleModule {
         // When a node received a given message
         std::map<NodeMessagePair, simtime_t> receivedAt;
 
-        // Periodically clean up the above map. Set to 0 to disable.
+        // Periodically clean up the above map. Set to 0 to disable(--by hill: maybe the following parameter, tried to set to 0, but the simulation crashed).
         cMessage* gcTimer;
 
         // How often to clean up
