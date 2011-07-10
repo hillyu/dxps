@@ -23,4 +23,5 @@ packet ALMTestTracedMessage;
 //
 packet XmlPsAppTracedMessage extends ALMTestTracedMessage {
     string xmlFileName;
+    bool false_positive;
 }

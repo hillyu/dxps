@@ -3,6 +3,7 @@
 #include "bloom_filter.hpp"
 #include <iostream>
 #include <fstream>
+#include "OverlayKey.h"
 class SubGen {
 public:
 	SubGen();

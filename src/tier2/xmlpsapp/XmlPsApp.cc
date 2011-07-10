@@ -17,7 +17,7 @@
 
 #include "XmlPsAppTracedMessage_m.h"
 Define_Module(XmlPsApp);
-const int BLOOM_L=4;
+const int BLOOM_L=32;
 const int BLOOM_K=1;
 
 
@@ -27,15 +27,15 @@ XmlPsApp::XmlPsApp() {
 	timer = new cMessage( "app_timer");
 	joinGroups = true;
 	sendMessages = true;
-	observer = NULL;
+	xmlpsapp_observer = NULL;
 
 
 
 }
 //
-//XmlPsApp::~XmlPsApp() {
-//	// TODO Auto-generated destructor stub
-//}
+XmlPsApp::~XmlPsApp() {
+	cancelAndDelete( timer );
+}
 
 void XmlPsApp::initializeApp(int stage)
 {
@@ -43,7 +43,7 @@ void XmlPsApp::initializeApp(int stage)
 	{
 		return;
 	}
-	observer = check_and_cast<MessageObserver*>(
+	xmlpsapp_observer = check_and_cast<XmlPsAppMessageObserver*>(
 			simulation.getModuleByPath("globalObserver.globalFunctions[0].function.observer"));
 	joinGroups = par("joinGroups");
 	msglen = par("messageLength");
@@ -52,8 +52,31 @@ void XmlPsApp::initializeApp(int stage)
 	subRate=par("subRate");
 	unsubRate=par("unsubRate");
 	groupNum=0;
+	WATCH_VECTOR(subscribeList);
 
 }
+
+
+
+
+void XmlPsApp::handleLowerMessage(cMessage* msg)
+{
+    ALMMulticastMessage* mcast = dynamic_cast<ALMMulticastMessage*>(msg);
+    if ( mcast != 0 ) {
+        handleMCast(mcast);
+    }
+}
+
+void XmlPsApp::handleReadyMessage(CompReadyMessage* msg)
+{
+    if( (getThisCompType() - msg->getComp() == 1) && msg->getReady() ) {
+	groupNum = 0;
+	cancelEvent(timer);
+	scheduleAt(simTime() + 1, timer);
+    }
+    delete msg;
+}
+
 
 void XmlPsApp::handleTimerEvent( cMessage* msg )
 {
@@ -75,14 +98,20 @@ void XmlPsApp::handleTimerEvent( cMessage* msg )
 			bloom_filter bloomfilter (BLOOM_L,BLOOM_K);
 			SubGen sub (bloomfilter);
 			bool isrepeat=false;
-			for (int i = 0; i < subscribeList.size(); ++i) {
+			bool isblrepeat=false;
+			for (size_t i = 0; i < subscribeList.size(); ++i) {
 				if ((subscribeList[i].getBloom()== sub.getBloom())){
+					isblrepeat=true;
+
+				}
+				if (subscribeList[i].getXpe()==sub.getXpe()) {
 					isrepeat=true;
-					break;
 				}
 			}
 			if (!isrepeat) {
-				joinGroup(sub.getBloom());
+				if (!isblrepeat) {
+								joinGroup(sub.getBloom());
+							}
 				subscribeList.push_back (sub);
 			}
 
@@ -118,8 +147,10 @@ void XmlPsApp::handleTimerEvent( cMessage* msg )
 
 		}
 		else if ( sendMessages ) {
-			int i=(intuniform(1, subscribeList.size())-1);
-			sendDataToGroup( subscribeList[i].getBloom());
+			//int i=(intuniform(1, subscribeList.size())-1);
+			//sendDataToGroup( subscribeList[i].getBloom());
+			std::string xmlfile=xmlGen();
+			sendDataToGroup(xml2bloom(xmlfile),xmlfile);
 
 			//EV <<"data send to"<<(unsigned long)*subscribeList[i].getBloom()<<"\n";
 			//
@@ -128,22 +159,7 @@ void XmlPsApp::handleTimerEvent( cMessage* msg )
 	}
 
 }
-//void XmlPsApp::handleTimerEvent( cMessage* msg )
-//{
-//    if( msg == timer ) {
-//
-//        double random = uniform( 0, 1 );
-//        if( (random < 0 && joinGroups) || groupNum < 1 ) {
-//            joinGroup( 1 );groupNum=1;
-//        } else if( random < 0 && joinGroups ) {
-//            leaveGroup( groupNum-- );
-//        } else if ( sendMessages ) {
-//            sendDataToGroup( 1 );
-//        }
-//        scheduleAt( simTime() + 10, timer );
-//    }
-//}
-//void XmlPsApp::joinGroup(const unsigned char *buffer, uint32_t size)
+
 void XmlPsApp::joinGroup(OverlayKey ovkey)
 {
 
@@ -151,7 +167,7 @@ void XmlPsApp::joinGroup(OverlayKey ovkey)
 	msg->setGroupId(ovkey);
 	send(msg, "to_lowerTier");
 
-	observer->joinedGroup(getId(), ovkey);
+	xmlpsapp_observer->joinedGroup(getId(), ovkey);
 }
 
 //void XmlPsApp::leaveGroup(const unsigned char *buffer, uint32_t size)
@@ -162,11 +178,11 @@ void XmlPsApp::leaveGroup(OverlayKey ovkey)
 	msg->setGroupId(ovkey);
 	send(msg, "to_lowerTier");
 
-	observer->leftGroup(getId(), ovkey);
+	xmlpsapp_observer->leftGroup(getId(), ovkey);
 }
 
 //void XmlPsApp::sendDataToGroup(const unsigned char *buffer, uint32_t size){
-void XmlPsApp::sendDataToGroup(OverlayKey ovkey){
+void XmlPsApp::sendDataToGroup(OverlayKey ovkey,std::string data){
 
 	ALMMulticastMessage* msg = new ALMMulticastMessage("Multicast message");
 	//msg->setGroupId(OverlayKey (buffer, size));
@@ -177,14 +193,14 @@ void XmlPsApp::sendDataToGroup(OverlayKey ovkey){
 	traced->setGroupId(ovkey);
 	traced->setMcastId(traced->getId());
 	traced->setSenderId(getId());
-	traced->setXmlFileName(xmlGen().c_str());
+	traced->setXmlFileName(data.c_str());
 	traced->setByteLength(msglen);
 
 	msg->encapsulate(traced);
 
 	send(msg, "to_lowerTier");
 
-	observer->sentMessage(traced);
+	xmlpsapp_observer->sentMessage(traced);
 }
 
 void XmlPsApp::handleMCast( ALMMulticastMessage* mcast )
@@ -196,7 +212,9 @@ void XmlPsApp::handleMCast( ALMMulticastMessage* mcast )
 
 	XmlPsAppTracedMessage* traced = check_and_cast<XmlPsAppTracedMessage*>(mcast->decapsulate());
 	traced->setReceiverId(getId());
-	observer->receivedMessage(traced);
+
+	traced->setFalse_positive(evaluateXpe(traced->getXmlFileName()));
+	xmlpsapp_observer->receivedMessage(traced);
 
 	delete traced;
 
@@ -208,8 +226,10 @@ void XmlPsApp::handleMCast( ALMMulticastMessage* mcast )
 
 std::string XmlPsApp::xmlGen()
 {
-	std::string pathlist = "../sim/repos/samplefiles/xmldocs/filelist.txt";
+	std::string pathlist = "../samplefiles/xmldocs/filelist2.txt";
 	std::string xmlfile=SubGen::random_line(pathlist);
+	EV << "The PathList is "<<pathlist<<"\n";
+	EV << "The XMLFILE INPUT is"<<xmlfile<<"\n";
 	struct stat filestatus;
 	stat( xmlfile.c_str(), &filestatus );
 	msglen=filestatus.st_size;
@@ -217,7 +237,47 @@ std::string XmlPsApp::xmlGen()
 }
 
 
+bool XmlPsApp::evaluateXpe(std::string xmlfilename){
+			TiXmlDocument  XDp_doc;
+			XDp_doc.LoadFile (xmlfilename);
+//			XDp_doc.LoadFile ("/Users/hill/test.xml");
+//			EV<<"The XML FILENAME IS: "<<xmlfilename<<"\n";
+//			TIXML_STRING S_res;
+			//S_res=TinyXPath::S_xpath_string (XDp_doc.RootElement (), "/");
+			//int i_res;//int is not working.
+//			S_res = TinyXPath::S_xpath_string (XDp_doc.RootElement (), "/*");
+//			EV<<"THE RESUlt IS: "<<S_res<<"\n";
+			//i_res = TinyXPath::i_xpath_int (XDp_doc.RootElement (), "/bib");
+			//groupNum=sub.getBloom();
+			for (int i = 0; i < subscribeList.size(); ++i) {
+				if (!((TinyXPath::S_xpath_string (XDp_doc.RootElement (), subscribeList[i].getXpe().c_str())).empty()))
+//				if (!((TinyXPath::S_xpath_string (XDp_doc.RootElement (), "/bib/")).empty()))
+					return false;
+			}
+		return true;
+}
 
+OverlayKey XmlPsApp::xml2bloom(std::string xmlfilename){
+bloom_filter bloomfilter (BLOOM_L,BLOOM_K);
+TiXmlDocument  XDp_doc;
+			XDp_doc.LoadFile (xmlfilename);
+			EV<<"TheRootElementis:"<<XDp_doc.RootElement()->ValueStr()<<"\n";
+			recursivex2b(XDp_doc.RootElement (),bloomfilter);
+			return OverlayKey (bloomfilter.table(), bloomfilter.size()/bits_per_char);
+}
+void XmlPsApp::recursivex2b(TiXmlElement* parent, bloom_filter & bloomfilter){
+
+				TiXmlElement* child = 0;
+				bloomfilter.insert(parent->ValueStr());
+				for( child = parent->FirstChildElement(); child; child = child->NextSiblingElement() ){
+					bloomfilter.insert(child->ValueStr());
+					bloomfilter.insert(parent->ValueStr()+child->ValueStr());
+					if (!child->NoChildren()){
+						recursivex2b(child, bloomfilter);
+
+					}
+				}
+}
 
 
 
@@ -239,9 +299,8 @@ SubGen::SubGen(bloom_filter& filter){
 	//reading from a subscription pool
 	std::string SUBFILE="/Users/hill/work/oversim/test/bib.xpelist";
 	xpe=random_line(SUBFILE);
-	xpe+="/";
 	int i=0;
-	parseXpe(xpe,&filter,"",i);
+	parseXpe(xpe+"/",&filter,"",i);
 	size=filter.size()/bits_per_char;
 	bloom=OverlayKey (filter.table(), size);
 	//std::copy(filter.table(),filter.table() + (filter.size() / bits_per_char),bloom);
@@ -319,6 +378,13 @@ std::string SubGen::random_line(std::string filepath)
 	file.close();
 	return selected_line ;
 }
+
+std::ostream & operator <<(std::ostream & os,  SubGen  & subg)
+{
+	return os << "bloom: " << subg.getBloom() << "; xpe: " << subg.getXpe();
+}
+
+
 
 
 

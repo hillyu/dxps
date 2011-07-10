@@ -24,6 +24,7 @@
  * <pre>
  * packet XmlPsAppTracedMessage extends ALMTestTracedMessage {
  *     string xmlFileName;
+ *     bool false_positive;
  * }
  * </pre>
  */
@@ -31,6 +32,7 @@ class XmlPsAppTracedMessage : public ::ALMTestTracedMessage
 {
   protected:
     opp_string xmlFileName_var;
+    bool false_positive_var;
 
     // protected and unimplemented operator==(), to prevent accidental usage
     bool operator==(const XmlPsAppTracedMessage&);
@@ -47,6 +49,8 @@ class XmlPsAppTracedMessage : public ::ALMTestTracedMessage
     // field getter/setter methods
     virtual const char * getXmlFileName() const;
     virtual void setXmlFileName(const char * xmlFileName_var);
+    virtual bool getFalse_positive() const;
+    virtual void setFalse_positive(bool false_positive_var);
 };
 
 inline void doPacking(cCommBuffer *b, XmlPsAppTracedMessage& obj) {obj.parsimPack(b);}

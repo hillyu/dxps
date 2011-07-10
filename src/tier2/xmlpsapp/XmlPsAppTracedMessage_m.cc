@@ -35,6 +35,7 @@ Register_Class(XmlPsAppTracedMessage);
 XmlPsAppTracedMessage::XmlPsAppTracedMessage(const char *name, int kind) : ALMTestTracedMessage(name,kind)
 {
     this->xmlFileName_var = 0;
+    this->false_positive_var = 0;
 }
 
 XmlPsAppTracedMessage::XmlPsAppTracedMessage(const XmlPsAppTracedMessage& other) : ALMTestTracedMessage()
@@ -52,6 +53,7 @@ XmlPsAppTracedMessage& XmlPsAppTracedMessage::operator=(const XmlPsAppTracedMess
     if (this==&other) return *this;
     ALMTestTracedMessage::operator=(other);
     this->xmlFileName_var = other.xmlFileName_var;
+    this->false_positive_var = other.false_positive_var;
     return *this;
 }
 
@@ -59,12 +61,14 @@ void XmlPsAppTracedMessage::parsimPack(cCommBuffer *b)
 {
     ALMTestTracedMessage::parsimPack(b);
     doPacking(b,this->xmlFileName_var);
+    doPacking(b,this->false_positive_var);
 }
 
 void XmlPsAppTracedMessage::parsimUnpack(cCommBuffer *b)
 {
     ALMTestTracedMessage::parsimUnpack(b);
     doUnpacking(b,this->xmlFileName_var);
+    doUnpacking(b,this->false_positive_var);
 }
 
 const char * XmlPsAppTracedMessage::getXmlFileName() const
@@ -75,6 +79,16 @@ const char * XmlPsAppTracedMessage::getXmlFileName() const
 void XmlPsAppTracedMessage::setXmlFileName(const char * xmlFileName_var)
 {
     this->xmlFileName_var = xmlFileName_var;
+}
+
+bool XmlPsAppTracedMessage::getFalse_positive() const
+{
+    return false_positive_var;
+}
+
+void XmlPsAppTracedMessage::setFalse_positive(bool false_positive_var)
+{
+    this->false_positive_var = false_positive_var;
 }
 
 class XmlPsAppTracedMessageDescriptor : public cClassDescriptor
@@ -124,7 +138,7 @@ const char *XmlPsAppTracedMessageDescriptor::getProperty(const char *propertynam
 int XmlPsAppTracedMessageDescriptor::getFieldCount(void *object) const
 {
     cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 1+basedesc->getFieldCount(object) : 1;
+    return basedesc ? 2+basedesc->getFieldCount(object) : 2;
 }
 
 unsigned int XmlPsAppTracedMessageDescriptor::getFieldTypeFlags(void *object, int field) const
@@ -137,8 +151,9 @@ unsigned int XmlPsAppTracedMessageDescriptor::getFieldTypeFlags(void *object, in
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,
+        FD_ISEDITABLE,
     };
-    return (field>=0 && field<1) ? fieldTypeFlags[field] : 0;
+    return (field>=0 && field<2) ? fieldTypeFlags[field] : 0;
 }
 
 const char *XmlPsAppTracedMessageDescriptor::getFieldName(void *object, int field) const
@@ -151,8 +166,9 @@ const char *XmlPsAppTracedMessageDescriptor::getFieldName(void *object, int fiel
     }
     static const char *fieldNames[] = {
         "xmlFileName",
+        "false_positive",
     };
-    return (field>=0 && field<1) ? fieldNames[field] : NULL;
+    return (field>=0 && field<2) ? fieldNames[field] : NULL;
 }
 
 int XmlPsAppTracedMessageDescriptor::findField(void *object, const char *fieldName) const
@@ -160,6 +176,7 @@ int XmlPsAppTracedMessageDescriptor::findField(void *object, const char *fieldNa
     cClassDescriptor *basedesc = getBaseClassDescriptor();
     int base = basedesc ? basedesc->getFieldCount(object) : 0;
     if (fieldName[0]=='x' && strcmp(fieldName, "xmlFileName")==0) return base+0;
+    if (fieldName[0]=='f' && strcmp(fieldName, "false_positive")==0) return base+1;
     return basedesc ? basedesc->findField(object, fieldName) : -1;
 }
 
@@ -173,8 +190,9 @@ const char *XmlPsAppTracedMessageDescriptor::getFieldTypeString(void *object, in
     }
     static const char *fieldTypeStrings[] = {
         "string",
+        "bool",
     };
-    return (field>=0 && field<1) ? fieldTypeStrings[field] : NULL;
+    return (field>=0 && field<2) ? fieldTypeStrings[field] : NULL;
 }
 
 const char *XmlPsAppTracedMessageDescriptor::getFieldProperty(void *object, int field, const char *propertyname) const
@@ -215,6 +233,7 @@ std::string XmlPsAppTracedMessageDescriptor::getFieldAsString(void *object, int 
     XmlPsAppTracedMessage *pp = (XmlPsAppTracedMessage *)object; (void)pp;
     switch (field) {
         case 0: return oppstring2string(pp->getXmlFileName());
+        case 1: return bool2string(pp->getFalse_positive());
         default: return "";
     }
 }
@@ -230,6 +249,7 @@ bool XmlPsAppTracedMessageDescriptor::setFieldAsString(void *object, int field, 
     XmlPsAppTracedMessage *pp = (XmlPsAppTracedMessage *)object; (void)pp;
     switch (field) {
         case 0: pp->setXmlFileName((value)); return true;
+        case 1: pp->setFalse_positive(string2bool(value)); return true;
         default: return false;
     }
 }
@@ -244,8 +264,9 @@ const char *XmlPsAppTracedMessageDescriptor::getFieldStructName(void *object, in
     }
     static const char *fieldStructNames[] = {
         NULL,
+        NULL,
     };
-    return (field>=0 && field<1) ? fieldStructNames[field] : NULL;
+    return (field>=0 && field<2) ? fieldStructNames[field] : NULL;
 }
 
 void *XmlPsAppTracedMessageDescriptor::getFieldStructPointer(void *object, int field, int i) const

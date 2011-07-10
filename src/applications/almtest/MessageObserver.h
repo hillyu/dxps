@@ -62,14 +62,14 @@ class MessageObserver : public cSimpleModule {
         /**
          * Counts one received message for group.
          */
-        void receivedMessage(ALMTestTracedMessage* msg);
+        virtual void receivedMessage(ALMTestTracedMessage* msg);
 
         /**
          * Notifies the observer that the node doesn't exist anymore.
          */
         void nodeDead(int moduleId);
 
-    private:
+    protected:
 
         /*
          * Tracks data related to a single group
