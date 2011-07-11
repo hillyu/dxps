@@ -53,7 +53,7 @@ class ALMTest : public BaseApp {
         void joinGroup(int i);
         void leaveGroup(int i);
         virtual void sendDataToGroup(int i);
-        void handleMCast( ALMMulticastMessage* mcast );
+        virtual void handleMCast( ALMMulticastMessage* mcast );
         cMessage* timer;
         int groupNum;
 
@@ -66,7 +66,7 @@ class ALMTest : public BaseApp {
 
 	bool sendMessages;
 
-        MessageObserver* observer;
+         MessageObserver* observer;
         int msglen;
 };
 

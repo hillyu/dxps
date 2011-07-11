@@ -15,12 +15,12 @@
 //
 
 /**
- * @file MessageObserver.h
+ * @file XmlPsAppMessageObserver.h
  * @author Dimitar Toshev
  */
 
-#ifndef __MESSAGEOBSERVER_H__
-#define __MESSAGEOBSERVER_H__
+#ifndef __XMLPSAPPMESSAGEOBSERVER_H__
+#define __XMLPSAPPMESSAGEOBSERVER_H__
 
 #include <stdint.h>
 #include <time.h>
@@ -28,14 +28,14 @@
 #include <omnetpp.h>
 #include "OverlayKey.h"
 
-class ALMTestTracedMessage;
+class XmlPsAppTracedMessage;
 
-class MessageObserver : public cSimpleModule {
+class XmlPsAppMessageObserver : public cSimpleModule {
 
     public:
 
-        MessageObserver();
-        ~MessageObserver();
+        XmlPsAppMessageObserver();
+        ~XmlPsAppMessageObserver();
 
         void initialize();
 
@@ -57,25 +57,25 @@ class MessageObserver : public cSimpleModule {
          * Counts n - 1 messages pending reception, where n is the
          * size of the group to which the message is sent.
          */
-        void sentMessage(ALMTestTracedMessage* msg);
+        void sentMessage(XmlPsAppTracedMessage* msg);
 
         /**
          * Counts one received message for group.
          */
-        virtual void receivedMessage(ALMTestTracedMessage* msg);
+         void receivedMessage(XmlPsAppTracedMessage* msg);
 
         /**
          * Notifies the observer that the node doesn't exist anymore.
          */
         void nodeDead(int moduleId);
 
-    protected:
+    private:
 
         /*
          * Tracks data related to a single group
          */
         struct MulticastGroup {
-            MulticastGroup() : size(0), sent(0), received(0) {}
+            MulticastGroup() : size(0), sent(0), received(0),false_positive(0) {}
 
             // Number of nodes in the group
             uint32_t size;
@@ -85,6 +85,9 @@ class MessageObserver : public cSimpleModule {
 
             // Number of messages recieved total by all nodes
             uint64_t received;
+
+            //number of messages receibed that is false positive error.
+            uint64_t false_positive;
 
         };
 
@@ -117,11 +120,11 @@ class MessageObserver : public cSimpleModule {
 
         GlobalStatistics* globalStatistics;
 
-        friend std::ostream& operator<< (std::ostream& os, MessageObserver::MulticastGroup const & mg);
-        friend std::ostream& operator<< (std::ostream& os, MessageObserver::NodeGroupPair const & ngp);
+        friend std::ostream& operator<< (std::ostream& os, XmlPsAppMessageObserver::MulticastGroup const & mg);
+        friend std::ostream& operator<< (std::ostream& os, XmlPsAppMessageObserver::NodeGroupPair const & ngp);
 };
 
-std::ostream& operator<< (std::ostream& os, MessageObserver::MulticastGroup const & mg);
-std::ostream& operator<< (std::ostream& os, MessageObserver::NodeGroupPair const & ngp);
+std::ostream& operator<< (std::ostream& os, XmlPsAppMessageObserver::MulticastGroup const & mg);
+std::ostream& operator<< (std::ostream& os, XmlPsAppMessageObserver::NodeGroupPair const & ngp);
 
 #endif

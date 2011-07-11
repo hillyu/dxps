@@ -64,7 +64,13 @@ public:
       bit_table_ = new cell_type[table_size_ / bits_per_char];
       std::fill_n(bit_table_,(table_size_ / bits_per_char),0x00);
    }
-   bloom_filter(std::size_t min_m, std::size_t min_k){
+   bloom_filter(std::size_t min_m, std::size_t min_k)
+	   : bit_table_(0),
+	        predicted_element_count_(10),
+	        inserted_element_count_(0),
+	        random_seed_(0xA5A5A5A5),
+	        desired_false_positive_probability_(1)
+	        {
        salt_count_ = static_cast<std::size_t>(min_k);
        table_size_ = static_cast<std::size_t>(min_m);
        table_size_ += (((table_size_ % bits_per_char) != 0) ? (bits_per_char - (table_size_ % bits_per_char)) : 0);

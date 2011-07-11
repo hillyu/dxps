@@ -17,7 +17,7 @@ package oversim.tier2.xmlpsapp;
 
 //
 // TODO auto-generated type
-import oversim.applications.almtest.ALMTest;
+
 import oversim.common.BaseApp;
 import oversim.common.ITier;
 //simple XmlPsApp extends BaseApp
@@ -29,10 +29,13 @@ import oversim.common.ITier;
 //        bool sendMessages = default(true);
 //}
 
-simple XmlPsApp extends ALMTest
+simple XmlPsApp extends BaseApp
 {
     parameters:
         @class(XmlPsApp);
+        bool joinGroups = default(true);
+        int messageLength;
+        bool sendMessages = default(true);
         int maxSubscription;
         double subRate;
         double unsubRate;

@@ -244,6 +244,7 @@ OBJS = \
     $O/tier2/p2pns/P2pnsCache.o \
     $O/tier2/simmud/SimMud.o \
     $O/tier2/xmlpsapp/XmlPsApp.o \
+    $O/tier2/xmlpsapp/XmlPsAppMessageObserver.o \
     $O/tier2/xmlpsapp/tinyxpath/action_store.o \
     $O/tier2/xmlpsapp/tinyxpath/htmlutil.o \
     $O/tier2/xmlpsapp/tinyxpath/lex_util.o \
@@ -331,7 +332,8 @@ OBJS = \
     $O/overlay/vast/Vast_m.o \
     $O/tier2/dhttestapp/DHTTestAppMessages_m.o \
     $O/tier2/p2pns/P2pnsMessage_m.o \
-    $O/tier2/simmud/SimMud_m.o
+    $O/tier2/simmud/SimMud_m.o \
+    $O/tier2/xmlpsapp/XmlPsAppTracedMessage_m.o
 
 # Message files
 MSGFILES = \
@@ -368,7 +370,8 @@ MSGFILES = \
     overlay/vast/Vast.msg \
     tier2/dhttestapp/DHTTestAppMessages.msg \
     tier2/p2pns/P2pnsMessage.msg \
-    tier2/simmud/SimMud.msg
+    tier2/simmud/SimMud.msg \
+    tier2/xmlpsapp/XmlPsAppTracedMessage.msg
 
 # Other makefile variables (-K)
 INET_PROJ=../../INET-OverSim-20101019
@@ -4756,42 +4759,53 @@ $O/tier2/simmud/SimMud_m.o: tier2/simmud/SimMud_m.cc \
 	$(INET_PROJ)/src/networklayer/contract/IPv6Address.h \
 	$(INET_PROJ)/src/networklayer/contract/IPAddress.h \
 	common/NodeHandle.h
+$O/tier2/xmlpsapp/XmlPsAppMessageObserver.o: tier2/xmlpsapp/XmlPsAppMessageObserver.cc \
+	tier2/xmlpsapp/XmlPsAppMessageObserver.h \
+	applications/almtest/ALMTestTracedMessage_m.h \
+	common/GlobalStatistics.h \
+	common/OverlayKey.h \
+	common/GlobalStatisticsAccess.h \
+	tier2/xmlpsapp/XmlPsAppTracedMessage_m.h
+$O/tier2/xmlpsapp/XmlPsAppTracedMessage_m.o: tier2/xmlpsapp/XmlPsAppTracedMessage_m.cc \
+	applications/almtest/ALMTestTracedMessage_m.h \
+	common/OverlayKey.h \
+	tier2/xmlpsapp/XmlPsAppTracedMessage_m.h
 $O/tier2/xmlpsapp/XmlPsApp.o: tier2/xmlpsapp/XmlPsApp.cc \
-	$(INET_PROJ)/src/base/INETDefs.h \
+	tier2/xmlpsapp/XmlPsAppMessageObserver.h \
 	$(INET_PROJ)/src/base/INotifiable.h \
+	$(INET_PROJ)/src/base/INETDefs.h \
 	common/OverSimMessage_m.h \
 	common/RecursiveLookup.h \
 	common/oversim_mapset.h \
-	applications/almtest/ALMTest.h \
+	tier2/xmlpsapp/XmlPsAppTracedMessage_m.h \
 	$(INET_PROJ)/src/transport/contract/TCPSocket.h \
-	applications/almtest/MessageObserver.h \
 	tier2/xmlpsapp/XmlPsApp.h \
 	common/OverSimMessage.h \
 	common/AbstractLookup.h \
-	common/RpcListener.h \
 	$(INET_PROJ)/src/networklayer/contract/IPvXAddress.h \
+	common/RpcListener.h \
 	common/ExtTCPSocketMap.h \
 	$(INET_PROJ)/src/networklayer/contract/IPAddress.h \
-	common/NodeVector.h \
 	applications/almtest/ALMTestTracedMessage_m.h \
+	common/NodeVector.h \
 	common/RpcState.h \
 	common/CommonMessages_m.h \
 	common/BaseApp.h \
 	common/InitStages.h \
 	$(INET_PROJ)/src/transport/contract/TCPCommand_m.h \
 	common/TopologyVis.h \
-	common/Vector2D.h \
 	common/BinaryValue.h \
+	common/Vector2D.h \
 	common/TransportAddress.h \
 	common/IterativeLookupConfiguration.h \
 	common/OverlayKey.h \
 	common/BaseTcpSupport.h \
-	common/BaseOverlay.h \
 	common/Comparator.h \
+	common/BaseOverlay.h \
 	$(INET_PROJ)/src/networklayer/contract/IPv6Address.h \
 	common/BaseRpc.h \
-	$(INET_PROJ)/src/transport/contract/TCPSocketMap.h \
 	common/ProxNodeHandle.h \
+	$(INET_PROJ)/src/transport/contract/TCPSocketMap.h \
 	tier2/xmlpsapp/subgen.h \
 	common/NodeHandle.h \
 	common/RpcMacros.h

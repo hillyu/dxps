@@ -16,30 +16,57 @@
 #ifndef XMLPSAPP_H_
 #define XMLPSAPP_H_
 
-#include "ALMTest.h"
+
+#include <omnetpp.h>
+#include "BaseApp.h"
+#include "CommonMessages_m.h"
+#include "XmlPsAppMessageObserver.h"
+#include "subgen.h"
 #include <vector>
 #include "bloom_filter.hpp"
 #include <iostream>
 #include <fstream>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
 
-class XmlPsApp: public ALMTest {
+class XmlPsApp : public BaseApp {
 public:
 	int maxSubscription;
 	double subRate;
 	double unsubRate;
 	XmlPsApp();
+	~XmlPsApp();
 	void initializeApp(int stage);
+	cMessage* timer;
+	int groupNum;
 protected:
-	void handleTimerEvent( cMessage* msg );
-        void joinGroup(const unsigned char *buffer, uint32_t size);
-        void leaveGroup(const unsigned char *buffer, uint32_t size);
-	void handleMCast( ALMMulticastMessage* mcast );
 
-void sendDataToGroup(const unsigned char *buffer, uint32_t size);
+	//        void joinGroup(const unsigned char *buffer, uint32_t size);
+	//        void leaveGroup(const unsigned char *buffer, uint32_t size);
+	//        void sendDataToGroup(const unsigned char *buffer, uint32_t size);
+	void joinGroup(OverlayKey ovkey);
+	void leaveGroup(OverlayKey ovkey);
+	void sendDataToGroup(OverlayKey ovkey,std::string data);
+	void handleMCast( ALMMulticastMessage* mcast );
+	void handleLowerMessage(cMessage* msg);
+	void handleReadyMessage(CompReadyMessage* msg);
+	void handleTimerEvent( cMessage* msg );
+	std::string xmlGen();
+friend std::ostream& operator<< (std::ostream& os, SubGen const & subg);
+
+	XmlPsAppMessageObserver* xmlpsapp_observer;
 private:
-	std::list<SubGen> subscribeList;
-    //std::vector<bloom_filter *> subscribeList;
+	std::vector<SubGen> subscribeList;
+	//std::vector<bloom_filter *> subscribeList;
+	bool joinGroups;
+
+	bool sendMessages;
+	int msglen;
+	bool evaluateXpe(std::string xmlfilename);
+	OverlayKey xml2bloom(std::string xmlfilename);
+	void recursivex2b(TiXmlElement* parent, bloom_filter & bloomfilter);
 
 };
-
+std::ostream& operator<< (std::ostream& os, SubGen const & subg);
 #endif /* XMLPSAPP_H_ */
