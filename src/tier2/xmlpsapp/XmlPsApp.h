@@ -35,6 +35,7 @@ public:
 	int maxSubscription;
 	double subRate;
 	double unsubRate;
+	bool expandJoin;
 	XmlPsApp();
 	~XmlPsApp();
 	void initializeApp(int stage);
@@ -66,6 +67,8 @@ private:
 	bool evaluateXpe(std::string xmlfilename);
 	OverlayKey xml2bloom(std::string xmlfilename);
 	void recursivex2b(TiXmlElement* parent, bloom_filter & bloomfilter);
+	void subscribe(OverlayKey ovkey);
+	void recursiveJoin(OverlayKey ovkey, int i);
 
 };
 std::ostream& operator<< (std::ostream& os, SubGen const & subg);

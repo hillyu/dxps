@@ -39,6 +39,7 @@ simple XmlPsApp extends BaseApp
         int maxSubscription;
         double subRate;
         double unsubRate;
+        bool expandJoin;
 }
 
 module XmlPsAppModule like ITier
