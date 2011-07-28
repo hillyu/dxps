@@ -2,7 +2,7 @@
 # OMNeT++/OMNEST Makefile for OverSim
 #
 # This file was generated with the command:
-#  opp_makemake -f --deep -O out -I../../INET-OverSim-20101019/src/networklayer/common -I../../INET-OverSim-20101019/src/networklayer/rsvp_te -I../../INET-OverSim-20101019/src/networklayer/icmpv6 -I../../INET-OverSim-20101019/src/transport/tcp -I../../INET-OverSim-20101019/src/networklayer/mpls -I../../INET-OverSim-20101019/src/networklayer/ted -I../../INET-OverSim-20101019/src/networklayer/contract -I../../INET-OverSim-20101019/src/util -I../../INET-OverSim-20101019/src/transport/contract -I../../INET-OverSim-20101019/src/linklayer/mfcore -I../../INET-OverSim-20101019/src/networklayer/ldp -I../../INET-OverSim-20101019/src/applications/udpapp -I../../INET-OverSim-20101019/src/networklayer/ipv4 -I../../INET-OverSim-20101019/src/base -I../../INET-OverSim-20101019/src/util/headerserializers -I../../INET-OverSim-20101019/src/transport/sctp -I../../INET-OverSim-20101019/src/networklayer/ipv6 -I../../INET-OverSim-20101019/src/world -I../../INET-OverSim-20101019/src/applications/pingapp -I../../INET-OverSim-20101019/src/linklayer/contract -I../../INET-OverSim-20101019/src/networklayer/arp -I../../INET-OverSim-20101019/src/transport/udp -I../../INET-OverSim-20101019/src/networklayer/autorouting -L/usr/lib -L../../INET-OverSim-20101019/out/$(CONFIGNAME)/src -linet -KINET_PROJ=../../INET-OverSim-20101019 -- -lgmp
+#  opp_makemake -f --deep -O out -I../../INET-OverSim-20101019/src/networklayer/common -I../../INET-OverSim-20101019/src/networklayer/rsvp_te -I../../INET-OverSim-20101019/src/networklayer/icmpv6 -I../../INET-OverSim-20101019/src/transport/tcp -I../../INET-OverSim-20101019/src/networklayer/mpls -I../../INET-OverSim-20101019/src/networklayer/ted -I../../INET-OverSim-20101019/src/networklayer/contract -I../../INET-OverSim-20101019/src/util -I../../INET-OverSim-20101019/src/transport/contract -I../../INET-OverSim-20101019/src/linklayer/mfcore -I../../INET-OverSim-20101019/src/networklayer/ldp -I../../INET-OverSim-20101019/src/applications/udpapp -I../../INET-OverSim-20101019/src/networklayer/ipv4 -I../../INET-OverSim-20101019/src/base -I../../INET-OverSim-20101019/src/util/headerserializers -I../../INET-OverSim-20101019/src/transport/sctp -I../../INET-OverSim-20101019/src/networklayer/ipv6 -I../../INET-OverSim-20101019/src/world -I../../INET-OverSim-20101019/src/applications/pingapp -I../../INET-OverSim-20101019/src/linklayer/contract -I../../INET-OverSim-20101019/src/networklayer/arp -I../../INET-OverSim-20101019/src/transport/udp -I../../INET-OverSim-20101019/src/networklayer/autorouting -L/usr/lib -L/opt/local/lib -L../../INET-OverSim-20101019/out/$(CONFIGNAME)/src -linet -KINET_PROJ=../../INET-OverSim-20101019 -- -lgmp
 #
 
 # Name of target to be created (-o option)
@@ -95,8 +95,8 @@ INCLUDE_PATH = \
 EXTRA_OBJS = -lgmp
 
 # Additional libraries (-L, -l options)
-LIBS = -L/usr/lib -L../../INET-OverSim-20101019/out/$(CONFIGNAME)/src  -linet
-LIBS += -Wl,-rpath,`abspath /usr/lib` -Wl,-rpath,`abspath ../../INET-OverSim-20101019/out/$(CONFIGNAME)/src`
+LIBS = -L/usr/lib -L/opt/local/lib -L../../INET-OverSim-20101019/out/$(CONFIGNAME)/src  -linet
+LIBS += -Wl,-rpath,`abspath /usr/lib` -Wl,-rpath,`abspath /opt/local/lib` -Wl,-rpath,`abspath ../../INET-OverSim-20101019/out/$(CONFIGNAME)/src`
 
 # Output directory
 PROJECT_OUTPUT_DIR = ../out

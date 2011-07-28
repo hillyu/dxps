@@ -26,6 +26,7 @@
 #include <limits>
 #include <string>
 #include <vector>
+//#include <iostream>//TODO delete it after test
 
 
 static const std::size_t bits_per_char = 0x08;    // 8 bits in 1 char(unsigned)
@@ -50,20 +51,20 @@ protected:
 
 public:
 
-   bloom_filter(const std::size_t& predicted_element_count,
-                const double& false_positive_probability,
-                const std::size_t& random_seed)
-   : bit_table_(0),
-     predicted_element_count_(predicted_element_count),
-     inserted_element_count_(0),
-     random_seed_((random_seed) ? random_seed : 0xA5A5A5A5),
-     desired_false_positive_probability_(false_positive_probability)
-   {
-      find_optimal_parameters();
-      generate_unique_salt();
-      bit_table_ = new cell_type[table_size_ / bits_per_char];
-      std::fill_n(bit_table_,(table_size_ / bits_per_char),0x00);
-   }
+//   bloom_filter(const std::size_t& predicted_element_count,
+//                const double& false_positive_probability,
+//                const std::size_t& random_seed)
+//   : bit_table_(0),
+//     predicted_element_count_(predicted_element_count),
+//     inserted_element_count_(0),
+//     random_seed_((random_seed) ? random_seed : 0xA5A5A5A5),
+//     desired_false_positive_probability_(false_positive_probability)
+//   {
+//      find_optimal_parameters();
+//      generate_unique_salt();
+//      bit_table_ = new cell_type[table_size_ / bits_per_char];
+//      std::fill_n(bit_table_,(table_size_ / bits_per_char),0x00);
+//   }
    bloom_filter(std::size_t min_m, std::size_t min_k)
 	   : bit_table_(0),
 	        predicted_element_count_(10),
@@ -123,6 +124,7 @@ public:
       {
          compute_indices(hash_ap(key_begin,length,(*itr)),bit_index,bit);
          bit_table_[bit_index / bits_per_char] |= bit_mask[bit];
+//         std::cout<<(unsigned long)bit_table_[bit_index / bits_per_char]<<"is the bit pos \n";//TODO delete after test!!
       }
       ++inserted_element_count_;
    }
@@ -452,54 +454,54 @@ bloom_filter operator ^ (const bloom_filter& a, const bloom_filter& b)
 
 
 
-class compressible_bloom_filter : public bloom_filter
-{
-public:
-
-   compressible_bloom_filter(const std::size_t& predicted_element_count,
-                             const double& false_positive_probability,
-                             const std::size_t& random_seed)
-   : bloom_filter(predicted_element_count,false_positive_probability,random_seed)
-   {
-      size_list.push_back(table_size_);
-   }
-
-   inline virtual std::size_t size() const
-   {
-      return size_list.back();
-   }
-
-   inline bool compress(const double& percentage)
-   {
-      if ((0.0 >= percentage) || (percentage >= 100.0)) return false;
-      std::size_t original_table_size = size_list.back();
-      std::size_t new_table_size = static_cast<std::size_t>((size_list.back() * (1.0 - (percentage / 100.0))));
-      new_table_size -= (((new_table_size % bits_per_char) != 0) ? (new_table_size % bits_per_char) : 0);
-      if ((bits_per_char > new_table_size) || (new_table_size >= original_table_size)) return false;
-      desired_false_positive_probability_ = effective_fpp();
-      cell_type* tmp = new cell_type[new_table_size / bits_per_char];
-      std::copy(bit_table_, bit_table_ + (new_table_size / bits_per_char), tmp);
-      cell_type* it = bit_table_ + (new_table_size / bits_per_char);
-      cell_type* end = bit_table_ + (original_table_size / bits_per_char);
-      cell_type* it_tmp = tmp;
-      while(it != end) { *(it_tmp++) |= (*it++); }
-      delete[] bit_table_;
-      bit_table_ = tmp;
-      size_list.push_back(new_table_size);
-      return true;
-   }
-
-private:
-
-   inline virtual void compute_indices(const bloom_type& hash, std::size_t& bit_index, std::size_t& bit) const
-   {
-      bit_index = hash;
-      for(unsigned int j = 0; j < size_list.size(); bit_index %= size_list[j++]) ;
-      bit = bit_index % bits_per_char;
-   }
-
-   std::vector<std::size_t> size_list;
-};
+//class compressible_bloom_filter : public bloom_filter
+//{
+//public:
+//
+//   compressible_bloom_filter(const std::size_t& predicted_element_count,
+//                             const double& false_positive_probability,
+//                             const std::size_t& random_seed)
+//   : bloom_filter(predicted_element_count,false_positive_probability,random_seed)
+//   {
+//      size_list.push_back(table_size_);
+//   }
+//
+//   inline virtual std::size_t size() const
+//   {
+//      return size_list.back();
+//   }
+//
+//   inline bool compress(const double& percentage)
+//   {
+//      if ((0.0 >= percentage) || (percentage >= 100.0)) return false;
+//      std::size_t original_table_size = size_list.back();
+//      std::size_t new_table_size = static_cast<std::size_t>((size_list.back() * (1.0 - (percentage / 100.0))));
+//      new_table_size -= (((new_table_size % bits_per_char) != 0) ? (new_table_size % bits_per_char) : 0);
+//      if ((bits_per_char > new_table_size) || (new_table_size >= original_table_size)) return false;
+//      desired_false_positive_probability_ = effective_fpp();
+//      cell_type* tmp = new cell_type[new_table_size / bits_per_char];
+//      std::copy(bit_table_, bit_table_ + (new_table_size / bits_per_char), tmp);
+//      cell_type* it = bit_table_ + (new_table_size / bits_per_char);
+//      cell_type* end = bit_table_ + (original_table_size / bits_per_char);
+//      cell_type* it_tmp = tmp;
+//      while(it != end) { *(it_tmp++) |= (*it++); }
+//      delete[] bit_table_;
+//      bit_table_ = tmp;
+//      size_list.push_back(new_table_size);
+//      return true;
+//   }
+//
+//private:
+//
+//   inline virtual void compute_indices(const bloom_type& hash, std::size_t& bit_index, std::size_t& bit) const
+//   {
+//      bit_index = hash;
+//      for(unsigned int j = 0; j < size_list.size(); bit_index %= size_list[j++]) ;
+//      bit = bit_index % bits_per_char;
+//   }
+//
+//   std::vector<std::size_t> size_list;
+//};
 
 
 

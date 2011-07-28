@@ -1,0 +1,3 @@
+#../src/OverSim [-u Tkenv | CmdEnv] [-f customConfigFile] -c configName [-r runNumber]
+cd ../simulations
+../src/OverSim -u Cmdenv -f dxps.ini -c Dxps 

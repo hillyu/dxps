@@ -1,0 +1,20 @@
+file 11834 1311814673                                           
+version 2
+run Dxps-0-20110728-08:50:17-36456
+attr configname Dxps
+attr datetime 20110728-08:50:17
+attr experiment Dxps
+attr inifile /Users/hill/sim/repos/simulations/dxps.ini
+attr iterationvars ""
+attr iterationvars2 $repetition=0
+attr measurement ""
+attr network oversim.underlay.simpleunderlay.SimpleUnderlayNetwork
+attr processid 36456
+attr repetition 0
+attr replication #0
+attr resultdir results
+attr runnumber 0
+attr seedset 0
+
+vector 1  SimpleUnderlayNetwork.globalObserver.globalStatistics  "GlobalNodeList: Number of nodes"  ETV
+1	537 11297 1 7602013 0 30550 612 0 10 6110 61100

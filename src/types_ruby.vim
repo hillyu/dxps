@@ -1,0 +1,4 @@
+silent! syn clear CTagsMethod CTagsSingleton CTagsModule CTagsClass
+syntax keyword CTagsMethod addChild initialize printAllData saveDataToPlotfile saveDataToXml saveRawCoordsToPlotfile saveToXml split splitByNodes
+syntax keyword CTagsClass Treenode
+

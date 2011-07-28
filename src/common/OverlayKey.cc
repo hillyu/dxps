@@ -84,7 +84,7 @@ OverlayKey::OverlayKey(const unsigned char* buf, uint32_t size)
     clear();
     trimSize = (int)min((uint32_t) (aSize * sizeof(mp_limb_t)), size);
     offset = aSize * sizeof(mp_limb_t) - trimSize;
-    memcpy( ((char*)key) + offset, buf, trimSize);
+    memcpy( ((char*)key), buf, trimSize);
     trim();
 }
 
