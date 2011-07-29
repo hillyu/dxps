@@ -72,7 +72,6 @@ enum DxpsTimerType
 packet DxpsJoinCall extends BaseCallMessage
 {
         OverlayKey groupId; // HACK. The key is already included in BaseRouteMessage,
-        int FIndex; //the start bit position to generate fork keys. One digit/hop
                             //   but it gets lost in handleRpc
 }
 

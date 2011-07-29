@@ -1,8 +1,9 @@
 # Partial Tkenv config file -- see $HOME/.tkenvrc as well
-inspector "SimpleUnderlayNetwork.overlayTerminal[13]" "SimpleOverlayHost" "2" "845x604+152+170:normal"
+inspector "SimpleUnderlayNetwork" "SimpleUnderlayNetwork" "2" "976x626+323+182:normal"
 inspector "SimpleUnderlayNetwork.globalObserver.globalFunctions[0].function" "MessageObserverModule" "2" "960x284+89+119:normal"
-inspector "SimpleUnderlayNetwork.overlayTerminal[13].tier2.xmlPsApp" "XmlPsApp" "1" "803x274+194+234:normal"
+inspector "SimpleUnderlayNetwork.overlayTerminal[13]" "SimpleOverlayHost" "2" "845x604+152+170:normal"
 inspector "SimpleUnderlayNetwork.overlayTerminal[13].tier2" "XmlPsAppModule" "2" "790x284+173+211:normal"
+inspector "SimpleUnderlayNetwork.overlayTerminal[13].tier2.xmlPsApp" "XmlPsApp" "1" "803x274+194+234:normal"
 inspector "SimpleUnderlayNetwork.globalObserver.globalFunctions[0].function.observer.groups" "std::map<OverlayKey,MessageObserver::MulticastGroup>" "1" "1039x314+131+165:normal"
 inspector "SimpleUnderlayNetwork.globalObserver.globalFunctions[0].function.observer" "MessageObserver" "1" "978x274+110+142:normal"
 
