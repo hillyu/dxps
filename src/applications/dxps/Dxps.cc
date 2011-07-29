@@ -319,7 +319,7 @@ void Dxps::handleTimerEvent( cMessage *msg )
             break;
     }
 
-}                                                                
+}
 
 void Dxps::handleJoinCall( DxpsJoinCall* joinMsg)
 {
@@ -330,7 +330,7 @@ void Dxps::handleJoinMessage( DxpsJoinCall* joinMsg, bool amIRoot)
 {
     RECORD_STATS(++numJoins);
     OverlayKey key = joinMsg->getGroupId();
-    int forkIndex = joinMsg->getFIndex();
+
     EV << "[Dxps::handleJoinMessage() @ " << overlay->getThisNode().getIp()
         << " (" << overlay->getThisNode().getKey().toString(16) << ")]\n"
         << "    Received a DxpsJoin for group " << key << "\n"
@@ -343,8 +343,10 @@ void Dxps::handleJoinMessage( DxpsJoinCall* joinMsg, bool amIRoot)
 
     // If group is new or no parent is known, send join to parent (unless I am root, so there is no parent)
     if ( !amIRoot && ( groupInserter.second || groupInserter.first->second.getParent().isUnspecified()) ) {
-
-        
+        DxpsJoinCall* newJoin = new DxpsJoinCall;
+        newJoin->setGroupId( key );
+        newJoin->setBitLength( DXPS_JOINCALL_L(newJoin) );
+        sendRouteRpcCall(TIER1_COMP, key, newJoin);
     }
 
     // If group had no children, start heartbeat timer for group
@@ -701,28 +703,3 @@ void Dxps::deliverALMDataToGroup( DxpsDataMessage* dataMsg )
     delete dataMsg;
 }
 
-void Dxps::recursiveJoin(OverlayKey ovkey, int i,DIGIT_L){
-  //while( i <=ovkey.getLength()) {
-  while( i <=DIGIT_L) {
-
-    // if(i==ovkey.getLength())
-    if(i==DIGIT_L){
-      joinKey(ovkey);
-      EV<<"Genreated Subscrition is:"<<ovkey.toString(2)<<"\n";}
-    else if (ovkey[ovkey.getLength()-i-1]==0){
-      OverlayKey tmpkey=ovkey;
-      tmpkey[ovkey.getLength()-i-1]=1;
-      recursiveJoin(ovkey,i+1,DIGIT_L);
-      recursiveJoin(tmpkey,i+1,DIGIT_L);
-      break;
-    }
-    ++i;
-  }
-}
-void Dxps::joinKey(OverlayKey ovkey, int ForkIndex){
-  DxpsJoinCall* newJoin = new DxpsJoinCall;
-        newJoin->setGroupId( key );
-        newJoin->setFIndex( ForkIndex );
-        newJoin->setBitLength( DXPS_JOINCALL_L(newJoin) );
-        sendRouteRpcCall(TIER1_COMP, key, newJoin); 
-}

@@ -7,9 +7,7 @@
 
 <cconfiguration id="org.omnetpp.cdt.gnu.config.debug.146291904">
 <storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="org.omnetpp.cdt.gnu.config.debug.146291904" moduleId="org.eclipse.cdt.core.settings" name="gcc-debug">
-<externalSettings>
-<externalSetting languages="cdt.managedbuild.tool.gnu.cpp.linker.input.1998703184"/>
-</externalSettings>
+<externalSettings/>
 <extensions>
 <extension id="org.eclipse.cdt.core.PE" point="org.eclipse.cdt.core.BinaryParser"/>
 <extension id="org.eclipse.cdt.core.ELF" point="org.eclipse.cdt.core.BinaryParser"/>
@@ -38,7 +36,6 @@
 <option id="gnu.cpp.link.option.paths.1300634997" name="Library search path (-L)" superClass="gnu.cpp.link.option.paths" valueType="libPaths">
 <listOptionValue builtIn="false" value="&quot;${workspace_loc:/INET/src}&quot;"/>
 <listOptionValue builtIn="false" value="/usr/lib"/>
-<listOptionValue builtIn="false" value="/opt/local/lib"/>
 </option>
 <inputType id="cdt.managedbuild.tool.gnu.cpp.linker.input.1998703184" superClass="cdt.managedbuild.tool.gnu.cpp.linker.input">
 <additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
@@ -46,9 +43,6 @@
 </inputType>
 </tool>
 <tool id="cdt.managedbuild.tool.gnu.assembler.base.512874236" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.base">
-<option id="gnu.both.asm.option.include.paths.856093284" superClass="gnu.both.asm.option.include.paths" valueType="includePath">
-<listOptionValue builtIn="false" value="/opt/local/include"/>
-</option>
 <inputType id="cdt.managedbuild.tool.gnu.assembler.input.1310537114" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
 </tool>
 </toolChain>

@@ -1,2 +1,0 @@
-INCLUDE_PATH += -I$(OMNETPP_ROOT)/src/sim/parsim -I/opt/local/include
-LIBS += -L/opt/local/lib

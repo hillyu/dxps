@@ -210,8 +210,6 @@ class Dxps : public BaseApp
          * to the multiacst group.
          */
         void deliverALMDataToRoot( ALMMulticastMessage* mcastMsg );
-        void joinKey(OverlayKey ovkey, int ForkIndex);
-
 };
 
 #endif
