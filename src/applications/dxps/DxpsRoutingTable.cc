@@ -17,52 +17,53 @@
 //
 
 /**
- * @file DxpsGroup.cc
+ * @file DxpsRoutingTable.cc
  * @author Stephan Krause
  */
 
 
 
-#include "DxpsGroup.h"
+#include "DxpsRoutingTable.h"
 
-
-DxpsGroup::DxpsGroup( OverlayKey id ) : groupId(id)
+typedef std::pair<OverlayKey, NodeHandle> Children;
+DxpsRoutingTable::DxpsRoutingTable( OverlayKey id ) : logicalNodeKey(id)
 {
-    parent = NodeHandle::UNSPECIFIED_NODE;
+//    parent = NodeHandle::UNSPECIFIED_NODE;
     rendezvousPoint = NodeHandle::UNSPECIFIED_NODE;
     subscription = false;
     amISource = false;
-    parentTimer = NULL;
+    isForwarder = false;
+//    parentTimer = NULL;
     heartbeatTimer = NULL;
 }
 
-DxpsGroup::~DxpsGroup( )
+DxpsRoutingTable::~DxpsRoutingTable( )
 {
     children.clear();
 }
 
-bool DxpsGroup::isForwarder() const
+//bool DxpsRoutingTable::isForwarder() const
+//{
+//    return !children.empty();
+//}
+
+std::pair<std::set<Children>::iterator, bool> DxpsRoutingTable::addChild( const Children& nodepair )
 {
-    return !children.empty();
+    return children.insert(nodepair);
 }
 
-std::pair<std::set<NodeHandle>::iterator, bool> DxpsGroup::addChild( const NodeHandle& node )
+void DxpsRoutingTable::removeChild( const Children& nodepair )
 {
-    return children.insert(node);
-}
-
-void DxpsGroup::removeChild( const NodeHandle& node )
-{
-    children.erase(node);
+    children.erase(nodepair);
 }
 
 
-std::set<NodeHandle>::iterator DxpsGroup::getChildrenBegin()
+std::set<Children>::iterator DxpsRoutingTable::getChildrenBegin()
 {
     return children.begin();
 }
 
-std::set<NodeHandle>::iterator DxpsGroup::getChildrenEnd()
+std::set<Children>::iterator DxpsRoutingTable::getChildrenEnd()
 {
     return children.end();
 }

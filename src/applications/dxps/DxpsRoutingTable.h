@@ -17,19 +17,19 @@
 //
 
 /**
- * @file DxpsGroup.h
+ * @file RoutingTable.h
  * @author Stephan Krause
  */
 
 
-#ifndef __DXPSGROUP_H_
-#define __DXPSGROUP_H_
+#ifndef __DXPSROUTINGTABLE_H_
+#define __DXPSROUTINGTABLE_H_
 
 #include <set>
 #include "OverlayKey.h"
 #include "NodeHandle.h"
 
-class DxpsGroup;
+class DxpsRoutingTable;
 
 #include "DxpsMessage_m.h"
 
@@ -37,27 +37,30 @@ class DxpsGroup;
  * Capsulates the informations of a dxps multicast group
  */
 
-class DxpsGroup
+class DxpsRoutingTable
 {
     private:
-        OverlayKey groupId;
+        OverlayKey logicalNodeKey;
         NodeHandle rendezvousPoint;
-        NodeHandle parent;
-        std::set<NodeHandle> children;
+        typedef std::pair<OverlayKey, NodeHandle> Children;
+//        std::set<Children> parents;
+
+        std::set<Children> children;
         bool subscription;
         bool amISource;
+        bool isForwarder;
 
-        DxpsTimer* parentTimer;
+//        DxpsTimer* parentTimer;
         DxpsTimer* heartbeatTimer;
 
     public:
         /**
-         * Creates a new DxpsGroup
+         * Creates a new RoutingTable
          *
          * @param id The group ID of the new group
          */
-        DxpsGroup( OverlayKey id );
-        ~DxpsGroup( );
+        DxpsRoutingTable( OverlayKey id );
+        ~DxpsRoutingTable( );
 
         /**
          * Adds a new child to the multicast tree
@@ -65,34 +68,39 @@ class DxpsGroup
          * @param node The nodeHandle of the child
          * @return An iterator to the inserted child and a boolean value (true = new child, false = child was already present)
          */
-        std::pair<std::set<NodeHandle>::iterator, bool> addChild( const NodeHandle& node );
+//        std::pair<std::set<Children>::iterator, bool> addParent( const Children& node );
+        std::pair<std::set<Children>::iterator, bool> addChild( const Children& node );
 
         /**
          * Removes a child from the multicast tree
          *
          * @param node The nodeHandle of the child
          */
-        void removeChild( const NodeHandle& node );
+//        void removeParent( const Children& node );
+        void removeChild( const Children& node );
 
         /**
          * Returns an iterator to the begin of the children list
          *
          * @return the iterator
          */
-        std::set<NodeHandle>::iterator getChildrenBegin();
+//        std::set<Children>::iterator getParentsBegin();
+        std::set<Children>::iterator getChildrenBegin();
 
         /**
          * Returns an iterator to the end of the children list
          *
          * @return the iterator
          */
-        std::set<NodeHandle>::iterator getChildrenEnd();
+//        std::set<Children>::iterator getParentsEnd();
+        std::set<Children>::iterator getChildrenEnd();
 
         /**
          * Get the number of children
          *
          * @return The number of children
          */
+//        int numParents() const { return parents.size(); }
         int numChildren() const { return children.size(); }
 
         /**
@@ -100,7 +108,8 @@ class DxpsGroup
          *
          * @return True if there are any children, false else.
          */
-        bool isForwarder() const;
+        bool getIsForwarder() const {return isForwarder;}
+        void setForwarder( bool forwarder ) { isForwarder = forwarder; }
 
         /**
          * Returns the amISource status
@@ -143,14 +152,12 @@ class DxpsGroup
          *
          * @return The parent. thisNode if the node is root of the tree
          */
-        NodeHandle getParent() const { return parent; }
 
         /**
          * Sets a new parent for the multicast tree
          *
          * @param _parent The new Parent. Set to thisNode if node should be root of the tree
          */
-        void setParent( NodeHandle& _parent ) { parent = _parent; }
 
         /**
          * Returns the rendevouzPoint (root) of the multicast tree for the group
@@ -167,11 +174,11 @@ class DxpsGroup
         void setRendezvousPoint( const NodeHandle& _rendezvousPoint ) { rendezvousPoint = _rendezvousPoint; }
 
         /**
-         * Returns the groupId of the group
+         * Returns the logicalNodeKey of the node
          *
          * @return The group ID
          */
-        OverlayKey getGroupId() const { return groupId; }
+        OverlayKey getLogicalNodeKey() const { return logicalNodeKey; }
 
         /**
          * Returns the parent timer.
@@ -181,7 +188,7 @@ class DxpsGroup
          *
          * @return The parentTimer
          */
-        DxpsTimer* getParentTimer() { return parentTimer; }
+//        DxpsTimer* getParentTimer() { return parentTimer; }
 
         /**
          * Sets the parent timer.
@@ -191,7 +198,7 @@ class DxpsGroup
          *
          * @param t The parentTimer
          */
-        void setParentTimer(DxpsTimer* t ) { parentTimer = t; }
+//        void setParentTimer(DxpsTimer* t ) { parentTimer = t; }
 
         /**
          * Returns the heartbeat timer.
@@ -214,12 +221,12 @@ class DxpsGroup
         void setHeartbeatTimer(DxpsTimer* t ) { heartbeatTimer = t; }
 
         /**
-         * Checks whether the group has a certain groupId
+         * Checks whether the group has a certain logicalNodeKey
          *
-         * @param id The groupId to check
-         * @return True if id == groupId, false else
+         * @param id The logicalNodeKey to check
+         * @return True if id == logicalNodeKey, false else
          */
-        bool operator== (const OverlayKey& id) const { return id == groupId; };
+        bool operator== (const OverlayKey& id) const { return id == logicalNodeKey; };
 
         /**
          * Checks whether two groups have the same ID
@@ -227,7 +234,7 @@ class DxpsGroup
          * @param a The group to compare
          * @return True if the groups have the same ID, false else.
          */
-        bool operator== (const DxpsGroup& a) const { return a.getGroupId() == groupId; };
+        bool operator== (const DxpsRoutingTable& a) const { return a.getLogicalNodeKey() == logicalNodeKey; };
 
         /**
          * Checks whether the group has a smaller ID than the given key
@@ -235,15 +242,15 @@ class DxpsGroup
          * @param id The key to compare
          * @return True if the group id is smaller than the key, false else.
          */
-        bool operator< (const OverlayKey& id) const { return id < groupId; };
+        bool operator< (const OverlayKey& id) const { return id < logicalNodeKey; };
 
         /**
          * Checks whether the group has a smaller ID than another group
          *
          * @param a the group to compare
-         * @return True if the (local) group id is smaller than the a's groupId, false else.
+         * @return True if the (local) group id is smaller than the a's logicalNodeKey, false else.
          */
-        bool operator< (const DxpsGroup& a) const { return groupId < a.getGroupId(); };
+        bool operator< (const DxpsRoutingTable& a) const { return logicalNodeKey < a.getLogicalNodeKey(); };
 };
 
 #endif

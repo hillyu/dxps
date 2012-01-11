@@ -688,6 +688,9 @@ void Scribe::deliverALMDataToGroup( ScribeDataMessage* dataMsg )
             cit != it->second.getChildrenEnd(); ++cit ) {
         ScribeDataMessage* newMsg = new ScribeDataMessage( *dataMsg );
         RECORD_STATS(++numForward; forwardBytes += newMsg->getByteLength());
+
+
+
         callRoute( OverlayKey::UNSPECIFIED_KEY, newMsg, *cit );
     }
 

@@ -31,20 +31,21 @@
 #include "GlobalNodeList.h"
 #include "NodeHandle.h"
 
-#include "DxpsGroup.h"
+#include "DxpsRoutingTable.h"
 #include "DxpsMessage_m.h"
 
-// Output function for grouplist, needed for WATCH
-std::ostream& operator<< (std::ostream& o, std::map<OverlayKey, DxpsGroup> m )
+// Output function for RoutingTableList, needed for WATCH
+std::ostream& operator<< (std::ostream& o, std::map<OverlayKey, DxpsRoutingTable> m )
 {
-    for (std::map<OverlayKey, DxpsGroup>::iterator it = m.begin(); it != m.end(); ++it) {
+    for (std::map<OverlayKey, DxpsRoutingTable>::iterator it = m.begin(); it != m.end(); ++it) {
         o << it->first << "\n";
-        o << "  Parent: " << it->second.getParent() << "\n";
+       // o << "  Parent: " << it->second.getParent() << "\n";
         o << "  Status: " << (it->second.getSubscription() ? "subscriber\n" : "Forwarder\n");
         o << "  Children (" << it->second.numChildren() << "):\n";
-        std::set<NodeHandle>::iterator iit = it->second.getChildrenBegin();
+        typedef std::pair<OverlayKey, NodeHandle> Children;
+        std::set<Children>::iterator iit = it->second.getChildrenBegin();
         for (int i = it->second.numChildren(); i > 0; --i) {
-            o << "    " << *iit << "\n";
+            o << "    " << iit->first<<"  "<<iit->second<< "\n";
             ++iit;
         }
     }
@@ -55,8 +56,9 @@ std::ostream& operator<< (std::ostream& o, std::map<OverlayKey, DxpsGroup> m )
 class Dxps : public BaseApp
 {
     private:
-        typedef std::map<OverlayKey, DxpsGroup> GroupList;
-        GroupList groupList;
+        typedef std::map<OverlayKey, DxpsRoutingTable> RoutingTableList;
+        RoutingTableList routingTableList;
+        typedef std::pair<OverlayKey, NodeHandle> Children;
         typedef std::multimap<NodeHandle, DxpsTimer*> ChildTimeoutList;
         ChildTimeoutList childTimeoutList;
 
@@ -77,6 +79,9 @@ class Dxps : public BaseApp
         int heartbeatBytes;
         int numSubscriptionRefresh;
         int subscriptionRefreshBytes;
+
+        std::vector<long int> msgLog;
+        //bool isForwarder;// in routingTable already.
 
     public:
         Dxps( );
@@ -113,7 +118,7 @@ class Dxps : public BaseApp
          * Handles a join request from another node
          *
          * This method only gets called if the local node is the root of the
-         * multicast group. It only calls handlePublishCall with amIRoot
+         * multicast routingTable. It only calls handlePublishCall with amIRoot
          * parameter set to "true"
         */
         void handleJoinCall( DxpsJoinCall* joinMsg);
@@ -145,18 +150,18 @@ class Dxps : public BaseApp
         void handleLeaveMessage( DxpsLeaveMessage* leaveMsg );
 
         /**
-         * Gets called if the local node wants to subscribe to a multicast group
+         * Gets called if the local node wants to subscribe to a multicast routingTable
          *
-         * @param groupId the ID of the group to join
+         * @param groupId the ID of the routingTable to join
          */
-        void subscribeToGroup( const OverlayKey& groupId );
+        void subscribeToGroup( ALMSubscribeMessage* subMsg );
 
         /**
-         * Gets called if the local node wants to leave a multicast group
+         * Gets called if the local node wants to leave a multicast routingTable
          *
-         * @param group the ID of the group to leave
+         * @param routingTable the ID of the routingTable to leave
          */
-        void leaveGroup( const OverlayKey& group );
+        void leaveGroup( const OverlayKey& routingTable );
 
         /**
          * Starts a local timer
@@ -168,19 +173,19 @@ class Dxps : public BaseApp
         void startTimer( DxpsTimer* timer );
 
         /**
-         * Adds a child to a multicast group
+         * Adds a child to a multicast routingTable
          */
-        void addChildToGroup( const NodeHandle& child, DxpsGroup& group );
+        void addChildToRoutingTable( const Children& child, DxpsRoutingTable& routingTable );
 
         /**
-         * Removes a child from a multicast group
+         * Removes a child from a  routingTable
          */
-        void removeChildFromGroup( const NodeHandle& child, DxpsGroup& group );
+        void removeChildFromGroup( const NodeHandle& child, DxpsRoutingTable& routingTable );
 
         /**
-         * Removes a child from a multicast group
+         * Removes a child from a  routingTable
          *
-         * Both the child and the group are determined from the timer message
+         * Both the child and the routingTable are determined from the timer message
          * This method gets calld if a subscription timer of a child expires.
          */
         void removeChildFromGroup( DxpsTimer* timer );
@@ -188,18 +193,18 @@ class Dxps : public BaseApp
         /**
          * Chechs wheter there are any subscibers left to a given root
          */
-        void checkGroupEmpty( DxpsGroup& group );
+        void checkGroupEmpty( DxpsRoutingTable& routingTable );
 
         /**
          * Refreshes a child timer
          *
          * If a child sends a subscribtion refresh, this method gets called.
-         * It finds the subscriptionTimeout timer for the group and reschedules it.
+         * It finds the subscriptionTimeout timer for the routingTable and reschedules it.
          */
         void refreshChildTimer( NodeHandle& child, OverlayKey& groupId );
 
         /**
-         * Delivers a multicast message to all children in the multicast group
+         * Delivers a multicast message to all children in the multicast routingTable
          */
         void deliverALMDataToGroup( DxpsDataMessage* dataMsg );
 
@@ -207,9 +212,11 @@ class Dxps : public BaseApp
          * Delivers a multicast message to the tree's root
          *
          * This method gets called when the local app wants to publish some data
-         * to the multiacst group.
+         * to the multiacst routingTable.
          */
         void deliverALMDataToRoot( ALMMulticastMessage* mcastMsg );
+        void formHyperCube();
+        void getParents(DxpsRoutingTable& routingTable);
 };
 
 #endif

@@ -17,7 +17,7 @@
 
 #include "XmlPsAppTracedMessage_m.h"
 Define_Module(XmlPsApp);
-const int BLOOM_L=16;
+const int BLOOM_L=4;
 const int BLOOM_K=1;
 
 

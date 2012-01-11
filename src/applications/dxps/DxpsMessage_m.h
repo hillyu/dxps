@@ -18,14 +18,15 @@
 
 class DxpsTimer;
 
-#include "DxpsGroup.h"
+#include "DxpsRoutingTable.h"
 
 
 static const int DXPS_WRONGROOT_L = 8;
 static const int DXPS_EMPTYFLAG_L = 8;
+static const int DXPS_FILTER_L = 8;
 
 
-#define DXPS_JOINCALL_L(msg) (BASECALL_L(msg))
+#define DXPS_JOINCALL_L(msg) (2*KEY_L+BASECALL_L(msg))
 #define DXPS_JOINRESPONSE_L(msg) (BASECALL_L(msg))
 #define DXPS_PUBLISHCALL_L(msg) (BASECALL_L(msg))
 #define DXPS_PUBLISHRESPONSE_L(msg) (BASECALL_L(msg) + DXPS_WRONGROOT_L)
@@ -33,6 +34,7 @@ static const int DXPS_EMPTYFLAG_L = 8;
 #define DXPS_SUBSCRIPTIONREFRESH_L(msg) (NODEHANDLE_L + KEY_L)
 #define DXPS_LEAVE_L(msg) (NODEHANDLE_L + KEY_L)
 #define DXPS_DATA_L(msg) (KEY_L + DXPS_EMPTYFLAG_L)
+#define DXPS_SUBSCRIPTIONMESSAGE_L(msg) (KEY_L+DXPS_FILTER_L)
 // }}
 
 
@@ -62,7 +64,8 @@ enum DxpsTimerType {
  * <pre>
  * packet DxpsJoinCall extends BaseCallMessage
  * {
- *         OverlayKey groupId; 
+ *         OverlayKey srcLogicalNodeKey;
+ *         OverlayKey dstLogicalNodeKey;
  *                             
  * }
  * </pre>
@@ -70,7 +73,8 @@ enum DxpsTimerType {
 class DxpsJoinCall : public ::BaseCallMessage
 {
   protected:
-    ::OverlayKey groupId_var;
+    ::OverlayKey srcLogicalNodeKey_var;
+    ::OverlayKey dstLogicalNodeKey_var;
 
     // protected and unimplemented operator==(), to prevent accidental usage
     bool operator==(const DxpsJoinCall&);
@@ -85,9 +89,12 @@ class DxpsJoinCall : public ::BaseCallMessage
     virtual void parsimUnpack(cCommBuffer *b);
 
     // field getter/setter methods
-    virtual OverlayKey& getGroupId();
-    virtual const OverlayKey& getGroupId() const {return const_cast<DxpsJoinCall*>(this)->getGroupId();}
-    virtual void setGroupId(const OverlayKey& groupId_var);
+    virtual OverlayKey& getSrcLogicalNodeKey();
+    virtual const OverlayKey& getSrcLogicalNodeKey() const {return const_cast<DxpsJoinCall*>(this)->getSrcLogicalNodeKey();}
+    virtual void setSrcLogicalNodeKey(const OverlayKey& srcLogicalNodeKey_var);
+    virtual OverlayKey& getDstLogicalNodeKey();
+    virtual const OverlayKey& getDstLogicalNodeKey() const {return const_cast<DxpsJoinCall*>(this)->getDstLogicalNodeKey();}
+    virtual void setDstLogicalNodeKey(const OverlayKey& dstLogicalNodeKey_var);
 };
 
 inline void doPacking(cCommBuffer *b, DxpsJoinCall& obj) {obj.parsimPack(b);}
@@ -98,7 +105,7 @@ inline void doUnpacking(cCommBuffer *b, DxpsJoinCall& obj) {obj.parsimUnpack(b);
  * <pre>
  * packet DxpsJoinResponse extends BaseResponseMessage
  * {
- *         OverlayKey groupId; 
+ *         OverlayKey logicalNodeKey; 
  *                             
  * }
  * </pre>
@@ -106,7 +113,7 @@ inline void doUnpacking(cCommBuffer *b, DxpsJoinCall& obj) {obj.parsimUnpack(b);
 class DxpsJoinResponse : public ::BaseResponseMessage
 {
   protected:
-    ::OverlayKey groupId_var;
+    ::OverlayKey logicalNodeKey_var;
 
     // protected and unimplemented operator==(), to prevent accidental usage
     bool operator==(const DxpsJoinResponse&);
@@ -121,9 +128,9 @@ class DxpsJoinResponse : public ::BaseResponseMessage
     virtual void parsimUnpack(cCommBuffer *b);
 
     // field getter/setter methods
-    virtual OverlayKey& getGroupId();
-    virtual const OverlayKey& getGroupId() const {return const_cast<DxpsJoinResponse*>(this)->getGroupId();}
-    virtual void setGroupId(const OverlayKey& groupId_var);
+    virtual OverlayKey& getLogicalNodeKey();
+    virtual const OverlayKey& getLogicalNodeKey() const {return const_cast<DxpsJoinResponse*>(this)->getLogicalNodeKey();}
+    virtual void setLogicalNodeKey(const OverlayKey& logicalNodeKey_var);
 };
 
 inline void doPacking(cCommBuffer *b, DxpsJoinResponse& obj) {obj.parsimPack(b);}
@@ -134,7 +141,7 @@ inline void doUnpacking(cCommBuffer *b, DxpsJoinResponse& obj) {obj.parsimUnpack
  * <pre>
  * packet DxpsPublishCall extends BaseCallMessage
  * {
- *         OverlayKey groupId; 
+ *         OverlayKey logicalNodeKey; 
  *                             
  * }
  * </pre>
@@ -142,7 +149,7 @@ inline void doUnpacking(cCommBuffer *b, DxpsJoinResponse& obj) {obj.parsimUnpack
 class DxpsPublishCall : public ::BaseCallMessage
 {
   protected:
-    ::OverlayKey groupId_var;
+    ::OverlayKey logicalNodeKey_var;
 
     // protected and unimplemented operator==(), to prevent accidental usage
     bool operator==(const DxpsPublishCall&);
@@ -157,9 +164,9 @@ class DxpsPublishCall : public ::BaseCallMessage
     virtual void parsimUnpack(cCommBuffer *b);
 
     // field getter/setter methods
-    virtual OverlayKey& getGroupId();
-    virtual const OverlayKey& getGroupId() const {return const_cast<DxpsPublishCall*>(this)->getGroupId();}
-    virtual void setGroupId(const OverlayKey& groupId_var);
+    virtual OverlayKey& getLogicalNodeKey();
+    virtual const OverlayKey& getLogicalNodeKey() const {return const_cast<DxpsPublishCall*>(this)->getLogicalNodeKey();}
+    virtual void setLogicalNodeKey(const OverlayKey& logicalNodeKey_var);
 };
 
 inline void doPacking(cCommBuffer *b, DxpsPublishCall& obj) {obj.parsimPack(b);}
@@ -170,7 +177,7 @@ inline void doUnpacking(cCommBuffer *b, DxpsPublishCall& obj) {obj.parsimUnpack(
  * <pre>
  * packet DxpsPublishResponse extends BaseResponseMessage
  * {
- *         OverlayKey groupId; 
+ *         OverlayKey logicalNodeKey; 
  *                             
  *         bool wrongRoot = false;
  * }
@@ -179,7 +186,7 @@ inline void doUnpacking(cCommBuffer *b, DxpsPublishCall& obj) {obj.parsimUnpack(
 class DxpsPublishResponse : public ::BaseResponseMessage
 {
   protected:
-    ::OverlayKey groupId_var;
+    ::OverlayKey logicalNodeKey_var;
     bool wrongRoot_var;
 
     // protected and unimplemented operator==(), to prevent accidental usage
@@ -195,9 +202,9 @@ class DxpsPublishResponse : public ::BaseResponseMessage
     virtual void parsimUnpack(cCommBuffer *b);
 
     // field getter/setter methods
-    virtual OverlayKey& getGroupId();
-    virtual const OverlayKey& getGroupId() const {return const_cast<DxpsPublishResponse*>(this)->getGroupId();}
-    virtual void setGroupId(const OverlayKey& groupId_var);
+    virtual OverlayKey& getLogicalNodeKey();
+    virtual const OverlayKey& getLogicalNodeKey() const {return const_cast<DxpsPublishResponse*>(this)->getLogicalNodeKey();}
+    virtual void setLogicalNodeKey(const OverlayKey& logicalNodeKey_var);
     virtual bool getWrongRoot() const;
     virtual void setWrongRoot(bool wrongRoot_var);
 };
@@ -208,10 +215,86 @@ inline void doUnpacking(cCommBuffer *b, DxpsPublishResponse& obj) {obj.parsimUnp
 /**
  * Class generated from <tt>applications/dxps/DxpsMessage.msg</tt> by opp_msgc.
  * <pre>
+ * packet DxpsSubscribeCall extends BaseCallMessage
+ * {
+ *         OverlayKey logicalNodeKey; 
+ *                             
+ * }
+ * </pre>
+ */
+class DxpsSubscribeCall : public ::BaseCallMessage
+{
+  protected:
+    ::OverlayKey logicalNodeKey_var;
+
+    // protected and unimplemented operator==(), to prevent accidental usage
+    bool operator==(const DxpsSubscribeCall&);
+
+  public:
+    DxpsSubscribeCall(const char *name=NULL, int kind=0);
+    DxpsSubscribeCall(const DxpsSubscribeCall& other);
+    virtual ~DxpsSubscribeCall();
+    DxpsSubscribeCall& operator=(const DxpsSubscribeCall& other);
+    virtual DxpsSubscribeCall *dup() const {return new DxpsSubscribeCall(*this);}
+    virtual void parsimPack(cCommBuffer *b);
+    virtual void parsimUnpack(cCommBuffer *b);
+
+    // field getter/setter methods
+    virtual OverlayKey& getLogicalNodeKey();
+    virtual const OverlayKey& getLogicalNodeKey() const {return const_cast<DxpsSubscribeCall*>(this)->getLogicalNodeKey();}
+    virtual void setLogicalNodeKey(const OverlayKey& logicalNodeKey_var);
+};
+
+inline void doPacking(cCommBuffer *b, DxpsSubscribeCall& obj) {obj.parsimPack(b);}
+inline void doUnpacking(cCommBuffer *b, DxpsSubscribeCall& obj) {obj.parsimUnpack(b);}
+
+/**
+ * Class generated from <tt>applications/dxps/DxpsMessage.msg</tt> by opp_msgc.
+ * <pre>
+ * packet DxpsSubscribeResponse extends BaseResponseMessage
+ * {
+ *         OverlayKey logicalNodeKey; 
+ *                             
+ *         bool wrongRoot = false;
+ * }
+ * </pre>
+ */
+class DxpsSubscribeResponse : public ::BaseResponseMessage
+{
+  protected:
+    ::OverlayKey logicalNodeKey_var;
+    bool wrongRoot_var;
+
+    // protected and unimplemented operator==(), to prevent accidental usage
+    bool operator==(const DxpsSubscribeResponse&);
+
+  public:
+    DxpsSubscribeResponse(const char *name=NULL, int kind=0);
+    DxpsSubscribeResponse(const DxpsSubscribeResponse& other);
+    virtual ~DxpsSubscribeResponse();
+    DxpsSubscribeResponse& operator=(const DxpsSubscribeResponse& other);
+    virtual DxpsSubscribeResponse *dup() const {return new DxpsSubscribeResponse(*this);}
+    virtual void parsimPack(cCommBuffer *b);
+    virtual void parsimUnpack(cCommBuffer *b);
+
+    // field getter/setter methods
+    virtual OverlayKey& getLogicalNodeKey();
+    virtual const OverlayKey& getLogicalNodeKey() const {return const_cast<DxpsSubscribeResponse*>(this)->getLogicalNodeKey();}
+    virtual void setLogicalNodeKey(const OverlayKey& logicalNodeKey_var);
+    virtual bool getWrongRoot() const;
+    virtual void setWrongRoot(bool wrongRoot_var);
+};
+
+inline void doPacking(cCommBuffer *b, DxpsSubscribeResponse& obj) {obj.parsimPack(b);}
+inline void doUnpacking(cCommBuffer *b, DxpsSubscribeResponse& obj) {obj.parsimUnpack(b);}
+
+/**
+ * Class generated from <tt>applications/dxps/DxpsMessage.msg</tt> by opp_msgc.
+ * <pre>
  * packet DxpsSubscriptionRefreshMessage
  * {
  *         NodeHandle src;
- *         OverlayKey groupId;
+ *         OverlayKey logicalNodeKey;
  * }
  * </pre>
  */
@@ -219,7 +302,7 @@ class DxpsSubscriptionRefreshMessage : public ::cPacket
 {
   protected:
     ::NodeHandle src_var;
-    ::OverlayKey groupId_var;
+    ::OverlayKey logicalNodeKey_var;
 
     // protected and unimplemented operator==(), to prevent accidental usage
     bool operator==(const DxpsSubscriptionRefreshMessage&);
@@ -237,9 +320,9 @@ class DxpsSubscriptionRefreshMessage : public ::cPacket
     virtual NodeHandle& getSrc();
     virtual const NodeHandle& getSrc() const {return const_cast<DxpsSubscriptionRefreshMessage*>(this)->getSrc();}
     virtual void setSrc(const NodeHandle& src_var);
-    virtual OverlayKey& getGroupId();
-    virtual const OverlayKey& getGroupId() const {return const_cast<DxpsSubscriptionRefreshMessage*>(this)->getGroupId();}
-    virtual void setGroupId(const OverlayKey& groupId_var);
+    virtual OverlayKey& getLogicalNodeKey();
+    virtual const OverlayKey& getLogicalNodeKey() const {return const_cast<DxpsSubscriptionRefreshMessage*>(this)->getLogicalNodeKey();}
+    virtual void setLogicalNodeKey(const OverlayKey& logicalNodeKey_var);
 };
 
 inline void doPacking(cCommBuffer *b, DxpsSubscriptionRefreshMessage& obj) {obj.parsimPack(b);}
@@ -251,7 +334,7 @@ inline void doUnpacking(cCommBuffer *b, DxpsSubscriptionRefreshMessage& obj) {ob
  * packet DxpsLeaveMessage
  * {
  *         NodeHandle src;
- *         OverlayKey groupId;
+ *         OverlayKey logicalNodeKey;
  * }
  * </pre>
  */
@@ -259,7 +342,7 @@ class DxpsLeaveMessage : public ::cPacket
 {
   protected:
     ::NodeHandle src_var;
-    ::OverlayKey groupId_var;
+    ::OverlayKey logicalNodeKey_var;
 
     // protected and unimplemented operator==(), to prevent accidental usage
     bool operator==(const DxpsLeaveMessage&);
@@ -277,9 +360,9 @@ class DxpsLeaveMessage : public ::cPacket
     virtual NodeHandle& getSrc();
     virtual const NodeHandle& getSrc() const {return const_cast<DxpsLeaveMessage*>(this)->getSrc();}
     virtual void setSrc(const NodeHandle& src_var);
-    virtual OverlayKey& getGroupId();
-    virtual const OverlayKey& getGroupId() const {return const_cast<DxpsLeaveMessage*>(this)->getGroupId();}
-    virtual void setGroupId(const OverlayKey& groupId_var);
+    virtual OverlayKey& getLogicalNodeKey();
+    virtual const OverlayKey& getLogicalNodeKey() const {return const_cast<DxpsLeaveMessage*>(this)->getLogicalNodeKey();}
+    virtual void setLogicalNodeKey(const OverlayKey& logicalNodeKey_var);
 };
 
 inline void doPacking(cCommBuffer *b, DxpsLeaveMessage& obj) {obj.parsimPack(b);}
@@ -292,7 +375,7 @@ inline void doUnpacking(cCommBuffer *b, DxpsLeaveMessage& obj) {obj.parsimUnpack
  * {
  *         int timerType enum(DxpsTimerType);
  *         NodeHandle child;
- *         OverlayKey group;
+ *         OverlayKey logicalNodeKey;
  * }
  * </pre>
  */
@@ -301,7 +384,7 @@ class DxpsTimer : public ::cMessage
   protected:
     int timerType_var;
     ::NodeHandle child_var;
-    ::OverlayKey group_var;
+    ::OverlayKey logicalNodeKey_var;
 
     // protected and unimplemented operator==(), to prevent accidental usage
     bool operator==(const DxpsTimer&);
@@ -321,9 +404,9 @@ class DxpsTimer : public ::cMessage
     virtual NodeHandle& getChild();
     virtual const NodeHandle& getChild() const {return const_cast<DxpsTimer*>(this)->getChild();}
     virtual void setChild(const NodeHandle& child_var);
-    virtual OverlayKey& getGroup();
-    virtual const OverlayKey& getGroup() const {return const_cast<DxpsTimer*>(this)->getGroup();}
-    virtual void setGroup(const OverlayKey& group_var);
+    virtual OverlayKey& getLogicalNodeKey();
+    virtual const OverlayKey& getLogicalNodeKey() const {return const_cast<DxpsTimer*>(this)->getLogicalNodeKey();}
+    virtual void setLogicalNodeKey(const OverlayKey& logicalNodeKey_var);
 };
 
 inline void doPacking(cCommBuffer *b, DxpsTimer& obj) {obj.parsimPack(b);}
@@ -334,7 +417,8 @@ inline void doUnpacking(cCommBuffer *b, DxpsTimer& obj) {obj.parsimUnpack(b);}
  * <pre>
  * packet DxpsDataMessage
  * {
- *         OverlayKey groupId;
+ *         OverlayKey logicalNodeKey;
+ *         long dxpsMsgId =0;
  *         bool empty = false;
  * }
  * </pre>
@@ -342,7 +426,8 @@ inline void doUnpacking(cCommBuffer *b, DxpsTimer& obj) {obj.parsimUnpack(b);}
 class DxpsDataMessage : public ::cPacket
 {
   protected:
-    ::OverlayKey groupId_var;
+    ::OverlayKey logicalNodeKey_var;
+    long dxpsMsgId_var;
     bool empty_var;
 
     // protected and unimplemented operator==(), to prevent accidental usage
@@ -358,15 +443,60 @@ class DxpsDataMessage : public ::cPacket
     virtual void parsimUnpack(cCommBuffer *b);
 
     // field getter/setter methods
-    virtual OverlayKey& getGroupId();
-    virtual const OverlayKey& getGroupId() const {return const_cast<DxpsDataMessage*>(this)->getGroupId();}
-    virtual void setGroupId(const OverlayKey& groupId_var);
+    virtual OverlayKey& getLogicalNodeKey();
+    virtual const OverlayKey& getLogicalNodeKey() const {return const_cast<DxpsDataMessage*>(this)->getLogicalNodeKey();}
+    virtual void setLogicalNodeKey(const OverlayKey& logicalNodeKey_var);
+    virtual long getDxpsMsgId() const;
+    virtual void setDxpsMsgId(long dxpsMsgId_var);
     virtual bool getEmpty() const;
     virtual void setEmpty(bool empty_var);
 };
 
 inline void doPacking(cCommBuffer *b, DxpsDataMessage& obj) {obj.parsimPack(b);}
 inline void doUnpacking(cCommBuffer *b, DxpsDataMessage& obj) {obj.parsimUnpack(b);}
+
+/**
+ * Class generated from <tt>applications/dxps/DxpsMessage.msg</tt> by opp_msgc.
+ * <pre>
+ * packet DxpsSubscriptionMessage
+ * {
+ *         OverlayKey logicalNodeKey;
+ *         long dxpsMsgId =0;
+ *         bool empty = false;
+ * }
+ * </pre>
+ */
+class DxpsSubscriptionMessage : public ::cPacket
+{
+  protected:
+    ::OverlayKey logicalNodeKey_var;
+    long dxpsMsgId_var;
+    bool empty_var;
+
+    // protected and unimplemented operator==(), to prevent accidental usage
+    bool operator==(const DxpsSubscriptionMessage&);
+
+  public:
+    DxpsSubscriptionMessage(const char *name=NULL, int kind=0);
+    DxpsSubscriptionMessage(const DxpsSubscriptionMessage& other);
+    virtual ~DxpsSubscriptionMessage();
+    DxpsSubscriptionMessage& operator=(const DxpsSubscriptionMessage& other);
+    virtual DxpsSubscriptionMessage *dup() const {return new DxpsSubscriptionMessage(*this);}
+    virtual void parsimPack(cCommBuffer *b);
+    virtual void parsimUnpack(cCommBuffer *b);
+
+    // field getter/setter methods
+    virtual OverlayKey& getLogicalNodeKey();
+    virtual const OverlayKey& getLogicalNodeKey() const {return const_cast<DxpsSubscriptionMessage*>(this)->getLogicalNodeKey();}
+    virtual void setLogicalNodeKey(const OverlayKey& logicalNodeKey_var);
+    virtual long getDxpsMsgId() const;
+    virtual void setDxpsMsgId(long dxpsMsgId_var);
+    virtual bool getEmpty() const;
+    virtual void setEmpty(bool empty_var);
+};
+
+inline void doPacking(cCommBuffer *b, DxpsSubscriptionMessage& obj) {obj.parsimPack(b);}
+inline void doUnpacking(cCommBuffer *b, DxpsSubscriptionMessage& obj) {obj.parsimUnpack(b);}
 
 
 #endif // _DXPSMESSAGE_M_H_
