@@ -1,0 +1,54 @@
+MC id 1 c cCompoundModule t oversim.underlay.simpleunderlay.SimpleUnderlayNetwork n SimpleUnderlayNetwork cm 1
+MC id 2 c SimpleUnderlayConfigurator t oversim.underlay.simpleunderlay.SimpleUnderlayConfigurator pid 1 n underlayConfigurator
+MC id 3 c cCompoundModule t oversim.common.GlobalObserver pid 1 n globalObserver cm 1
+MC id 4 c GlobalNodeList t oversim.common.GlobalNodeList pid 3 n globalNodeList
+MC id 5 c GlobalParameters t oversim.common.GlobalParameters pid 3 n globalParameters
+MC id 6 c GlobalTraceManager t oversim.common.GlobalTraceManager pid 3 n globalTraceManager
+MC id 7 c cCompoundModule t oversim.common.GlobalFunctions pid 3 n globalFunctions[0] cm 1
+MC id 8 c GlobalStatistics t oversim.common.GlobalStatistics pid 3 n globalStatistics
+MC id 9 c cCompoundModule t oversim.applications.almtest.MessageObserverModule pid 7 n function cm 1
+MC id 10 c MessageObserver t oversim.applications.almtest.MessageObserver pid 9 n observer
+
+E # 0 t 0 m 1 msg -1
+SB v 1025 rid Dxps-0-20120116-20:45:52-5665
+MB sm 1 tm 2 m initialize(0)
+ME
+MB sm 1 tm 3 m initialize(0)
+ME
+MB sm 1 tm 4 m initialize(0)
+BS id 1 tid 1 eid 1 etid 1 c cMessage n oracleTimer
+ES t 0
+ME
+MB sm 1 tm 5 m initialize(0)
+ME
+MB sm 1 tm 6 m initialize(0)
+ME
+MB sm 1 tm 7 m initialize(0)
+ME
+MB sm 1 tm 9 m initialize(0)
+ME
+MB sm 1 tm 10 m initialize(0)
+ME
+MB sm 1 tm 8 m initialize(0)
+ME
+MB sm 1 tm 2 m initialize(1)
+ME
+MB sm 1 tm 2 m initialize(2)
+ME
+MB sm 1 tm 2 m initialize(3)
+ME
+MB sm 1 tm 2 m initialize(4)
+- [SimpleNetConfigurator::initializeUnderlay()]
+-     Using 'nodes_2d_15000.xml' as coordinate source file
+- [SimpleNetConfigurator::parseCoordFile()]
+-     using 2 dimensions: 15000 nodes added to vector "nodeRecordPool".
+MC id 11 c NoChurn t oversim.common.NoChurn pid 1 n churnGenerator[0]
+ME
+MB sm 1 tm 11 m initialize(4)
+MS id 11 d p=70,210,column;i=block/timer
+MS id 11 d "t=No churn;p=70,210,column;i=block/timer"
+BS id 5 tid 5 eid 5 etid 5 c cMessage n mobilityTimer
+ES t 0
+ME
+MS id 2 d p=70,130;i=block/cogwheel
+MS id 3 d p=70,50;i=block/control
