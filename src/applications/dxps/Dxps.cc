@@ -266,9 +266,9 @@ if (routingTable.getIsForwarder()) {//TODO: make it in specific table
     if (!mykey.getBit(i)){
       OverlayKey tmpkey= mykey;
     tmpkey.setBit(i,true);
-    DxpsJoinCall* newJoin = new DxpsJoinCall;    //TODO: create HyperCubeJoinCall to .msg file
+    DxpsJoinCall* newJoin = new DxpsJoinCall;
         newJoin->setDstLogicalNodeKey( tmpkey );//set dstLogicalNodeKey.
-        newJoin->setSrcLogicalNodeKey( mykey );//set dstLogicalNodeKey.
+        newJoin->setSrcLogicalNodeKey( mykey );//set scrLogicalNodeKey.
         newJoin->setBitLength( DXPS_JOINCALL_L(newJoin) );
         sendRouteRpcCall(TIER1_COMP, tmpkey, newJoin);
     }
@@ -379,7 +379,9 @@ void Dxps::handleJoinCall( DxpsJoinCall* joinMsg)
     getParents(routingInserter.first->second);
     //set forwarder
     routingInserter.first->second.setForwarder(true);
-    // Add child to group
+    // Add child to routingTable
+    //check if I send request to myself --> this happens when I am the subscriber so I send myself a join request.
+    if (!(joinMsg->getSrcLogicalNodeKey()==overlay->getThisNode().getKey()))
     addChildToRoutingTable( make_pair(joinMsg->getSrcLogicalNodeKey(),joinMsg->getSrcNode()), routingInserter.first->second );
 
     // Send joinResponse
@@ -452,6 +454,7 @@ void Dxps::handlePublishCall( DxpsPublishCall* publishCall )
         DxpsDataMessage* data = dynamic_cast<DxpsDataMessage*>(publishCall->decapsulate());//decapsulate thedata for later use.
         data->setDxpsMsgId(data->getId());//hack: to use a unique identifier at dxps routing layer, delete msg with same id at intermidiate nodes.
 //inform sender that  publish is successful.
+        //TODO: need test here
         DxpsPublishResponse* msg = new DxpsPublishResponse("Publish Successful");
         msg->setLogicalNodeKey( publishCall->getLogicalNodeKey() );
         msg->setBitLength( DXPS_PUBLISHRESPONSE_L(msg) );
@@ -738,12 +741,12 @@ void Dxps::deliverALMDataToGroup( DxpsDataMessage* dataMsg )
 {
 	//Important to delete duplicate msg and avoid osilicate.
 
-	for ( size_t i = 0;  i < msgLog.size(); ++ i) {
-		if (msgLog[i]==dataMsg->getDxpsMsgId()) {
-			delete dataMsg;
-			return;
-		}
-	}
+//	for ( size_t i = 0;  i < msgLog.size(); ++ i) {
+//		if (msgLog[i]==dataMsg->getDxpsMsgId()) {
+//			delete dataMsg;
+//			return;
+//		}
+//	}
 
     // find logicalNodeKey.
     RoutingTableList::iterator it = routingTableList.find( dataMsg->getLogicalNodeKey() );

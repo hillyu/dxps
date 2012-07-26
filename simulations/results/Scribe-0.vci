@@ -1,4 +1,4 @@
-file 641 1323363878                                             
+file 641 1327049188                                             
 version 2
 run Scribe-0-20111209-00:40:05-3591
 attr configname Scribe
@@ -15,6 +15,5 @@ attr replication #0
 attr resultdir results
 attr runnumber 0
 attr seedset 0
-
 vector 1  SimpleUnderlayNetwork.globalObserver.globalStatistics  "GlobalNodeList: Number of nodes"  ETV
 1	544 97 1 8549 0 350 8 0 3 21 63

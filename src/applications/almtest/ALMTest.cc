@@ -34,6 +34,7 @@ ALMTest::ALMTest()
     joinGroups = true;
     sendMessages = true;
     observer = NULL;
+    keyLength=16;
 }
 
 ALMTest::~ALMTest()
@@ -60,16 +61,36 @@ void ALMTest::finishApp()
     observer->nodeDead(getId());
 }
 
+//void ALMTest::handleTimerEvent( cMessage* msg )
+//{
+//    if( msg == timer ) {
+//        double random = uniform( 0, 1 );
+//        if( (random < 0.1 && joinGroups) || groupNum < 1 ) {
+//            joinGroup( ++groupNum );
+//        } else if( random < 0.1 && joinGroups ) {
+//            leaveGroup( groupNum-- );
+//        } else if ( sendMessages ) {
+//            sendDataToGroup( intuniform( 1, groupNum ));
+//        }
+//        scheduleAt( simTime() + 10, timer );
+//    }
+//}
 void ALMTest::handleTimerEvent( cMessage* msg )
 {
+    int messageCounter =0;
     if( msg == timer ) {
         double random = uniform( 0, 1 );
-        if( (random < 0.1 && joinGroups) || groupNum < 1 ) {
-            joinGroup( ++groupNum );
-        } else if( random < 0.1 && joinGroups ) {
-            leaveGroup( groupNum-- );
-        } else if ( sendMessages ) {
-            sendDataToGroup( intuniform( 1, groupNum ));
+        if( (random < 0.1 && joinGroups) && groupNum < 1 ) { //groupNum is actually the allowed join request time for each node
+            joinGroup(1);//Fixme: hard coded method, once implement pubdelivery you can switchback.
+            groupNum++;
+        }
+//        else if( random < 0.1 && joinGroups ) {
+//            leaveGroup( groupNum-- );
+//        }
+        else if ( random <0.2 && sendMessages && messageCounter< 1) {
+            //sendDataToGroup( intuniform( 1, 7 ));// hard code method. Fixme: read from ini file
+            sendDataToGroup(truncnormal(keyLength/2,1));
+            messageCounter ++;
         }
         scheduleAt( simTime() + 10, timer );
     }
@@ -88,7 +109,7 @@ void ALMTest::handleReadyMessage(CompReadyMessage* msg)
     if( (getThisCompType() - msg->getComp() == 1) && msg->getReady() ) {
 	groupNum = 0;
 	cancelEvent(timer);
-	scheduleAt(simTime() + 1, timer);
+	scheduleAt(simTime() + 150, timer);
     }
     delete msg;
 }
@@ -114,10 +135,12 @@ void ALMTest::handleUpperMessage(cMessage* msg)
 void ALMTest::joinGroup(int i)
 {
     ALMSubscribeMessage* msg = new ALMSubscribeMessage;
-    msg->setGroupId(OverlayKey(i));
+    //msg->setGroupId(OverlayKey(i));Fixme: hardcoded method once implement pubdelivery you can switchback.
+    msg->setGroupId(overlay->getThisNode().getKey());
     send(msg, "to_lowerTier");
 
-    observer->joinedGroup(getId(), OverlayKey(i));
+    //observer->joinedGroup(getId(), OverlayKey(i));
+    observer->joinedGroup(getId(), overlay->getThisNode().getKey());
 }
 
 void ALMTest::leaveGroup(int i)

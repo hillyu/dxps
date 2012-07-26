@@ -77,7 +77,8 @@ public:
 
     void proxCallback(const TransportAddress &node, int rpcId,
                       cPolymorphic *contextPointer, Prox prox);
-
+private:
+    virtual void setOwnNodeID();
 protected:
     int joinRetry; /**< */
     int stabilizeRetry; /**< // retries before neighbor considered failed */

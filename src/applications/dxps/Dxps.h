@@ -20,7 +20,8 @@
  * @file Dxps.h
  * @author Stephan Krause
  */
-
+//TODO: Need to add a sublist for every routingtable(virtual), create a pubdeliver msg.
+//once recieve pubcall, first check childlist-> forward, then check sublist --send pubdeliver msg
 
 #ifndef __DXPS_H_
 #include <map>
@@ -40,7 +41,7 @@ std::ostream& operator<< (std::ostream& o, std::map<OverlayKey, DxpsRoutingTable
     for (std::map<OverlayKey, DxpsRoutingTable>::iterator it = m.begin(); it != m.end(); ++it) {
         o << it->first << "\n";
        // o << "  Parent: " << it->second.getParent() << "\n";
-        o << "  Status: " << (it->second.getSubscription() ? "subscriber\n" : "Forwarder\n");
+        o << "  Status: " << (it->second.getSubscription() ? "subscriber\n" : "\n")<< (it->second.getIsForwarder() ? "Forwarder\n" : "\n");
         o << "  Children (" << it->second.numChildren() << "):\n";
         typedef std::pair<OverlayKey, NodeHandle> Children;
         std::set<Children>::iterator iit = it->second.getChildrenBegin();

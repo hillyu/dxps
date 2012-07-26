@@ -68,6 +68,7 @@ class ALMTest : public BaseApp {
 
          MessageObserver* observer;
         int msglen;
+        int keyLength;
 };
 
 #endif
