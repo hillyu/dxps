@@ -25,7 +25,9 @@
 
 #include "DxpsRoutingTable.h"
 
-typedef std::pair<OverlayKey, NodeHandle> Children;
+typedef std::set <OverlayKey> FilterList;//OverlayKey type is used to represent the bit-array.
+        typedef std::pair<NodeHandle, FilterList> NfPair;
+        typedef std::pair<OverlayKey, NfPair> Children;
 DxpsRoutingTable::DxpsRoutingTable( OverlayKey id ) : logicalNodeKey(id)
 {
 //    parent = NodeHandle::UNSPECIFIED_NODE;
@@ -47,23 +49,33 @@ DxpsRoutingTable::~DxpsRoutingTable( )
 //    return !children.empty();
 //}
 
-std::pair<std::set<Children>::iterator, bool> DxpsRoutingTable::addChild( const Children& nodepair )
+std::pair<std::map<OverlayKey, NfPair>::iterator, bool> DxpsRoutingTable::addChild( const Children& nodepair )
 {
+    return children.insert(nodepair);
+}
+//modify the childern list if the request indicates the insertion of an known child.
+//only update the filter list/routing table.
+std::pair<std::map<OverlayKey, NfPair>::iterator, bool> DxpsRoutingTable::modChild( const Children& nodepair )
+{
+   std::map<OverlayKey, NfPair>::iterator it;
+   it=children.find(nodepair.first);
+   it->second.second.insert(*(nodepair.second.second.begin()));
+
     return children.insert(nodepair);
 }
 
 void DxpsRoutingTable::removeChild( const Children& nodepair )
 {
-    children.erase(nodepair);
+   // children.erase(nodepair);
 }
 
 
-std::set<Children>::iterator DxpsRoutingTable::getChildrenBegin()
+std::map<OverlayKey, NfPair>::iterator DxpsRoutingTable::getChildrenBegin()
 {
     return children.begin();
 }
 
-std::set<Children>::iterator DxpsRoutingTable::getChildrenEnd()
+std::map<OverlayKey, NfPair>::iterator DxpsRoutingTable::getChildrenEnd()
 {
     return children.end();
 }

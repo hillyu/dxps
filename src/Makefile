@@ -300,6 +300,7 @@ OBJS = \
     $O/underlay/singlehostunderlay/stun/stun.o \
     $O/underlay/singlehostunderlay/stun/udp.o \
     $O/applications/almtest/ALMTestTracedMessage_m.o \
+    $O/applications/almtest/Filter_m.o \
     $O/applications/dht/DHTMessage_m.o \
     $O/applications/dxps/DxpsMessage_m.o \
     $O/applications/i3/I3Message_m.o \
@@ -338,6 +339,7 @@ OBJS = \
 # Message files
 MSGFILES = \
     applications/almtest/ALMTestTracedMessage.msg \
+    applications/almtest/Filter.msg \
     applications/dht/DHTMessage.msg \
     applications/dxps/DxpsMessage.msg \
     applications/i3/I3Message.msg \
@@ -499,6 +501,9 @@ depend:
 	$(MAKEDEPEND) $(INCLUDE_PATH) -f Makefile -P\$$O/ -- $(MSG_CC_FILES)  ./*.cc applications/*.cc applications/almtest/*.cc applications/dht/*.cc applications/dxps/*.cc applications/giasearchapp/*.cc applications/i3/*.cc applications/i3/i3Apps/*.cc applications/kbrtestapp/*.cc applications/myapplication/*.cc applications/realworldtestapp/*.cc applications/scribe/*.cc applications/simplegameclient/*.cc applications/tcpexampleapp/*.cc applications/tierdummy/*.cc common/*.cc common/cbr/*.cc overlay/*.cc overlay/bamboo/*.cc overlay/broose/*.cc overlay/chord/*.cc overlay/gia/*.cc overlay/kademlia/*.cc overlay/koorde/*.cc overlay/myoverlay/*.cc overlay/nice/*.cc overlay/ntree/*.cc overlay/pastry/*.cc overlay/pubsubmmog/*.cc overlay/quon/*.cc overlay/vast/*.cc tier2/*.cc tier2/dhttestapp/*.cc tier2/p2pns/*.cc tier2/simmud/*.cc tier2/xmlpsapp/*.cc tier2/xmlpsapp/tinyxpath/*.cc tier2/xmlpsapp/tinyxpath/autom4te.cache/*.cc tier2/xmlpsapp/tinyxpath/tinyxpath_lib/*.cc tier3/*.cc tier3/xmlrpcinterface/*.cc tier3/xmlrpcinterface/xmlrpc++/*.cc underlay/*.cc underlay/inetunderlay/*.cc underlay/inetunderlay/ipv6/*.cc underlay/reaseunderlay/*.cc underlay/reaseunderlay/topologies/*.cc underlay/reaseunderlay/topologies/topology_example/*.cc underlay/reaseunderlay/topologies/topology_tiny_oversim/*.cc underlay/simpleunderlay/*.cc underlay/singlehostunderlay/*.cc underlay/singlehostunderlay/stun/*.cc
 
 # DO NOT DELETE THIS LINE -- make depend depends on it.
+$O/applications/almtest/Filter_m.o: applications/almtest/Filter_m.cc \
+	applications/almtest/Filter_m.h \
+	common/OverlayKey.h
 $O/applications/almtest/MessageObserver.o: applications/almtest/MessageObserver.cc \
 	applications/almtest/ALMTestTracedMessage_m.h \
 	common/GlobalStatistics.h \
@@ -509,8 +514,8 @@ $O/applications/almtest/ALMTest.o: applications/almtest/ALMTest.cc \
 	$(INET_PROJ)/src/base/INETDefs.h \
 	$(INET_PROJ)/src/base/INotifiable.h \
 	common/OverSimMessage_m.h \
-	common/oversim_mapset.h \
 	common/RecursiveLookup.h \
+	common/oversim_mapset.h \
 	applications/almtest/ALMTest.h \
 	$(INET_PROJ)/src/transport/contract/TCPSocket.h \
 	applications/almtest/MessageObserver.h \
@@ -520,6 +525,7 @@ $O/applications/almtest/ALMTest.o: applications/almtest/ALMTest.cc \
 	$(INET_PROJ)/src/networklayer/contract/IPvXAddress.h \
 	common/ExtTCPSocketMap.h \
 	$(INET_PROJ)/src/networklayer/contract/IPAddress.h \
+	applications/almtest/Filter_m.h \
 	common/NodeVector.h \
 	applications/almtest/ALMTestTracedMessage_m.h \
 	common/RpcState.h \

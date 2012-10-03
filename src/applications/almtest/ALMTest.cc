@@ -25,6 +25,7 @@
 #include <assert.h>
 #include "ALMTest.h"
 #include "ALMTestTracedMessage_m.h"
+#include "Filter_m.h"
 
 Define_Module(ALMTest);
 
@@ -80,16 +81,19 @@ void ALMTest::handleTimerEvent( cMessage* msg )
     int messageCounter =0;
     if( msg == timer ) {
         double random = uniform( 0, 1 );
-        if( (random < 0.1 && joinGroups) && groupNum < 1 ) { //groupNum is actually the allowed join request time for each node
-            joinGroup(1);//Fixme: hard coded method, once implement pubdelivery you can switchback.
-            groupNum++;
-        }
+//        if( (random < 0.1 && joinGroups) && groupNum < 1 ) { //groupNum is actually the allowed join request time for each node
+//            joinGroup(1);//Fixme: hard coded method, once implement pubdelivery you can switchback.
+//            groupNum++;
+//        }
+        if(overlay->getThisNode().getKey().toDouble()==2)
+                joinGroup(1);
 //        else if( random < 0.1 && joinGroups ) {
 //            leaveGroup( groupNum-- );
 //        }
-        else if ( random <0.2 && sendMessages && messageCounter< 1) {
+        if ( random <0.2 && sendMessages && messageCounter< 1) {
             //sendDataToGroup( intuniform( 1, 7 ));// hard code method. Fixme: read from ini file
-            sendDataToGroup(truncnormal(keyLength/2,1));
+            //sendDataToGroup(truncnormal(keyLength/2,1));
+            sendDataToGroup(15);
             messageCounter ++;
         }
         scheduleAt( simTime() + 10, timer );
@@ -136,7 +140,11 @@ void ALMTest::joinGroup(int i)
 {
     ALMSubscribeMessage* msg = new ALMSubscribeMessage;
     //msg->setGroupId(OverlayKey(i));Fixme: hardcoded method once implement pubdelivery you can switchback.
+    //create a msg to encapsule "secondary" filter.
+    Filter* filter =new Filter;
+    filter->setFilter(OverlayKey(1));
     msg->setGroupId(overlay->getThisNode().getKey());
+    msg->encapsulate(filter);
     send(msg, "to_lowerTier");
 
     //observer->joinedGroup(getId(), OverlayKey(i));

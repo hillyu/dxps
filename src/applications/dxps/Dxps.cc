@@ -28,6 +28,7 @@
 #include <GlobalStatistics.h>
 
 #include "Comparator.h"
+#include "../almtest/Filter_m.h"
 
 Define_Module(Dxps);
 
@@ -254,24 +255,37 @@ void Dxps::handleReadyMessage( CompReadyMessage* msg )
 // getChildren(); //TODO: maybe not needed.
 // isHyperCubeReady=true;
 //}//Use Ondemand method, similar to original joincall handle method.
-void Dxps::getParents(DxpsRoutingTable& routingTable){  //TODO: add to .h
-
+void Dxps::getParents(OverlayKey mykey, OverlayKey fromKey, DxpsSubscriptionMessage* DXPSsubMsg){
+//void Dxps::getParents(OverlayKey mykey, OverlayKey fromKey, ){//TODO: add to .h
+    bool startGenerating = false;
 //TODO: only when empty routingtable
 //	OverlayKey mykey=overlay->getThisNode().getKey();
-	OverlayKey mykey=routingTable.getLogicalNodeKey();
-if (routingTable.getIsForwarder()) {//TODO: make it in specific table
-	return;
-}
-  for(uint32_t i=0;i<mykey.getLength();i++){
-    if (!mykey.getBit(i)){
-      OverlayKey tmpkey= mykey;
-    tmpkey.setBit(i,true);
-    DxpsJoinCall* newJoin = new DxpsJoinCall;
-        newJoin->setDstLogicalNodeKey( tmpkey );//set dstLogicalNodeKey.
-        newJoin->setSrcLogicalNodeKey( mykey );//set scrLogicalNodeKey.
-        newJoin->setBitLength( DXPS_JOINCALL_L(newJoin) );
-        sendRouteRpcCall(TIER1_COMP, tmpkey, newJoin);
-    }
+//if (routingTable.getIsForwarder()) {
+//	return;
+//}
+	for(uint32_t i=0;i<mykey.getLength();i++){
+	    if (fromKey.isUnspecified())
+	        startGenerating= true;
+
+	    else if (mykey.getBit(i)!=fromKey.getBit(i))
+	        startGenerating= true;
+	    if (startGenerating){
+	        if (!mykey.getBit(i)){
+	            OverlayKey tmpkey= mykey;
+	            tmpkey.setBit(i,true);
+	            DxpsJoinCall* newJoin = new DxpsJoinCall;
+	            newJoin->setDstLogicalNodeKey( tmpkey );//set dstLogicalNodeKey.
+	            newJoin->setSrcLogicalNodeKey( mykey );//set scrLogicalNodeKey.
+	            newJoin->setBitLength( DXPS_JOINCALL_L(newJoin) );
+	            DxpsSubscriptionMessage* NewsubMsg=new DxpsSubscriptionMessage(*DXPSsubMsg);//
+//	            Filter* fn=new Filter();
+//	            fn->setFilter(OverlayKey(1));
+	//            NewsubMsg->encapsulate(DXPSsubMsg->getEncapsulatedPacket());
+//	            NewsubMsg->encapsulate(fn);
+	            newJoin->encapsulate(NewsubMsg);
+	            sendRouteRpcCall(TIER1_COMP, tmpkey, newJoin);
+	        }
+	    }
 
     }
 }
@@ -366,6 +380,13 @@ void Dxps::handleJoinCall( DxpsJoinCall* joinMsg)
 
     RECORD_STATS(++numJoins);//TODO: need to tweak all RECORD_STATS;
     OverlayKey key = joinMsg->getDstLogicalNodeKey();
+    OverlayKey fromKey= joinMsg->getSrcLogicalNodeKey();
+    DxpsSubscriptionMessage* dataMsg=dynamic_cast<DxpsSubscriptionMessage*>(joinMsg->decapsulate());
+    Filter* filter = dynamic_cast<Filter*>(dataMsg->getEncapsulatedPacket());
+    std::set<OverlayKey> filterlist;
+    OverlayKey FilterKey = filter->getFilter();
+    //filterlist.insert(FilterKey);
+
     EV << "[Dxps::handleJoinCall() @ " << overlay->getThisNode().getIp()
         << " (" << overlay->getThisNode().getKey().toString(16) << ")]\n"
         << "    Received a JoinMsg for child's  logical Key " << key << "\n"
@@ -374,22 +395,26 @@ void Dxps::handleJoinCall( DxpsJoinCall* joinMsg)
     // Insert group into RoutingTableList, if not already there
     pair<RoutingTableList::iterator, bool> routingInserter; //TODO: to check if it is a vitural node.
     routingInserter = routingTableList.insert( make_pair(key, DxpsRoutingTable(key)) );
+    OverlayKey mykey=routingInserter.first->second.getLogicalNodeKey();
     //TODO start heartbeat
     //forward join request to parent
-    getParents(routingInserter.first->second);
-    //set forwarder
+   getParents(mykey, fromKey,dataMsg);
+    //set forwarder, not used currently.
     routingInserter.first->second.setForwarder(true);
     // Add child to routingTable
     //check if I send request to myself --> this happens when I am the subscriber so I send myself a join request.
-    if (!(joinMsg->getSrcLogicalNodeKey()==overlay->getThisNode().getKey()))
-    addChildToRoutingTable( make_pair(joinMsg->getSrcLogicalNodeKey(),joinMsg->getSrcNode()), routingInserter.first->second );
+    //if (!(joinMsg->getSrcLogicalNodeKey()==overlay->getThisNode().getKey()))//since we have concept of virtual nodes, this is not correct way to identify a message send from it self.
+    //it maybe a message aimed at a key who also charged by the same node.
+    if (!(joinMsg->getSrcLogicalNodeKey().isUnspecified()))
+    addChildToRoutingTable( make_pair(joinMsg->getSrcLogicalNodeKey(),make_pair(joinMsg->getSrcNode(),filterlist)), routingInserter.first->second );
 
     // Send joinResponse
     DxpsJoinResponse* joinResponse = new DxpsJoinResponse;
     joinResponse->setLogicalNodeKey( key ); //TODO: Maybe need logicalID of parents,
     //send it here.
     joinResponse->setBitLength( DXPS_JOINRESPONSE_L(joinResponse) );
-    sendRpcResponse( joinMsg, joinResponse ); 
+    sendRpcResponse( joinMsg, joinResponse );
+    delete dataMsg;
 }
 //void Dxps::handleJoinMessage( DxpsJoinCall* joinMsg, bool amIRoot)
 //{
@@ -528,11 +553,16 @@ void Dxps::subscribeToGroup( ALMSubscribeMessage* subMsg )
 	    dataMsg->setLogicalNodeKey(overlay->getThisNode().getKey());//For later User. use subscriber's key to add to its RN's routing table as a child.
 	    //dataMsg->setDstLogicalNodeKey(subMsg->getGroupId());
 	    dataMsg->setBitLength( DXPS_SUBSCRIPTIONMESSAGE_L( dataMsg ));
-	    dataMsg->encapsulate( subMsg->decapsulate() );//FIXME:this should be empty by now
+	    dataMsg->encapsulate( subMsg->decapsulate() );
+//	    Filter* filter = dynamic_cast<Filter*>(dataMsg->decapsulate());
+//	    filter = dynamic_cast<Filter*>(dataMsg->decapsulate());
+//	    dataMsg->encapsulate(filter);
+
 
 	    // Send subscribe ...
 	    DxpsJoinCall* msg = new DxpsJoinCall;
-	    msg->setSrcLogicalNodeKey( overlay->getThisNode().getKey());
+	    //msg->setSrcLogicalNodeKey( overlay->getThisNode().getKey());
+	    msg->setSrcLogicalNodeKey(OverlayKey());//using unspecified key, needed for spanning tree generation.
 	    msg->setDstLogicalNodeKey(subMsg->getGroupId());
 	    msg->setBitLength( DXPS_PUBLISHCALL_L(msg) );
 	    msg->encapsulate( dataMsg );
@@ -571,8 +601,11 @@ void Dxps::addChildToRoutingTable( const Children& child, DxpsRoutingTable& rout
 //    }
 
     // add child to group's children list
-    pair<set<Children>::iterator, bool> inserter =
+    pair<map<OverlayKey, NfPair>::iterator, bool> inserter =
         routingTable.addChild( child );
+    if (!inserter.second){
+        routingTable.modChild( child);
+    }
 
 //    if( inserter.second ) {
 //        // if child has not been in the list, create new timeout msg
@@ -774,13 +807,13 @@ void Dxps::deliverALMDataToGroup( DxpsDataMessage* dataMsg )
     }
 
     // deliver data to children TODO: LinkActivation only delliver to child that is "activated"
-    for( set<Children>::iterator cit = it->second.getChildrenBegin();
+    for( map<OverlayKey, NfPair>::iterator cit = it->second.getChildrenBegin();
             cit != it->second.getChildrenEnd(); ++cit ) {
         DxpsDataMessage* newMsg = new DxpsDataMessage( *dataMsg );
         newMsg->setDxpsMsgId(dataMsg->getId());//keep the same dxpsMsgId;
         newMsg->setLogicalNodeKey(cit->first);
         RECORD_STATS(++numForward; forwardBytes += newMsg->getByteLength());
-        callRoute( OverlayKey::UNSPECIFIED_KEY, newMsg, cit->second );
+        callRoute( OverlayKey::UNSPECIFIED_KEY, newMsg, cit->second.first );
     }
 
     // deliver to myself if I'm subscribed to that group //TODO: create a new talbe for subscribers and check that talbe here. and deliver.

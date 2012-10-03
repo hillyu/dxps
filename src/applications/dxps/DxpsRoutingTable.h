@@ -42,10 +42,12 @@ class DxpsRoutingTable
     private:
         OverlayKey logicalNodeKey;
         NodeHandle rendezvousPoint;
-        typedef std::pair<OverlayKey, NodeHandle> Children;
-//        std::set<Children> parents;
 
-        std::set<Children> children;
+//        std::map<OverlayKey, NfPair> parents;
+        typedef std::set <OverlayKey> FilterList;//OverlayKey type is used to represent the bit-array.
+        typedef std::pair<NodeHandle, FilterList> NfPair;
+        typedef std::pair<OverlayKey, NfPair> Children;
+        std::map<OverlayKey, NfPair> children;
         bool subscription;
         bool amISource;
         bool isForwarder;
@@ -68,8 +70,9 @@ class DxpsRoutingTable
          * @param node The nodeHandle of the child
          * @return An iterator to the inserted child and a boolean value (true = new child, false = child was already present)
          */
-//        std::pair<std::set<Children>::iterator, bool> addParent( const Children& node );
-        std::pair<std::set<Children>::iterator, bool> addChild( const Children& node );
+//        std::pair<std::map<OverlayKey, NfPair>::iterator, bool> addParent( const Children& node );
+        std::pair<std::map<OverlayKey, NfPair>::iterator, bool> addChild( const Children& node );
+        std::pair<std::map<OverlayKey, NfPair>::iterator, bool> modChild( const Children& node );
 
         /**
          * Removes a child from the multicast tree
@@ -84,16 +87,16 @@ class DxpsRoutingTable
          *
          * @return the iterator
          */
-//        std::set<Children>::iterator getParentsBegin();
-        std::set<Children>::iterator getChildrenBegin();
+//        std::map<OverlayKey, NfPair>::iterator getParentsBegin();
+        std::map<OverlayKey, NfPair>::iterator getChildrenBegin();
 
         /**
          * Returns an iterator to the end of the children list
          *
          * @return the iterator
          */
-//        std::set<Children>::iterator getParentsEnd();
-        std::set<Children>::iterator getChildrenEnd();
+//        std::map<OverlayKey, NfPair>::iterator getParentsEnd();
+        std::map<OverlayKey, NfPair>::iterator getChildrenEnd();
 
         /**
          * Get the number of children

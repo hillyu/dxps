@@ -43,10 +43,12 @@ std::ostream& operator<< (std::ostream& o, std::map<OverlayKey, DxpsRoutingTable
        // o << "  Parent: " << it->second.getParent() << "\n";
         o << "  Status: " << (it->second.getSubscription() ? "subscriber\n" : "\n")<< (it->second.getIsForwarder() ? "Forwarder\n" : "\n");
         o << "  Children (" << it->second.numChildren() << "):\n";
-        typedef std::pair<OverlayKey, NodeHandle> Children;
-        std::set<Children>::iterator iit = it->second.getChildrenBegin();
+        typedef std::set <OverlayKey> FilterList;//OverlayKey type is used to represent the bit-array.
+                typedef std::pair<NodeHandle, FilterList> NfPair;
+
+        std::map<OverlayKey, NfPair>::iterator iit = it->second.getChildrenBegin();
         for (int i = it->second.numChildren(); i > 0; --i) {
-            o << "    " << iit->first<<"  "<<iit->second<< "\n";
+            o << "    " << iit->first<<"  "<<iit->second.first<< "\n";
             ++iit;
         }
     }
@@ -59,7 +61,9 @@ class Dxps : public BaseApp
     private:
         typedef std::map<OverlayKey, DxpsRoutingTable> RoutingTableList;
         RoutingTableList routingTableList;
-        typedef std::pair<OverlayKey, NodeHandle> Children;
+        typedef std::set <OverlayKey> FilterList;//OverlayKey type is used to represent the bit-array.
+        typedef std::pair<NodeHandle, FilterList> NfPair;
+        typedef std::pair<OverlayKey, NfPair> Children;
         typedef std::multimap<NodeHandle, DxpsTimer*> ChildTimeoutList;
         ChildTimeoutList childTimeoutList;
 
@@ -217,7 +221,7 @@ class Dxps : public BaseApp
          */
         void deliverALMDataToRoot( ALMMulticastMessage* mcastMsg );
         void formHyperCube();
-        void getParents(DxpsRoutingTable& routingTable);
+        void getParents(OverlayKey mykey, OverlayKey fromKey, DxpsSubscriptionMessage* DXPSsubMsg);
 };
 
 #endif
