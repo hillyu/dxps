@@ -1,0 +1,3 @@
+syn keyword CTagsMethod addChild saveDataToXml saveToXml splitByNodes saveRawCoordsToPlotfile split initialize printAllData saveDataToPlotfile
+syn keyword CTagsClass Treenode
+
