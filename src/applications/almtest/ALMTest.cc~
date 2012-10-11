@@ -94,7 +94,7 @@ void ALMTest::handleTimerEvent( cMessage* msg )
         if ( random <0.2 && sendMessages && messageCounter< 1) {
             //sendDataToGroup( intuniform( 1, 7 ));// hard code method. Fixme: read from ini file
             //sendDataToGroup(truncnormal(keyLength/2,1));
-            sendDataToGroup(12);
+            sendDataToGroup(15);
             messageCounter ++;
         }
         scheduleAt( simTime() + 10, timer );

@@ -10,7 +10,7 @@ simple Dxps extends BaseApp
         @class(Dxps);
         double childTimeout @unit(s); //seconds until a node assumes that a particular child has failed
         double parentTimeout @unit(s); //seconds until a node assumes that a particular parent has failed
-        bool subscriptionfilter;//indiciate wether use subscription filter to prone the result;
+        bool subscriptionfilter;
 }
 
 module MulticastDxps like ITier

@@ -94,7 +94,7 @@ class Dxps : public BaseApp
         int subscriptionRefreshBytes;
         std::vector<long int> msgLog;
         //bool isForwarder;// in routingTable already.
-        bool keycompare(OverlayKey subKey,OverlayKey pubKey);
+        bool Dxps::keycompare(OverlayKey subKey,OverlayKey pubKey);
 
     public:
         Dxps( );

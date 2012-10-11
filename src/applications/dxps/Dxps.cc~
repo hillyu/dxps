@@ -801,7 +801,7 @@ void Dxps::deliverALMDataToGroup( DxpsDataMessage* dataMsg )
 
     // Only empty heartbeat?
     if( dataMsg->getEmpty() ) {
-      EV << "publication is empty(dxpsdata packet has no encapsulation)\n";
+      EV << "publication is empty(dxpsdata packet has no encapsulation)"
         delete dataMsg;
         return;
     }
