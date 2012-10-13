@@ -74,14 +74,12 @@ class XmlPsAppMessageObserver : public cSimpleModule {
         /*
          * Tracks data related to a single group
          */
-        struct MulticastGroup {
-            MulticastGroup() : size(0), sent(0), received(0),false_positive(0) {}
+        struct Subscription {
+            Subscription() : size(0), received(0),false_positive(0) {}
 
             // Number of nodes in the group
             uint32_t size;
 
-            // Number of messages that should have been received
-            uint64_t sent;
 
             // Number of messages recieved total by all nodes
             uint64_t received;
@@ -89,19 +87,32 @@ class XmlPsAppMessageObserver : public cSimpleModule {
             //number of messages receibed that is false positive error.
             uint64_t false_positive;
 
+        }; 
+        struct Publication {
+            Publication() : size(0), sent(0) {}
+//add delay.
+            // Number of nodes in the group
+            uint32_t size;
+
+            // Number of messages that should have been received
+            uint64_t sent;
+
         };
 
         simtime_t creationTime;
 
-        typedef std::pair<int, OverlayKey> NodeGroupPair;
+        typedef std::pair<int, OverlayKey> NodeKeyPair;
 
         typedef std::pair<int, long> NodeMessagePair;
 
-        // Info about a specific group
-        std::map<OverlayKey, MulticastGroup> groups;
+        // Info about a specific subscriptions
+        std::map<int, Subscription> subList;
+        // Info about a specific publications
+        std::map<int, Publication> pubList;
 
-        // When a node joined a given group
-        std::map<NodeGroupPair, simtime_t> joinedAt;
+        // When a node subscribed with certain subscription.
+        std::map<NodeKeyPair, simtime_t> joinedAt;
+        std::map<NodeKeyPair, simtime_t> sendAt;
 
         // When a node received a given message
         std::map<NodeMessagePair, simtime_t> receivedAt;
@@ -120,11 +131,13 @@ class XmlPsAppMessageObserver : public cSimpleModule {
 
         GlobalStatistics* globalStatistics;
 
-        friend std::ostream& operator<< (std::ostream& os, XmlPsAppMessageObserver::MulticastGroup const & mg);
-        friend std::ostream& operator<< (std::ostream& os, XmlPsAppMessageObserver::NodeGroupPair const & ngp);
+        friend std::ostream& operator<< (std::ostream& os, XmlPsAppMessageObserver::Subscription const & mg);
+        friend std::ostream& operator<< (std::ostream& os, XmlPsAppMessageObserver::Publication const & mg);
+        friend std::ostream& operator<< (std::ostream& os, XmlPsAppMessageObserver::NodeKeyPair const & ngp);
 };
 
-std::ostream& operator<< (std::ostream& os, XmlPsAppMessageObserver::MulticastGroup const & mg);
-std::ostream& operator<< (std::ostream& os, XmlPsAppMessageObserver::NodeGroupPair const & ngp);
+std::ostream& operator<< (std::ostream& os, XmlPsAppMessageObserver::Subscription const & sub);
+std::ostream& operator<< (std::ostream& os, XmlPsAppMessageObserver::Publication const & pub);
+std::ostream& operator<< (std::ostream& os, XmlPsAppMessageObserver::NodeKeyPair const & ngp);
 
 #endif

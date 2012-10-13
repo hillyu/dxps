@@ -1,0 +1,24 @@
+file 16258 1350049409                                           
+version 2
+run General-0-20121012-21:43:28-4758
+attr configname General
+attr datetime 20121012-21:43:28
+attr experiment General
+attr inifile dxps.ini
+attr iterationvars ""
+attr iterationvars2 $repetition=0
+attr measurement ""
+attr network oversim.underlay.simpleunderlay.SimpleUnderlayNetwork
+attr processid 4758
+attr repetition 0
+attr replication #0
+attr resultdir results
+attr runnumber 0
+attr seedset 0
+
+vector 1  SimpleUnderlayNetwork.globalObserver.globalStatistics  "KBRTestApp: One-way Hop Count"  ETV
+vector 2  SimpleUnderlayNetwork.globalObserver.globalStatistics  "KBRTestApp: One-way Latency"  ETV
+vector 3  SimpleUnderlayNetwork.globalObserver.globalStatistics  "GlobalNodeList: Number of nodes"  ETV
+1	712 6344 5381 47590 103.39248571 1084.834385991 266 0 4 761 2371
+2	7056 8901 5381 47590 103.39248571 1084.834385991 266 0 1.116321802 80.091973353 33.849392845208
+3	15957 301 7852 48031 150 1100 20 16 16 320 5120

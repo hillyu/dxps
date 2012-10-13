@@ -14,7 +14,7 @@
 // 
 #include "./tinyxpath/xpath_static.h"
 #include "XmlPsApp.h"
-
+#include "../almtest/Filter_m.h"
 #include "XmlPsAppTracedMessage_m.h"
 Define_Module(XmlPsApp);
 const int BLOOM_L=4;
@@ -87,56 +87,63 @@ void XmlPsApp::handleTimerEvent( cMessage* msg )
         if (subscribeList.size()>=maxSubscription)
             joinGroups=false;
 
+        //if (overlay->getThisNode().getKey().toDouble()==2 && subscribeList.empty()) {
         if (subscribeList.empty()) {
             bloom_filter bloomfilter (BLOOM_L,BLOOM_K);
             SubGen sub (bloomfilter);
-            subscribe(sub.getBloom());
+            OverlayKey filter= OverlayKey(sub.getBloom());
+            if (overlay->getThisNode().getKey()==filter)
+            {
+              EV <<"the xpe is:"<<sub.getXpe().c_str()<<"\n";
+              EV <<"the bloom filter from list is:"<<subscribeList.back().getBloom().toString()<<"\n";
+              subscribe(filter);
+            }
+            //subscribe(sub.getBloom());//normllay this should work but I need node only subscribe to with bloom filter equals to it's own id.
+
             subscribeList.push_back (sub);
-            EV <<"the xpe is:"<<sub.getXpe().c_str()<<"\n";
-            EV <<"the bloom filter from list is:"<<subscribeList.back().getBloom().toString()<<"\n";
         }
-        else if( (random < subRate && joinGroups) ) {
-            //if( (random < subRate && joinGroups)||groupNum<1){
+        //else if( (random < subRate && joinGroups) ) {
+            ////if( (random < subRate && joinGroups)||groupNum<1){
 
-            bloom_filter bloomfilter (BLOOM_L,BLOOM_K);
-            SubGen sub (bloomfilter);
-            bool isrepeat=false;
-            bool isblrepeat=false;
-            for (size_t i = 0; i < subscribeList.size(); ++i) {
-                if ((subscribeList[i].getBloom()== sub.getBloom())){
-                    isblrepeat=true;
+            //bloom_filter bloomfilter (BLOOM_L,BLOOM_K);
+            //SubGen sub (bloomfilter);
+            //bool isrepeat=false;
+            //bool isblrepeat=false;
+            //for (size_t i = 0; i < subscribeList.size(); ++i) {
+                //if ((subscribeList[i].getBloom()== sub.getBloom())){
+                    //isblrepeat=true;
 
-                }
-                if (subscribeList[i].getXpe()==sub.getXpe()) {
-                    isrepeat=true;
-                }
-            }
-            if (!isrepeat) {
-                if (!isblrepeat) {
-                    subscribe(sub.getBloom());
-                }
-                subscribeList.push_back (sub);
-            }
+                //}
+                //if (subscribeList[i].getXpe()==sub.getXpe()) {
+                    //isrepeat=true;
+                //}
+            //}
+            //if (!isrepeat) {
+                //if (!isblrepeat) {
+                    //subscribe(sub.getBloom());
+                //}
+                //subscribeList.push_back (sub);
+            //}
 
-        }
-
-
-
+    //}
+//TODO Temperarily turn this off 
 
 
-        else if( random < subRate+unsubRate && joinGroups ) {
-            int i=intuniform(1, subscribeList.size());
-            i=i-1;
-            leaveGroup( subscribeList[i].getBloom());
 
-            EV<<"the size of sublist is"<<subscribeList.size()<<"\n";
-            EV<<"the xpe of sublist is"<<subscribeList[i].getXpe()<<"\n";
-            //EV <<"unsubscribe to"<<(unsigned long)*(subscribeList[i].getBloom())<<"\n";
-            EV <<"unsubscribe to: "<<subscribeList[i].getBloom().toString()<<"\n";
-            subscribeList.erase (subscribeList.begin()+i);
+        //TODO have no leavemsg handling at current pahse.
+        //else if( random < subRate+unsubRate && joinGroups ) {
+            //int i=intuniform(1, subscribeList.size());
+            //i=i-1;
+            //leaveGroup( subscribeList[i].getBloom());
 
-        }
-        else if ( sendMessages ) {
+            //EV<<"the size of sublist is"<<subscribeList.size()<<"\n";
+            //EV<<"the xpe of sublist is"<<subscribeList[i].getXpe()<<"\n";
+            ////EV <<"unsubscribe to"<<(unsigned long)*(subscribeList[i].getBloom())<<"\n";
+            //EV <<"unsubscribe to: "<<subscribeList[i].getBloom().toString()<<"\n";
+            //subscribeList.erase (subscribeList.begin()+i);
+
+        //}
+        else if (sendMessages ) {//FIXME only let 15 send.
             //int i=(intuniform(1, subscribeList.size())-1);
             //sendDataToGroup( subscribeList[i].getBloom());
             std::string xmlfile=xmlGen();
@@ -179,6 +186,9 @@ void XmlPsApp::joinGroup(OverlayKey ovkey)
 
     ALMSubscribeMessage* msg = new ALMSubscribeMessage;
     msg->setGroupId(ovkey);
+Filter * filter=new Filter;
+filter->setFilter(OverlayKey(1));//TODO: temperarily set it to 1
+    msg->encapsulate(filter);
     send(msg, "to_lowerTier");
 
     xmlpsapp_observer->joinedGroup(getId(), ovkey);
@@ -209,7 +219,9 @@ void XmlPsApp::sendDataToGroup(OverlayKey ovkey,std::string data){
     traced->setSenderId(getId());
     traced->setXmlFileName(data.c_str());
     traced->setByteLength(msglen);
-
+    Filter* filter=new Filter;
+    filter->setFilter(OverlayKey(1));//TODO: temperarily set it to 1
+    traced->encapsulate(filter);
     msg->encapsulate(traced);
 
     send(msg, "to_lowerTier");
@@ -240,7 +252,7 @@ void XmlPsApp::handleMCast( ALMMulticastMessage* mcast )
 
 std::string XmlPsApp::xmlGen()
 {
-    std::string pathlist = "../samplefiles/xmldocs/filelist2.txt";
+    std::string pathlist = "/home/hill/sim/OverSim-20101103/samplefiles/xmldocs/filelist2.txt";
     std::string xmlfile=SubGen::random_line(pathlist);
     EV << "The PathList is "<<pathlist<<"\n";
     EV << "The XMLFILE INPUT is"<<xmlfile<<"\n";
@@ -311,7 +323,7 @@ SubGen::SubGen():xpe(""),size(0),bloom(0){}
 
 SubGen::SubGen(bloom_filter& filter){
     //reading from a subscription pool
-    std::string SUBFILE="/Users/hill/work/oversim/test/bib.xpelist";
+    std::string SUBFILE="/home/hill/sim/OverSim-20101103/samplefiles/xpaths/bib.xpelist";
     xpe=random_line(SUBFILE);
     int i=0;
     parseXpe(xpe+"/",&filter,"",i);

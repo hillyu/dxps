@@ -1,0 +1,3 @@
+IncludeLocals:True
+UserLibraryDir:/home/hill/sim
+UserLibraries:omnetpp-4.1/include/types_c.taghl,INET-OverSim-20101019/src/types_c.taghl
