@@ -98,12 +98,19 @@ class XmlPsAppMessageObserver : public cSimpleModule {
             uint64_t sent;
 
         };
+        struct MsgInfo {
+        MsgInfo() : key(OverlayKey::UNSPECIFIED_KEY),subSize(0),subscriber() {}
+        OverlayKey key;
+        uint32_t subSize;
+        std::set<int> subscriber;
+        };
 
         simtime_t creationTime;
 
         typedef std::pair<int, OverlayKey> NodeKeyPair;
 
-        typedef std::pair<int, long> NodeMessagePair;
+        //typedef std::pair<int, long> NodeMessagePair
+        typedef std::pair<long, int>NodeMessagePair;
 
         // Info about a specific subscriptions
         std::map<int, Subscription> subList;
@@ -112,11 +119,12 @@ class XmlPsAppMessageObserver : public cSimpleModule {
 
         // When a node subscribed with certain subscription.
         std::map<NodeKeyPair, simtime_t> joinedAt;
-        std::map<NodeKeyPair, simtime_t> sendAt;
+        std::map<NodeMessagePair, simtime_t> sendAt;
 
         // When a node received a given message
         std::map<NodeMessagePair, simtime_t> receivedAt;
 
+        std::map<NodeMessagePair, MsgInfo> msgList;
         // Periodically clean up the above map. Set to 0 to disable(--by hill: maybe the following parameter, tried to set to 0, but the simulation crashed).
         cMessage* gcTimer;
 
@@ -132,12 +140,16 @@ class XmlPsAppMessageObserver : public cSimpleModule {
         GlobalStatistics* globalStatistics;
 
         friend std::ostream& operator<< (std::ostream& os, XmlPsAppMessageObserver::Subscription const & mg);
-        friend std::ostream& operator<< (std::ostream& os, XmlPsAppMessageObserver::Pubscription const & mg);
+        friend std::ostream& operator<< (std::ostream& os, XmlPsAppMessageObserver::Publication const & mg);
+        friend std::ostream& operator<< (std::ostream& os, XmlPsAppMessageObserver::MsgInfo const & msgInfo);
         friend std::ostream& operator<< (std::ostream& os, XmlPsAppMessageObserver::NodeKeyPair const & ngp);
+        friend std::ostream& operator<< (std::ostream& os, XmlPsAppMessageObserver::NodeMessagePair const & nmp);
 };
 
 std::ostream& operator<< (std::ostream& os, XmlPsAppMessageObserver::Subscription const & sub);
 std::ostream& operator<< (std::ostream& os, XmlPsAppMessageObserver::Publication const & pub);
+std::ostream& operator<< (std::ostream& os, XmlPsAppMessageObserver::MsgInfo const & msgInfo);
 std::ostream& operator<< (std::ostream& os, XmlPsAppMessageObserver::NodeKeyPair const & ngp);
+std::ostream& operator<< (std::ostream& os, XmlPsAppMessageObserver::NodeMessagePair const & nmp);
 
 #endif

@@ -31,8 +31,6 @@ Attribute	tinyxpath/tinyxml.h	/^	const char* Attribute( const char* name, int* i
 Attribute	tinyxpath/tinyxml.h	/^	const std::string* Attribute( const std::string& name ) const;$/;"	p	class:TiXmlElement	access:public	signature:( const std::string& name ) const
 Attribute	tinyxpath/tinyxml.h	/^	const std::string* Attribute( const std::string& name, double* d ) const;$/;"	p	class:TiXmlElement	access:public	signature:( const std::string& name, double* d ) const
 Attribute	tinyxpath/tinyxml.h	/^	const std::string* Attribute( const std::string& name, int* i ) const;$/;"	p	class:TiXmlElement	access:public	signature:( const std::string& name, int* i ) const
-BLOOM_K	XmlPsApp.cc	/^const int BLOOM_K=1;$/;"	v
-BLOOM_L	XmlPsApp.cc	/^const int BLOOM_L=4;$/;"	v
 Blank	tinyxpath/tinyxml.h	/^	bool Blank() const;	\/\/ returns true if all white space and new lines$/;"	p	class:TiXmlText	access:protected	signature:() const
 Blank	tinyxpath/tinyxmlparser.cc	/^bool TiXmlText::Blank() const$/;"	f	class:TiXmlText	signature:() const
 CDATA	tinyxpath/tinyxml.h	/^	bool CDATA() const				{ return cdata; }$/;"	f	class:TiXmlText	access:public	signature:() const
@@ -151,7 +149,7 @@ GetText	tinyxpath/tinyxml.h	/^	const char* GetText() const;$/;"	p	class:TiXmlEle
 GetUserData	tinyxpath/tinyxml.h	/^	const void* GetUserData() const 		{ return userData; }	\/\/\/< Get a pointer to arbitrary user data.$/;"	f	class:TiXmlBase	access:public	signature:() const
 GetUserData	tinyxpath/tinyxml.h	/^	void* GetUserData()						{ return userData; }	\/\/\/< Get a pointer to arbitrary user data.$/;"	f	class:TiXmlBase	access:public	signature:()
 INCLUDE_BLOOM_FILTER_HPP	bloom_filter.hpp	21;"	d
-INCLUDE_SUBGEN_H	subgen.h	3;"	d
+INCLUDE_SUBGEN_H	subgen.h	2;"	d
 Identify	tinyxpath/tinyxml.h	/^	TiXmlNode* Identify( const char* start, TiXmlEncoding encoding );$/;"	p	class:TiXmlNode	access:protected	signature:( const char* start, TiXmlEncoding encoding )
 Identify	tinyxpath/tinyxmlparser.cc	/^TiXmlNode* TiXmlNode::Identify( const char* p, TiXmlEncoding encoding )$/;"	f	class:TiXmlNode	signature:( const char* p, TiXmlEncoding encoding )
 Indent	tinyxpath/tinyxml.h	/^	const char* Indent()							{ return indent.c_str(); }$/;"	f	class:TiXmlPrinter	access:public	signature:()
@@ -200,6 +198,8 @@ LoadFile	tinyxpath/tinyxml.h	/^	bool LoadFile( TiXmlEncoding encoding = TIXML_DE
 LoadFile	tinyxpath/tinyxml.h	/^	bool LoadFile( const char * filename, TiXmlEncoding encoding = TIXML_DEFAULT_ENCODING );$/;"	p	class:TiXmlDocument	access:public	signature:( const char * filename, TiXmlEncoding encoding = TIXML_DEFAULT_ENCODING )
 LoadFile	tinyxpath/tinyxml.h	/^	bool LoadFile( const std::string& filename, TiXmlEncoding encoding = TIXML_DEFAULT_ENCODING )			\/\/\/< STL std::string version.$/;"	f	class:TiXmlDocument	access:public	signature:( const std::string& filename, TiXmlEncoding encoding = TIXML_DEFAULT_ENCODING )
 MAX_ENTITY_LENGTH	tinyxpath/tinyxml.h	/^		MAX_ENTITY_LENGTH = 6$/;"	e	enum:TiXmlBase::__anon4
+MsgInfo	XmlPsAppMessageObserver.h	/^        MsgInfo() : key(OverlayKey::UNSPECIFIED_KEY),subSize(0),subscriber() {}$/;"	f	struct:XmlPsAppMessageObserver::MsgInfo
+MsgInfo	XmlPsAppMessageObserver.h	/^        struct MsgInfo {$/;"	s	class:XmlPsAppMessageObserver
 NUM_ENTITY	tinyxpath/tinyxml.h	/^		NUM_ENTITY = 5,$/;"	e	enum:TiXmlBase::__anon4
 Name	tinyxpath/tinyxml.h	/^	const char*		Name()  const		{ return name.c_str(); }		\/\/\/< Return the name of this attribute.$/;"	f	class:TiXmlAttribute	access:public	signature:() const
 NameTStr	tinyxpath/tinyxml.h	/^	const TIXML_STRING& NameTStr() const { return name; }$/;"	f	class:TiXmlAttribute	access:public	signature:() const
@@ -224,7 +224,7 @@ NextSiblingElement	tinyxpath/tinyxml.h	/^	const TiXmlElement* NextSiblingElement
 NoChildren	tinyxpath/tinyxml.h	/^	bool NoChildren() const						{ return !firstChild; }$/;"	f	class:TiXmlNode	access:public	signature:() const
 Node	tinyxpath/tinyxml.h	/^	TiXmlNode* Node() const			{ return ToNode(); } $/;"	f	class:TiXmlHandle	access:public	signature:() const
 NodeKeyPair	XmlPsAppMessageObserver.h	/^        typedef std::pair<int, OverlayKey> NodeKeyPair;$/;"	t	class:XmlPsAppMessageObserver
-NodeMessagePair	XmlPsAppMessageObserver.h	/^        typedef std::pair<int, long> NodeMessagePair;$/;"	t	class:XmlPsAppMessageObserver
+NodeMessagePair	XmlPsAppMessageObserver.h	/^        typedef std::pair<long, int>NodeMessagePair;$/;"	t	class:XmlPsAppMessageObserver
 NodeType	tinyxpath/tinyxml.h	/^	enum NodeType$/;"	g	class:TiXmlNode	access:public
 Parent	tinyxpath/tinyxml.h	/^	TiXmlNode* Parent()							{ return parent; }$/;"	f	class:TiXmlNode	access:public	signature:()
 Parent	tinyxpath/tinyxml.h	/^	const TiXmlNode* Parent() const				{ return parent; }$/;"	f	class:TiXmlNode	access:public	signature:() const
@@ -387,17 +387,10 @@ StreamWhiteSpace	tinyxpath/tinyxml.h	/^	static bool	StreamWhiteSpace( std::istre
 StreamWhiteSpace	tinyxpath/tinyxmlparser.cc	/^\/*static*\/ bool TiXmlBase::StreamWhiteSpace( std::istream * in, TIXML_STRING * tag )$/;"	f	class:TiXmlBase	signature:( std::istream * in, TIXML_STRING * tag )
 StringEqual	tinyxpath/tinyxml.h	/^	static bool StringEqual(	const char* p,$/;"	p	class:TiXmlBase	access:protected	signature:( const char* p, const char* endTag, bool ignoreCase, TiXmlEncoding encoding )
 StringEqual	tinyxpath/tinyxmlparser.cc	/^bool TiXmlBase::StringEqual( const char* p,$/;"	f	class:TiXmlBase	signature:( const char* p, const char* tag, bool ignoreCase, TiXmlEncoding encoding )
-SubGen	XmlPsApp.cc	/^SubGen::SubGen():xpe(""),size(0),bloom(0){}$/;"	f	class:SubGen
+SubGen	XmlPsApp.cc	/^SubGen::SubGen():xpe(""),size(0),bloom(OverlayKey::UNSPECIFIED_KEY){}$/;"	f	class:SubGen
 SubGen	XmlPsApp.cc	/^SubGen::SubGen(bloom_filter& filter){$/;"	f	class:SubGen
-SubGen	subgen.h	/^     SubGen(bloom_filter& filter);$/;"	p	class:SubGen	access:public	signature:(bloom_filter& filter)
+SubGen	XmlPsApp.cc	/^SubGen::SubGen(int l, int k, OverlayKey mykey){$/;"	f	class:SubGen
 SubGen	subgen.h	/^class SubGen {$/;"	c
-SubGen::SubGen	subgen.h	/^     SubGen(bloom_filter& filter);$/;"	p	class:SubGen	access:public	signature:(bloom_filter& filter)
-SubGen::bloom	subgen.h	/^     unsigned int bloom;$/;"	m	class:SubGen	access:private
-SubGen::getBloom	subgen.h	/^     int getBloom(){return bloom;}\/\/TODO change the return type to bloom_filter$/;"	f	class:SubGen	access:public	signature:()
-SubGen::getXpe	subgen.h	/^     std::string getXpe(){return xpe;}$/;"	f	class:SubGen	access:public	signature:()
-SubGen::parseXpe	subgen.h	/^     void parseXpe(std::string xpe,bloom_filter* b,std::string parent, int& i);$/;"	p	class:SubGen	access:private	signature:(std::string xpe,bloom_filter* b,std::string parent, int& i)
-SubGen::random_line	subgen.h	/^     std::string random_line( std::string filepath );$/;"	p	class:SubGen	access:private	signature:( std::string filepath )
-SubGen::xpe	subgen.h	/^     std::string xpe;$/;"	m	class:SubGen	access:private
 Subscription	XmlPsAppMessageObserver.h	/^            Subscription() : size(0), received(0),false_positive(0) {}$/;"	f	struct:XmlPsAppMessageObserver::Subscription
 Subscription	XmlPsAppMessageObserver.h	/^        struct Subscription {$/;"	s	class:XmlPsAppMessageObserver
 TEXT	tinyxpath/tinyxml.h	/^		TEXT,$/;"	e	enum:TiXmlNode::NodeType
@@ -1783,18 +1776,7 @@ XNp_xpath_node	tinyxpath/xpath_static.cc	/^   TiXmlNode * XNp_xpath_node (const 
 XNp_xpath_node	tinyxpath/xpath_static.h	/^   extern TiXmlNode * XNp_xpath_node (const TiXmlNode * XNp_source_tree, const char * cp_xpath_expr);$/;"	p	namespace:TinyXPath	signature:(const TiXmlNode * XNp_source_tree, const char * cp_xpath_expr)
 XmlPsApp	XmlPsApp.cc	/^Define_Module(XmlPsApp);$/;"	v
 XmlPsApp	XmlPsApp.cc	/^XmlPsApp::XmlPsApp() {$/;"	f	class:XmlPsApp
-XmlPsApp	XmlPsApp.h	/^	XmlPsApp();$/;"	p	class:XmlPsApp	access:public	signature:()
-XmlPsApp	XmlPsApp.h	/^class XmlPsApp: public ALMTest {$/;"	c	inherits:ALMTest
-XmlPsApp::XmlPsApp	XmlPsApp.h	/^	XmlPsApp();$/;"	p	class:XmlPsApp	access:public	signature:()
-XmlPsApp::handleMCast	XmlPsApp.h	/^	void handleMCast( ALMMulticastMessage* mcast );$/;"	p	class:XmlPsApp	access:protected	signature:( ALMMulticastMessage* mcast )
-XmlPsApp::handleTimerEvent	XmlPsApp.h	/^	void handleTimerEvent( cMessage* msg );$/;"	p	class:XmlPsApp	access:protected	signature:( cMessage* msg )
-XmlPsApp::initializeApp	XmlPsApp.h	/^	void initializeApp(int stage);$/;"	p	class:XmlPsApp	access:public	signature:(int stage)
-XmlPsApp::joinGroup	XmlPsApp.h	/^        void joinGroup(const unsigned char *buffer, uint32_t size);$/;"	p	class:XmlPsApp	access:protected	signature:(const unsigned char *buffer, uint32_t size)
-XmlPsApp::leaveGroup	XmlPsApp.h	/^        void leaveGroup(const unsigned char *buffer, uint32_t size);$/;"	p	class:XmlPsApp	access:protected	signature:(const unsigned char *buffer, uint32_t size)
-XmlPsApp::maxSubscription	XmlPsApp.h	/^	int maxSubscription;$/;"	m	class:XmlPsApp	access:public
-XmlPsApp::subRate	XmlPsApp.h	/^	double subRate;$/;"	m	class:XmlPsApp	access:public
-XmlPsApp::subscribeList	XmlPsApp.h	/^	std::list<bloom_filter> subscribeList;$/;"	m	class:XmlPsApp	access:private
-XmlPsApp::unsubRate	XmlPsApp.h	/^	double unsubRate;$/;"	m	class:XmlPsApp	access:public
+XmlPsApp	XmlPsApp.h	/^class XmlPsApp : public BaseApp {$/;"	c
 XmlPsAppMessageObserver	XmlPsAppMessageObserver.cc	/^Define_Module(XmlPsAppMessageObserver);$/;"	v
 XmlPsAppMessageObserver	XmlPsAppMessageObserver.cc	/^XmlPsAppMessageObserver::XmlPsAppMessageObserver() {$/;"	f	class:XmlPsAppMessageObserver
 XmlPsAppMessageObserver	XmlPsAppMessageObserver.h	/^class XmlPsAppMessageObserver : public cSimpleModule {$/;"	c
@@ -1834,7 +1816,7 @@ b_top	tinyxpath/byte_stream.h	/^   _byte_ b_top ()$/;"	f	class:TinyXPath::byte_s
 bit_mask	bloom_filter.hpp	/^static const unsigned char bit_mask[bits_per_char] = {$/;"	v
 bit_table_	bloom_filter.hpp	/^   unsigned char*          bit_table_;$/;"	m	class:bloom_filter	access:protected
 bits_per_char	bloom_filter.hpp	/^static const std::size_t bits_per_char = 0x08;    \/\/ 8 bits in 1 char(unsigned)$/;"	v
-bloom	subgen.h	/^     unsigned int bloom;$/;"	m	class:SubGen	access:private
+bloom	subgen.h	/^	OverlayKey bloom;$/;"	m	class:SubGen
 bloom_filter	bloom_filter.hpp	/^   bloom_filter(const bloom_filter& filter)$/;"	f	class:bloom_filter	access:public	signature:(const bloom_filter& filter)
 bloom_filter	bloom_filter.hpp	/^   bloom_filter(const std::size_t& predicted_element_count,$/;"	f	class:bloom_filter	access:public	signature:(const std::size_t& predicted_element_count, const double& false_positive_probability, const std::size_t& random_seed)
 bloom_filter	bloom_filter.hpp	/^   bloom_filter(std::size_t min_m, std::size_t min_k){$/;"	f	class:bloom_filter	access:public	signature:(std::size_t min_m, std::size_t min_k)
@@ -1878,6 +1860,8 @@ bloom_filter::size	bloom_filter.hpp	/^   inline virtual std::size_t size() const
 bloom_filter::table	bloom_filter.hpp	/^   const cell_type* table() const { return bit_table_; }$/;"	f	class:bloom_filter	access:public	signature:() const
 bloom_filter::table_size_	bloom_filter.hpp	/^   std::size_t             table_size_;$/;"	m	class:bloom_filter	access:protected
 bloom_filter::~bloom_filter	bloom_filter.hpp	/^   virtual ~bloom_filter()$/;"	f	class:bloom_filter	access:public	signature:()
+bloom_k	XmlPsApp.h	/^  int bloom_k;$/;"	m	class:XmlPsApp
+bloom_l	XmlPsApp.h	/^  int bloom_l;$/;"	m	class:XmlPsApp
 bloom_type	bloom_filter.hpp	/^   typedef unsigned int bloom_type;$/;"	t	class:bloom_filter	access:protected
 bp_current	tinyxpath/byte_stream.h	/^   _byte_ * bp_current;$/;"	m	class:TinyXPath::byte_stream	access:private
 bp_end	tinyxpath/byte_stream.h	/^   _byte_ * bp_end;$/;"	m	class:TinyXPath::byte_stream	access:private
@@ -1981,11 +1965,12 @@ error_not_yet	tinyxpath/xpath_processor.h	/^class error_not_yet : public executi
 evaluateXpe	XmlPsApp.cc	/^bool XmlPsApp::evaluateXpe(std::string xmlfilename){$/;"	f	class:XmlPsApp
 execution_error	tinyxpath/xpath_processor.h	/^class execution_error {public : execution_error (int i_) {i=i_;} int i;};$/;"	c	namespace:TinyXPath
 execution_error	tinyxpath/xpath_processor.h	/^class execution_error {public : execution_error (int i_) {i=i_;} int i;};$/;"	f	class:TinyXPath::execution_error	access:public	signature:(int i_)
+expandJoin	XmlPsApp.h	/^	bool expandJoin;$/;"	m	class:XmlPsApp
 expression_result	tinyxpath/xpath_expression.h	/^	expression_result (const expression_result & er_2)$/;"	f	class:TinyXPath::expression_result	access:public	signature:(const expression_result & er_2)
 expression_result	tinyxpath/xpath_expression.h	/^ 	expression_result (const TiXmlNode * XNp_in_root) : XNp_root (XNp_in_root)$/;"	f	class:TinyXPath::expression_result	access:public	signature:(const TiXmlNode * XNp_in_root)
 expression_result	tinyxpath/xpath_expression.h	/^   expression_result ()$/;"	f	class:TinyXPath::expression_result	access:public	signature:()
 expression_result	tinyxpath/xpath_expression.h	/^class expression_result$/;"	c	namespace:TinyXPath
-false_positive	XmlPsAppMessageObserver.h	/^            uint64_t false_positive;$/;"	m	struct:XmlPsAppMessageObserver::Subscription
+false_positive	XmlPsAppMessageObserver.h	/^            long false_positive;$/;"	m	struct:XmlPsAppMessageObserver::Subscription
 find	tinyxpath/tinystr.h	/^	size_type find (char lookup) const$/;"	f	class:TiXmlString	access:public	signature:(char lookup) const
 find	tinyxpath/tinystr.h	/^	size_type find (char tofind, size_type offset) const$/;"	f	class:TiXmlString	access:public	signature:(char tofind, size_type offset) const
 find_optimal_parameters	bloom_filter.hpp	/^   void find_optimal_parameters()$/;"	f	class:bloom_filter	access:protected	signature:()
@@ -1995,16 +1980,16 @@ firstChild	tinyxpath/tinyxml.h	/^	TiXmlNode*		firstChild;$/;"	m	class:TiXmlNode	
 gcInterval	XmlPsAppMessageObserver.h	/^        double gcInterval;$/;"	m	class:XmlPsAppMessageObserver
 gcTimer	XmlPsAppMessageObserver.h	/^        cMessage* gcTimer;$/;"	m	class:XmlPsAppMessageObserver
 generate_unique_salt	bloom_filter.hpp	/^   void generate_unique_salt()$/;"	f	class:bloom_filter	access:protected	signature:()
-getBloom	subgen.h	/^     int getBloom(){return bloom;}\/\/TODO change the return type to bloom_filter$/;"	f	class:SubGen	access:public	signature:()
-getXpe	subgen.h	/^     std::string getXpe(){return xpe;}$/;"	f	class:SubGen	access:public	signature:()
+getBloom	subgen.h	/^	OverlayKey getBloom() const {return bloom;}$/;"	f	class:SubGen
+getSize	subgen.h	/^	uint32_t  getSize(){return size;}$/;"	f	class:SubGen
+getXpe	subgen.h	/^	std::string getXpe() const {return xpe;}$/;"	f	class:SubGen
 globalStatistics	XmlPsAppMessageObserver.h	/^        GlobalStatistics* globalStatistics;$/;"	m	class:XmlPsAppMessageObserver
+groupNum	XmlPsApp.h	/^	int groupNum;$/;"	m	class:XmlPsApp
 handleLowerMessage	XmlPsApp.cc	/^void XmlPsApp::handleLowerMessage(cMessage* msg)$/;"	f	class:XmlPsApp
 handleMCast	XmlPsApp.cc	/^void XmlPsApp::handleMCast( ALMMulticastMessage* mcast )$/;"	f	class:XmlPsApp
-handleMCast	XmlPsApp.h	/^	void handleMCast( ALMMulticastMessage* mcast );$/;"	p	class:XmlPsApp	access:protected	signature:( ALMMulticastMessage* mcast )
 handleMessage	XmlPsAppMessageObserver.cc	/^void XmlPsAppMessageObserver::handleMessage(cMessage* msg) {$/;"	f	class:XmlPsAppMessageObserver
 handleReadyMessage	XmlPsApp.cc	/^void XmlPsApp::handleReadyMessage(CompReadyMessage* msg)$/;"	f	class:XmlPsApp
 handleTimerEvent	XmlPsApp.cc	/^void XmlPsApp::handleTimerEvent( cMessage* msg )$/;"	f	class:XmlPsApp
-handleTimerEvent	XmlPsApp.h	/^	void handleTimerEvent( cMessage* msg );$/;"	p	class:XmlPsApp	access:protected	signature:( cMessage* msg )
 hash_ap	bloom_filter.hpp	/^   bloom_type hash_ap(const unsigned char* begin, std::size_t remaining_length, bloom_type hash) const$/;"	f	class:bloom_filter	access:protected	signature:(const unsigned char* begin, std::size_t remaining_length, bloom_type hash) const
 i	tinyxpath/xpath_processor.h	/^class execution_error {public : execution_error (int i_) {i=i_;} int i;};$/;"	m	class:TinyXPath::execution_error	access:public
 i_1	tinyxpath/action_store.h	/^   int i_1, i_2, i_3;$/;"	m	class:TinyXPath::action_item	access:protected
@@ -2045,7 +2030,6 @@ init	tinyxpath/tinystr.h	/^	void init(size_type sz) { init(sz, sz); }$/;"	f	clas
 init	tinyxpath/tinystr.h	/^	void init(size_type sz, size_type cap)$/;"	f	class:TiXmlString	access:private	signature:(size_type sz, size_type cap)
 initialize	XmlPsAppMessageObserver.cc	/^void XmlPsAppMessageObserver::initialize() {$/;"	f	class:XmlPsAppMessageObserver
 initializeApp	XmlPsApp.cc	/^void XmlPsApp::initializeApp(int stage)$/;"	f	class:XmlPsApp
-initializeApp	XmlPsApp.h	/^	void initializeApp(int stage);$/;"	p	class:XmlPsApp	access:public	signature:(int stage)
 insert	bloom_filter.hpp	/^   inline void insert(const InputIterator begin, const InputIterator end)$/;"	f	class:bloom_filter	access:public	signature:(const InputIterator begin, const InputIterator end)
 insert	bloom_filter.hpp	/^   inline void insert(const T& t)$/;"	f	class:bloom_filter	access:public	signature:(const T& t)
 insert	bloom_filter.hpp	/^   inline void insert(const char* data, const std::size_t& length)$/;"	f	class:bloom_filter	access:public	signature:(const char* data, const std::size_t& length)
@@ -2053,13 +2037,13 @@ insert	bloom_filter.hpp	/^   inline void insert(const std::string& key)$/;"	f	cl
 insert	bloom_filter.hpp	/^   inline void insert(const unsigned char* key_begin, const std::size_t& length)$/;"	f	class:bloom_filter	access:public	signature:(const unsigned char* key_begin, const std::size_t& length)
 inserted_element_count_	bloom_filter.hpp	/^   std::size_t             inserted_element_count_;$/;"	m	class:bloom_filter	access:protected
 joinGroup	XmlPsApp.cc	/^void XmlPsApp::joinGroup(OverlayKey ovkey)$/;"	f	class:XmlPsApp
-joinGroup	XmlPsApp.h	/^        void joinGroup(const unsigned char *buffer, uint32_t size);$/;"	p	class:XmlPsApp	access:protected	signature:(const unsigned char *buffer, uint32_t size)
+joinGroups	XmlPsApp.h	/^	bool joinGroups;$/;"	m	class:XmlPsApp
 joinedAt	XmlPsAppMessageObserver.h	/^        std::map<NodeKeyPair, simtime_t> joinedAt;$/;"	m	class:XmlPsAppMessageObserver
 joinedGroup	XmlPsAppMessageObserver.cc	/^void XmlPsAppMessageObserver::joinedGroup(int moduleId, OverlayKey subBloom) {$/;"	f	class:XmlPsAppMessageObserver
+key	XmlPsAppMessageObserver.h	/^        OverlayKey key;$/;"	m	struct:XmlPsAppMessageObserver::MsgInfo
 l_enum	tinyxpath/lex_token.h	/^   lexico l_enum;$/;"	m	class:TinyXPath::lex_token	access:private
 lastChild	tinyxpath/tinyxml.h	/^	TiXmlNode*		lastChild;$/;"	m	class:TiXmlNode	access:protected
 leaveGroup	XmlPsApp.cc	/^void XmlPsApp::leaveGroup(OverlayKey ovkey)$/;"	f	class:XmlPsApp
-leaveGroup	XmlPsApp.h	/^        void leaveGroup(const unsigned char *buffer, uint32_t size);$/;"	p	class:XmlPsApp	access:protected	signature:(const unsigned char *buffer, uint32_t size)
 leftGroup	XmlPsAppMessageObserver.cc	/^void XmlPsAppMessageObserver::leftGroup(int moduleId, OverlayKey groupId) {$/;"	f	class:XmlPsAppMessageObserver
 length	tinyxpath/tinystr.h	/^	size_type length () const { return rep_->size; }$/;"	f	class:TiXmlString	access:public	signature:() const
 lex_1_quote	tinyxpath/lex_util.h	/^            lex_dot, lex_minus, lex_under, lex_colon, lex_scolon, lex_2_quote, lex_1_quote, $/;"	e	enum:TinyXPath::lexico
@@ -2146,7 +2130,9 @@ ltp_last	tinyxpath/tokenlist.h	/^   lex_token * ltp_last;$/;"	m	class:TinyXPath:
 ltp_next	tinyxpath/lex_token.h	/^   lex_token * ltp_next, * ltp_prev;$/;"	m	class:TinyXPath::lex_token	access:private
 ltp_prev	tinyxpath/lex_token.h	/^   lex_token * ltp_next, * ltp_prev;$/;"	m	class:TinyXPath::lex_token	access:private
 main	tinyxpath/main.cc	/^int main ()$/;"	f	signature:()
-maxSubscription	XmlPsApp.h	/^	int maxSubscription;$/;"	m	class:XmlPsApp	access:public
+maxSubscription	XmlPsApp.h	/^	int maxSubscription;$/;"	m	class:XmlPsApp
+msgList	XmlPsAppMessageObserver.h	/^        std::map<NodeMessagePair, MsgInfo> msgList;$/;"	m	class:XmlPsAppMessageObserver
+msglen	XmlPsApp.h	/^	int msglen;$/;"	m	class:XmlPsApp
 name	tinyxpath/tinyxml.h	/^	TIXML_STRING name;$/;"	m	class:TiXmlAttribute	access:private
 next	tinyxpath/tinyxml.h	/^	TiXmlAttribute*	next;$/;"	m	class:TiXmlAttribute	access:private
 next	tinyxpath/tinyxml.h	/^	TiXmlNode*		next;$/;"	m	class:TiXmlNode	access:protected
@@ -2204,6 +2190,7 @@ o_xpath_string	tinyxpath/xpath_static.cc	/^   bool o_xpath_string (const TiXmlNo
 o_xpath_string	tinyxpath/xpath_static.h	/^   extern bool o_xpath_string (const TiXmlNode * XNp_source_tree, const char * cp_xpath_expr, TIXML_STRING & S_res);$/;"	p	namespace:TinyXPath	signature:(const TiXmlNode * XNp_source_tree, const char * cp_xpath_expr, TIXML_STRING & S_res)
 op_attrib	tinyxpath/node_set.h	/^   bool * op_attrib;$/;"	m	class:TinyXPath::node_set	access:protected
 operator !	bloom_filter.hpp	/^   inline bool operator!() const$/;"	f	class:bloom_filter	access:public	signature:() const
+operator !=	subgen.h	/^bool operator!= ( const SubGen &other) const$/;"	f	class:SubGen
 operator !=	tinyxpath/tinystr.h	/^inline bool operator != (const TiXmlString & a, const TiXmlString & b) { return !(a == b); }$/;"	f	signature:(const TiXmlString & a, const TiXmlString & b)
 operator !=	tinyxpath/tinystr.h	/^inline bool operator != (const TiXmlString & a, const char* b) { return !(a == b); }$/;"	f	signature:(const TiXmlString & a, const char* b)
 operator !=	tinyxpath/tinystr.h	/^inline bool operator != (const char* a, const TiXmlString & b) { return !(b == a); }$/;"	f	signature:(const char* a, const TiXmlString & b)
@@ -2221,6 +2208,8 @@ operator +=	tinyxpath/tinystr.h	/^	TiXmlString& operator += (const char * suffix
 operator <	tinyxpath/tinystr.h	/^inline bool operator < (const TiXmlString & a, const TiXmlString & b)$/;"	f	signature:(const TiXmlString & a, const TiXmlString & b)
 operator <	tinyxpath/tinyxml.h	/^	bool operator<( const TiXmlAttribute& rhs )	 const { return name < rhs.name; }$/;"	f	class:TiXmlAttribute	access:public	signature:( const TiXmlAttribute& rhs ) const
 operator <<	XmlPsApp.cc	/^std::ostream & operator <<(std::ostream & os,  SubGen  & subg)$/;"	f
+operator <<	XmlPsAppMessageObserver.cc	/^std::ostream& operator<< (std::ostream& os, XmlPsAppMessageObserver::MsgInfo const & msgInfo) {$/;"	f
+operator <<	XmlPsAppMessageObserver.cc	/^std::ostream& operator<< (std::ostream& os, XmlPsAppMessageObserver::NodeMessagePair const & nmp) {$/;"	f
 operator <<	XmlPsAppMessageObserver.cc	/^std::ostream& operator<< (std::ostream& os, XmlPsAppMessageObserver::Publication const & pub) {$/;"	f
 operator <<	XmlPsAppMessageObserver.cc	/^std::ostream& operator<< (std::ostream& os, XmlPsAppMessageObserver::Subscription const & sub) {$/;"	f
 operator <<	tinyxpath/tinystr.h	/^	TiXmlOutStream & operator << (const TiXmlString & in)$/;"	f	class:TiXmlOutStream	access:public	signature:(const TiXmlString & in)
@@ -2251,6 +2240,7 @@ operator =	tinyxpath/tinyxml.h	/^	void operator=( const TiXmlNode& base );	\/\/ 
 operator =	tinyxpath/tinyxml.h	/^	void operator=( const TiXmlText& base )							 	{ base.CopyTo( this ); }$/;"	f	class:TiXmlText	access:public	signature:( const TiXmlText& base )
 operator =	tinyxpath/tinyxml.h	/^	void operator=( const TiXmlUnknown& copy )										{ copy.CopyTo( this ); }$/;"	f	class:TiXmlUnknown	access:public	signature:( const TiXmlUnknown& copy )
 operator =	tinyxpath/xpath_expression.h	/^   expression_result & operator = (const expression_result & er_2)$/;"	f	class:TinyXPath::expression_result	access:public	signature:(const expression_result & er_2)
+operator ==	subgen.h	/^inline bool operator== ( const SubGen &other) const$/;"	f	class:SubGen
 operator ==	tinyxpath/tinystr.h	/^inline bool operator == (const TiXmlString & a, const TiXmlString & b)$/;"	f	signature:(const TiXmlString & a, const TiXmlString & b)
 operator ==	tinyxpath/tinystr.h	/^inline bool operator == (const TiXmlString & a, const char* b) { return strcmp(a.c_str(), b) == 0; }$/;"	f	signature:(const TiXmlString & a, const char* b)
 operator ==	tinyxpath/tinystr.h	/^inline bool operator == (const char* a, const TiXmlString & b) { return b == a; }$/;"	f	signature:(const char* a, const TiXmlString & b)
@@ -2265,17 +2255,17 @@ operator ^	bloom_filter.hpp	/^bloom_filter operator ^ (const bloom_filter& a, co
 operator ^=	bloom_filter.hpp	/^   bloom_filter& operator ^= (const bloom_filter& filter)$/;"	f	class:bloom_filter	access:public	signature:(const bloom_filter& filter)
 operator |	bloom_filter.hpp	/^bloom_filter operator | (const bloom_filter& a, const bloom_filter& b)$/;"	f	signature:(const bloom_filter& a, const bloom_filter& b)
 operator |=	bloom_filter.hpp	/^   bloom_filter& operator |= (const bloom_filter& filter)$/;"	f	class:bloom_filter	access:public	signature:(const bloom_filter& filter)
+ov_key	XmlPsApp.h	/^  OverlayKey ov_key;$/;"	m	class:XmlPsApp
 parent	tinyxpath/tinyxml.h	/^	TiXmlNode*		parent;$/;"	m	class:TiXmlNode	access:protected
 parseXpe	XmlPsApp.cc	/^void SubGen::parseXpe(std::string xpstr, bloom_filter* bl,std::string parent, int &i){$/;"	f	class:SubGen
-parseXpe	subgen.h	/^     void parseXpe(std::string xpe,bloom_filter* b,std::string parent, int& i);$/;"	p	class:SubGen	access:private	signature:(std::string xpe,bloom_filter* b,std::string parent, int& i)
 predicted_element_count_	bloom_filter.hpp	/^   std::size_t             predicted_element_count_;$/;"	m	class:bloom_filter	access:protected
 prev	tinyxpath/tinyxml.h	/^	TiXmlAttribute*	prev;$/;"	m	class:TiXmlAttribute	access:private
 prev	tinyxpath/tinyxml.h	/^	TiXmlNode*		prev;$/;"	m	class:TiXmlNode	access:protected
 ptr_2_and_flag	tinyxpath/node_set.cc	/^class ptr_2_and_flag $/;"	c	namespace:TinyXPath	file:
 pubList	XmlPsAppMessageObserver.h	/^        std::map<int, Publication> pubList;$/;"	m	class:XmlPsAppMessageObserver
+pubRate	XmlPsApp.h	/^  double pubRate;$/;"	m	class:XmlPsApp
 quit	tinyxpath/tinystr.h	/^	void quit()$/;"	f	class:TiXmlString	access:private	signature:()
 random_line	XmlPsApp.cc	/^std::string SubGen::random_line(std::string filepath)$/;"	f	class:SubGen
-random_line	subgen.h	/^     std::string random_line( std::string filepath );$/;"	p	class:SubGen	access:private	signature:( std::string filepath )
 random_seed_	bloom_filter.hpp	/^   std::size_t             random_seed_;$/;"	m	class:bloom_filter	access:protected
 received	XmlPsAppMessageObserver.h	/^            uint64_t received;$/;"	m	struct:XmlPsAppMessageObserver::Subscription
 receivedAt	XmlPsAppMessageObserver.h	/^        std::map<NodeMessagePair, simtime_t> receivedAt;$/;"	m	class:XmlPsAppMessageObserver
@@ -2293,8 +2283,9 @@ rnp_next	tinyxpath/xpath_stack.cc	/^   result_and_next * rnp_next;$/;"	m	class:T
 row	tinyxpath/tinyxml.h	/^	int row;	\/\/ 0 based.$/;"	m	struct:TiXmlCursor	access:public
 salt_	bloom_filter.hpp	/^   std::vector<bloom_type> salt_;$/;"	m	class:bloom_filter	access:protected
 salt_count_	bloom_filter.hpp	/^   std::size_t             salt_count_;$/;"	m	class:bloom_filter	access:protected
-sendAt	XmlPsAppMessageObserver.h	/^        std::map<NodeKeyPair, simtime_t> sendAt;$/;"	m	class:XmlPsAppMessageObserver
+sendAt	XmlPsAppMessageObserver.h	/^        std::map<NodeMessagePair, simtime_t> sendAt;$/;"	m	class:XmlPsAppMessageObserver
 sendDataToGroup	XmlPsApp.cc	/^void XmlPsApp::sendDataToGroup(OverlayKey ovkey,std::string data){$/;"	f	class:XmlPsApp
+sendMessages	XmlPsApp.h	/^	bool sendMessages;$/;"	m	class:XmlPsApp
 sent	XmlPsAppMessageObserver.h	/^            uint64_t sent;$/;"	m	struct:XmlPsAppMessageObserver::Publication
 sentMessage	XmlPsAppMessageObserver.cc	/^void XmlPsAppMessageObserver::sentMessage(XmlPsAppTracedMessage* msg) {$/;"	f	class:XmlPsAppMessageObserver
 sentinel	tinyxpath/tinyxml.h	/^	TiXmlAttribute sentinel;$/;"	m	class:TiXmlAttributeSet	access:private
@@ -2304,6 +2295,7 @@ size	XmlPsAppMessageObserver.h	/^            uint32_t size;$/;"	m	struct:XmlPsAp
 size	XmlPsAppMessageObserver.h	/^            uint32_t size;$/;"	m	struct:XmlPsAppMessageObserver::Subscription
 size	bloom_filter.hpp	/^   inline virtual std::size_t size() const$/;"	f	class:bloom_filter	access:public	signature:() const
 size	bloom_filter.hpp	/^   inline virtual std::size_t size() const$/;"	f	class:compressible_bloom_filter	access:public	signature:() const
+size	subgen.h	/^	uint32_t size;$/;"	m	class:SubGen
 size	tinyxpath/tinystr.h	/^		size_type size, capacity;$/;"	m	struct:TiXmlString::Rep	access:public
 size	tinyxpath/tinystr.h	/^	size_type size () const { return rep_->size; }$/;"	f	class:TiXmlString	access:public	signature:() const
 size_list	bloom_filter.hpp	/^   std::vector<std::size_t> size_list;$/;"	m	class:compressible_bloom_filter	access:private
@@ -2315,9 +2307,11 @@ str	tinyxpath/tinystr.h	/^		char str[1];$/;"	m	struct:TiXmlString::Rep	access:pu
 str	tinyxpath/tinyxml.h	/^		const char*     str;$/;"	m	struct:TiXmlBase::Entity	access:public
 strLength	tinyxpath/tinyxml.h	/^		unsigned int	strLength;$/;"	m	struct:TiXmlBase::Entity	access:public
 subList	XmlPsAppMessageObserver.h	/^        std::map<int, Subscription> subList;$/;"	m	class:XmlPsAppMessageObserver
-subRate	XmlPsApp.h	/^	double subRate;$/;"	m	class:XmlPsApp	access:public
+subRate	XmlPsApp.h	/^	double subRate;$/;"	m	class:XmlPsApp
+subSize	XmlPsAppMessageObserver.h	/^        uint32_t subSize;$/;"	m	struct:XmlPsAppMessageObserver::MsgInfo
 subscribe	XmlPsApp.cc	/^void XmlPsApp::subscribe(OverlayKey ovkey){$/;"	f	class:XmlPsApp
-subscribeList	XmlPsApp.h	/^	std::list<bloom_filter> subscribeList;$/;"	m	class:XmlPsApp	access:private
+subscribeList	XmlPsApp.h	/^	std::vector<SubGen> subscribeList;$/;"	m	class:XmlPsApp
+subscriber	XmlPsAppMessageObserver.h	/^        std::set<int> subscriber;$/;"	m	struct:XmlPsAppMessageObserver::MsgInfo
 swap	tinyxpath/tinystr.h	/^	void swap (TiXmlString& other)$/;"	f	class:TiXmlString	access:public	signature:(TiXmlString& other)
 syntax_error	tinyxpath/xpath_syntax.h	/^   syntax_error (const char * cp_mess = NULL)$/;"	f	class:TinyXPath::syntax_error	access:public	signature:(const char * cp_mess = NULL)
 syntax_error	tinyxpath/xpath_syntax.h	/^class syntax_error$/;"	c	namespace:TinyXPath
@@ -2326,6 +2320,7 @@ table	bloom_filter.hpp	/^   const cell_type* table() const { return bit_table_; 
 table_size_	bloom_filter.hpp	/^   std::size_t             table_size_;$/;"	m	class:bloom_filter	access:protected
 tabsize	tinyxpath/tinyxml.h	/^	int tabsize;$/;"	m	class:TiXmlDocument	access:private
 tabsize	tinyxpath/tinyxmlparser.cc	/^	int				tabsize;$/;"	m	class:TiXmlParsingData	file:	access:private
+timer	XmlPsApp.h	/^	cMessage* timer;$/;"	m	class:XmlPsApp
 tlp_list	tinyxpath/xpath_stream.h	/^   token_syntax_decoder * tlp_list;$/;"	m	class:TinyXPath::xpath_stream	access:protected
 token_list	tinyxpath/tokenlist.h	/^   token_list () $/;"	f	class:TinyXPath::token_list	access:public	signature:()
 token_list	tinyxpath/tokenlist.h	/^class token_list $/;"	c	namespace:TinyXPath
@@ -2343,7 +2338,7 @@ u_nb_node	tinyxpath/node_set.h	/^   unsigned u_nb_node;$/;"	m	class:TinyXPath::n
 u_nb_recurs	tinyxpath/xpath_syntax.h	/^   unsigned u_nb_recurs;$/;"	m	class:TinyXPath::token_syntax_decoder	access:protected
 u_remain	tinyxpath/byte_stream.h	/^   unsigned u_remain ()$/;"	f	class:TinyXPath::byte_stream	access:public	signature:()
 u_size	tinyxpath/xpath_stack.h	/^   unsigned u_size;$/;"	m	class:TinyXPath::xpath_stack	access:protected
-unsubRate	XmlPsApp.h	/^	double unsubRate;$/;"	m	class:XmlPsApp	access:public
+unsubRate	XmlPsApp.h	/^	double unsubRate;$/;"	m	class:XmlPsApp
 useMicrosoftBOM	tinyxpath/tinyxml.h	/^	bool useMicrosoftBOM;		\/\/ the UTF-8 BOM were found when read. Note this, and try to write.$/;"	m	class:TiXmlDocument	access:private
 userData	tinyxpath/tinyxml.h	/^	void*			userData;$/;"	m	class:TiXmlBase	access:protected
 utf8ByteTable	tinyxpath/tinyxml.h	/^	static const int utf8ByteTable[256];$/;"	m	class:TiXmlBase	access:public
@@ -2543,6 +2538,7 @@ vp_node	tinyxpath/node_set.cc	/^   const void * vp_node;$/;"	m	class:TinyXPath::
 vpp_node_set	tinyxpath/node_set.h	/^	const void ** vpp_node_set;$/;"	m	class:TinyXPath::node_set	access:protected
 xml2bloom	XmlPsApp.cc	/^OverlayKey XmlPsApp::xml2bloom(std::string xmlfilename){$/;"	f	class:XmlPsApp
 xmlGen	XmlPsApp.cc	/^std::string XmlPsApp::xmlGen()$/;"	f	class:XmlPsApp
+xmlpsapp_observer	XmlPsApp.h	/^	XmlPsAppMessageObserver* xmlpsapp_observer;$/;"	m	class:XmlPsApp
 xpath_abbreviated_absolute_location_path	tinyxpath/lex_util.h	/^   xpath_abbreviated_absolute_location_path = 10,$/;"	e	enum:TinyXPath::xpath_construct
 xpath_abbreviated_axis_specifier	tinyxpath/lex_util.h	/^   xpath_abbreviated_axis_specifier = 13,$/;"	e	enum:TinyXPath::xpath_construct
 xpath_abbrieviated_step	tinyxpath/lex_util.h	/^   xpath_abbrieviated_step = 12,$/;"	e	enum:TinyXPath::xpath_construct
@@ -2697,7 +2693,7 @@ xpath_xml_prefix	tinyxpath/lex_util.h	/^   xpath_xml_prefix = 207,$/;"	e	enum:Ti
 xpath_xml_q_name	tinyxpath/lex_util.h	/^   xpath_xml_q_name = 206,$/;"	e	enum:TinyXPath::xpath_construct
 xpath_xml_q_name_colon	tinyxpath/lex_util.h	/^   xpath_xml_q_name_colon,$/;"	e	enum:TinyXPath::xpath_sub
 xpath_xml_q_name_simple	tinyxpath/lex_util.h	/^   xpath_xml_q_name_simple,$/;"	e	enum:TinyXPath::xpath_sub
-xpe	subgen.h	/^     std::string xpe;$/;"	m	class:SubGen	access:private
+xpe	subgen.h	/^	std::string xpe;$/;"	m	class:SubGen
 xs_stack	tinyxpath/xpath_processor.h	/^   xpath_stack xs_stack;$/;"	m	class:TinyXPath::xpath_processor	access:protected
 xsp_stream	tinyxpath/xpath_stream.cc	/^	xpath_stream * xsp_stream;$/;"	m	class:TinyXPath::token_redef	file:	access:protected
 ~TiXmlAttributeSet	tinyxpath/tinyxml.cc	/^TiXmlAttributeSet::~TiXmlAttributeSet()$/;"	f	class:TiXmlAttributeSet	signature:()

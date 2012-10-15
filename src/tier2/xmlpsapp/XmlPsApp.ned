@@ -38,8 +38,11 @@ simple XmlPsApp extends BaseApp
         bool sendMessages = default(true);
         int maxSubscription;
         double subRate;
+        double pubRate; 
         double unsubRate;
         bool expandJoin;
+        int bloom_l;
+        int bloom_k;
 }
 
 module XmlPsAppModule like ITier

@@ -8,11 +8,20 @@ class SubGen {
 public:
 	SubGen();
 	SubGen(bloom_filter& filter);
+  SubGen(int l,int k, OverlayKey mykey);
 	//TODO SubGen(string xpe)
 	OverlayKey getBloom() const {return bloom;}
-	std::string getXpe(){return xpe;}
+	std::string getXpe() const {return xpe;}
 	uint32_t  getSize(){return size;}
-	static std::string random_line( std::string filepath );
+inline bool operator== ( const SubGen &other) const
+{
+      return (this->getBloom() == other.getBloom() && this->getXpe() == other.getXpe());
+}
+bool operator!= ( const SubGen &other) const
+{
+      return !(*this == other);
+}
+static std::string random_line( std::string filepath );
 private:
 	//unsigned char bloom[];
 	OverlayKey bloom;
@@ -21,4 +30,7 @@ private:
 
 	uint32_t size;
 };
+
+ 
+
 #endif

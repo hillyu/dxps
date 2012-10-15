@@ -35,12 +35,14 @@ public:
 	int maxSubscription;
 	double subRate;
 	double unsubRate;
+  double pubRate;
 	bool expandJoin;
 	XmlPsApp();
 	~XmlPsApp();
 	void initializeApp(int stage);
 	cMessage* timer;
 	int groupNum;
+  OverlayKey ov_key;
 protected:
 
 	//        void joinGroup(const unsigned char *buffer, uint32_t size);
@@ -61,7 +63,6 @@ private:
 	std::vector<SubGen> subscribeList;
 	//std::vector<bloom_filter *> subscribeList;
 	bool joinGroups;
-
 	bool sendMessages;
 	int msglen;
 	bool evaluateXpe(std::string xmlfilename);
@@ -69,6 +70,8 @@ private:
 	void recursivex2b(TiXmlElement* parent, bloom_filter & bloomfilter);
 	void subscribe(OverlayKey ovkey);
 	void recursiveJoin(OverlayKey ovkey, int i);
+  int bloom_l;
+  int bloom_k;
 
 };
 std::ostream& operator<< (std::ostream& os, SubGen const & subg);

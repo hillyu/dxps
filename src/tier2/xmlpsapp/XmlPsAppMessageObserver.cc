@@ -42,6 +42,7 @@ XmlPsAppMessageObserver::~XmlPsAppMessageObserver() {
 void XmlPsAppMessageObserver::initialize() {
     WATCH_MAP(subList);
     WATCH_MAP(pubList);
+    WATCH_MAP(msgList);
     WATCH_MAP(joinedAt);
     WATCH_MAP(sendAt);
     WATCH_MAP(receivedAt);
@@ -144,7 +145,9 @@ void XmlPsAppMessageObserver::sentMessage(XmlPsAppTracedMessage* msg) {
     int moduleId=(msg->getSenderId());
      pubList[moduleId].size += 1;
      pubList[moduleId].sent +=1;
-    sendAt[NodeKeyPair(moduleId, msg->getGroupId())] = OPP::simTime();
+     NodeMessagePair nmp=NodeMessagePair(msg->getMcastId(),moduleId);
+    sendAt[nmp] = OPP::simTime();
+    msgList[nmp].key=msg->getGroupId();
 //    pubList[msg->getSenderModuleId()].size += 1;//TODO: Create a publist in .h
     
 }
@@ -157,14 +160,16 @@ void XmlPsAppMessageObserver::receivedMessage(XmlPsAppTracedMessage* msg) {
 
     std::map<int, Subscription>::iterator iSubList;
     iSubList = subList.find(msg->getReceiverId());
-            NodeMessagePair nmp = NodeMessagePair(msg->getReceiverId(), msg->getMcastId());
+            NodeMessagePair nmp = NodeMessagePair( msg->getMcastId(),msg->getReceiverId());
             if (receivedAt.find(nmp) == receivedAt.end()) {
                 iSubList->second.received += 1;
                 if (msg->getFalse_positive()) {
                 	iSubList->second.false_positive += 1;
 				}
 
-
+      NodeMessagePair nmp2=NodeMessagePair( msg->getMcastId(),msg->getSenderId());
+      msgList[nmp2].subSize+=1;
+      msgList[nmp2].subscriber.insert(msg->getReceiverId());
                 receivedAt[nmp] = msg->getTimestamp();
             }
     }
@@ -194,10 +199,20 @@ std::ostream& operator<< (std::ostream& os, XmlPsAppMessageObserver::Subscriptio
 std::ostream& operator<< (std::ostream& os, XmlPsAppMessageObserver::Publication const & pub) {
     return os << "Num(Nodes): " << pub.size << "; Messages Sent: " << pub.sent;
 }
-//this has been defined in MessageObserver Module so do not overwrite it unless you changed the type of nodeGroupPair.
-//std::ostream& operator<< (std::ostream& os, XmlPsAppMessageObserver::NodeSubPair const & ngp) {
-//    cModule* module = OPP::cSimulation::getActiveSimulation()->getModule(ngp.first);
-//    return os << "(" << (module != NULL ? module->getFullPath() : "Deleted node")
-//        << ", " << ngp.second << ")";
-//}
+std::ostream& operator<< (std::ostream& os, XmlPsAppMessageObserver::MsgInfo const & msgInfo) {
+    os << "Msg key: "<<msgInfo.key<<" Num(Subscribers): " << msgInfo.subSize << "; Subscriber List: (" ;
+        std::set<int>::iterator subiit=msgInfo.subscriber.begin();
+       for (size_t i = 0; i < msgInfo.subscriber.size(); ++i)
+       {
+    //cModule* module = OPP::cSimulation::getActiveSimulation()->getModule(*subiit);
+          os  << " "<< *subiit  ;
+         subiit++;
+       } 
+       os << ")";
+    return os;
+}
+std::ostream& operator<< (std::ostream& os, XmlPsAppMessageObserver::NodeMessagePair const & nmp) {
+    cModule* module = OPP::cSimulation::getActiveSimulation()->getModule(nmp.second);
+    return os << "(" << (module != NULL ? module->getFullPath() : "Deleted node") << ", Message ID: " << nmp.first << ")";
+}
 
