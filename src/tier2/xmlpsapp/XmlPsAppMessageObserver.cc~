@@ -194,20 +194,21 @@ void XmlPsAppMessageObserver::nodeDead(int moduleId) {
 }
 
 std::ostream& operator<< (std::ostream& os, XmlPsAppMessageObserver::Subscription const & sub) {
-    return os << "Num(Nodes): " << sub.size << "; Messages Received: " << sub.received << ", Fase Possitive rate: "<<(double)sub.false_positive;
+    return os << "Num(Nodes): " << sub.size << "; Messages Received: " << sub.received <<", Fase Possitive: "<<sub.false_positive<< ", Fase Possitive rate: "<<(double)sub.false_positive/(double)sub.received;
 }
 std::ostream& operator<< (std::ostream& os, XmlPsAppMessageObserver::Publication const & pub) {
     return os << "Num(Nodes): " << pub.size << "; Messages Sent: " << pub.sent;
 }
 std::ostream& operator<< (std::ostream& os, XmlPsAppMessageObserver::MsgInfo const & msgInfo) {
-    os << "Msg key: "<<msgInfo.key<<" Num(Subscribers): " << msgInfo.subSize << "; Subscriber List: " ;
+    os << "Msg key: "<<msgInfo.key<<" Num(Subscribers): " << msgInfo.subSize << "; Subscriber List: (" ;
         std::set<int>::iterator subiit=msgInfo.subscriber.begin();
        for (size_t i = 0; i < msgInfo.subscriber.size(); ++i)
        {
     //cModule* module = OPP::cSimulation::getActiveSimulation()->getModule(*subiit);
-          os  << *subiit << "\n;" ;
+          os  << " "<< *subiit  ;
          subiit++;
        } 
+       os << ")";
     return os;
 }
 std::ostream& operator<< (std::ostream& os, XmlPsAppMessageObserver::NodeMessagePair const & nmp) {

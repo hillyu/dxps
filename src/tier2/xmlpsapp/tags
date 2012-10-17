@@ -4,6 +4,14 @@
 !_TAG_PROGRAM_NAME	Exuberant Ctags	//
 !_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
 !_TAG_PROGRAM_VERSION	5.7	//
+ACLOCAL	tinyxpath/Makefile	/^ACLOCAL = aclocal-1.11$/;"	m
+ACLOCAL_M4	tinyxpath/Makefile	/^ACLOCAL_M4 = $(top_srcdir)\/aclocal.m4$/;"	m
+AMTAR	tinyxpath/Makefile	/^AMTAR = tar$/;"	m
+AM_CXXFLAGS	tinyxpath/Makefile	/^AM_CXXFLAGS = -Wall$/;"	m
+AUTOCONF	tinyxpath/Makefile	/^AUTOCONF = autoconf$/;"	m
+AUTOHEADER	tinyxpath/Makefile	/^AUTOHEADER = autoheader$/;"	m
+AUTOMAKE	tinyxpath/Makefile	/^AUTOMAKE = automake-1.11$/;"	m
+AWK	tinyxpath/Makefile	/^AWK = gawk$/;"	m
 Accept	tinyxpath/tinyxml.cc	/^bool TiXmlComment::Accept( TiXmlVisitor* visitor ) const$/;"	f	class:TiXmlComment	signature:( TiXmlVisitor* visitor ) const
 Accept	tinyxpath/tinyxml.cc	/^bool TiXmlDeclaration::Accept( TiXmlVisitor* visitor ) const$/;"	f	class:TiXmlDeclaration	signature:( TiXmlVisitor* visitor ) const
 Accept	tinyxpath/tinyxml.cc	/^bool TiXmlDocument::Accept( TiXmlVisitor* visitor ) const$/;"	f	class:TiXmlDocument	signature:( TiXmlVisitor* visitor ) const
@@ -33,9 +41,24 @@ Attribute	tinyxpath/tinyxml.h	/^	const std::string* Attribute( const std::string
 Attribute	tinyxpath/tinyxml.h	/^	const std::string* Attribute( const std::string& name, int* i ) const;$/;"	p	class:TiXmlElement	access:public	signature:( const std::string& name, int* i ) const
 Blank	tinyxpath/tinyxml.h	/^	bool Blank() const;	\/\/ returns true if all white space and new lines$/;"	p	class:TiXmlText	access:protected	signature:() const
 Blank	tinyxpath/tinyxmlparser.cc	/^bool TiXmlText::Blank() const$/;"	f	class:TiXmlText	signature:() const
+CC	tinyxpath/Makefile	/^CC = gcc$/;"	m
+CCDEPMODE	tinyxpath/Makefile	/^CCDEPMODE = depmode=none$/;"	m
 CDATA	tinyxpath/tinyxml.h	/^	bool CDATA() const				{ return cdata; }$/;"	f	class:TiXmlText	access:public	signature:() const
+CFLAGS	tinyxpath/Makefile	/^CFLAGS = -g -O2$/;"	m
 COMMENT	tinyxpath/tinyxml.h	/^		COMMENT,$/;"	e	enum:TiXmlNode::NodeType
+CONFIG_CLEAN_FILES	tinyxpath/Makefile	/^CONFIG_CLEAN_FILES =$/;"	m
+CONFIG_CLEAN_VPATH_FILES	tinyxpath/Makefile	/^CONFIG_CLEAN_VPATH_FILES =$/;"	m
+CPP	tinyxpath/Makefile	/^CPP = gcc -E$/;"	m
+CPPFLAGS	tinyxpath/Makefile	/^CPPFLAGS = $/;"	m
 CStr	tinyxpath/tinyxml.h	/^	const char* CStr()								{ return buffer.c_str(); }$/;"	f	class:TiXmlPrinter	access:public	signature:()
+CTAGS	tinyxpath/Makefile	/^CTAGS = ctags$/;"	m
+CXX	tinyxpath/Makefile	/^CXX = g++$/;"	m
+CXXCOMPILE	tinyxpath/Makefile	/^CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \\$/;"	m
+CXXDEPMODE	tinyxpath/Makefile	/^CXXDEPMODE = depmode=none$/;"	m
+CXXFLAGS	tinyxpath/Makefile	/^CXXFLAGS = -g -O2$/;"	m
+CXXLD	tinyxpath/Makefile	/^CXXLD = $(CXX)$/;"	m
+CXXLINK	tinyxpath/Makefile	/^CXXLINK = $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) $(AM_LDFLAGS) $(LDFLAGS) \\$/;"	m
+CYGPATH_W	tinyxpath/Makefile	/^CYGPATH_W = echo$/;"	m
 Child	tinyxpath/tinyxml.cc	/^TiXmlHandle TiXmlHandle::Child( const char* value, int count ) const$/;"	f	class:TiXmlHandle	signature:( const char* value, int count ) const
 Child	tinyxpath/tinyxml.cc	/^TiXmlHandle TiXmlHandle::Child( int count ) const$/;"	f	class:TiXmlHandle	signature:( int count ) const
 Child	tinyxpath/tinyxml.h	/^	TiXmlHandle Child( const char* value, int index ) const;$/;"	p	class:TiXmlHandle	access:public	signature:( const char* value, int index ) const
@@ -85,13 +108,26 @@ CopyTo	tinyxpath/tinyxml.h	/^	void CopyTo( TiXmlUnknown* target ) const;$/;"	p	c
 Cursor	tinyxpath/tinyxmlparser.cc	/^	const TiXmlCursor& Cursor()	{ return cursor; }$/;"	f	class:TiXmlParsingData	access:public	signature:()
 DEBUG	tinyxpath/tinyxml.h	43;"	d
 DECLARATION	tinyxpath/tinyxml.h	/^		DECLARATION,$/;"	e	enum:TiXmlNode::NodeType
+DEFAULT_INCLUDES	tinyxpath/Makefile	/^DEFAULT_INCLUDES = -I.$/;"	m
+DEFS	tinyxpath/Makefile	/^DEFS = -DPACKAGE_NAME=\\"\\" -DPACKAGE_TARNAME=\\"\\" -DPACKAGE_VERSION=\\"\\" -DPACKAGE_STRING=\\"\\" -DPACKAGE_BUGREPORT=\\"\\" -DPACKAGE=\\"tinyxpath\\" -DVERSION=\\"1.1\\" -DHAVE_LIBM=1 -DHAVE_DIRENT_H=1 -DSTDC_HEADERS=1 -DHAVE_SYS_WAIT_H=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_FCNTL_H=1 -DHAVE_SYS_TIME_H=1 -DHAVE_UNISTD_H=1 -DTIME_WITH_SYS_TIME=1 -DHAVE_SOCKET=1$/;"	m
+DEPDIR	tinyxpath/Makefile	/^DEPDIR = .deps$/;"	m
+DISTFILES	tinyxpath/Makefile	/^DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)$/;"	m
+DIST_ARCHIVES	tinyxpath/Makefile	/^DIST_ARCHIVES = $(distdir).tar.gz$/;"	m
+DIST_COMMON	tinyxpath/Makefile	/^DIST_COMMON = README $(am__configure_deps) $(srcdir)\/Makefile.am \\$/;"	m
+DIST_SOURCES	tinyxpath/Makefile	/^DIST_SOURCES = $(tinyxpath_SOURCES)$/;"	m
 DOCUMENT	tinyxpath/tinyxml.h	/^		DOCUMENT,$/;"	e	enum:TiXmlNode::NodeType
 DUMP_ACTION	tinyxpath/xpath_processor.cc	41;"	d	file:
 DoIndent	tinyxpath/tinyxml.h	/^	void DoIndent()	{$/;"	f	class:TiXmlPrinter	access:private	signature:()
 DoLineBreak	tinyxpath/tinyxml.h	/^	void DoLineBreak() {$/;"	f	class:TiXmlPrinter	access:private	signature:()
 DoubleValue	tinyxpath/tinyxml.cc	/^double  TiXmlAttribute::DoubleValue() const$/;"	f	class:TiXmlAttribute	signature:() const
 DoubleValue	tinyxpath/tinyxml.h	/^	double			DoubleValue() const;								\/\/\/< Return the value of this attribute, converted to a double.$/;"	p	class:TiXmlAttribute	access:public	signature:() const
+ECHO_C	tinyxpath/Makefile	/^ECHO_C = $/;"	m
+ECHO_N	tinyxpath/Makefile	/^ECHO_N = -n$/;"	m
+ECHO_T	tinyxpath/Makefile	/^ECHO_T = $/;"	m
+EGREP	tinyxpath/Makefile	/^EGREP = \/bin\/grep -E$/;"	m
 ELEMENT	tinyxpath/tinyxml.h	/^		ELEMENT,$/;"	e	enum:TiXmlNode::NodeType
+ETAGS	tinyxpath/Makefile	/^ETAGS = etags$/;"	m
+EXEEXT	tinyxpath/Makefile	/^EXEEXT = $/;"	m
 Element	tinyxpath/tinyxml.h	/^	TiXmlElement* Element() const	{ return ToElement(); }$/;"	f	class:TiXmlHandle	access:public	signature:() const
 EncodeString	tinyxpath/tinyxml.cc	/^void TiXmlBase::EncodeString( const TIXML_STRING& str, TIXML_STRING* outString )$/;"	f	class:TiXmlBase	signature:( const TIXML_STRING& str, TIXML_STRING* outString )
 EncodeString	tinyxpath/tinyxml.h	/^	static void EncodeString( const TIXML_STRING& str, TIXML_STRING* out );$/;"	p	class:TiXmlBase	access:public	signature:( const TIXML_STRING& str, TIXML_STRING* out )
@@ -138,6 +174,8 @@ FirstChildElement	tinyxpath/tinyxml.h	/^	const TiXmlElement* FirstChildElement( 
 FirstChildElement	tinyxpath/tinyxml.h	/^	const TiXmlElement* FirstChildElement( const std::string& _value ) const	{	return FirstChildElement (_value.c_str ());	}	\/\/\/< STL std::string form.$/;"	f	class:TiXmlNode	access:public	signature:( const std::string& _value ) const
 FirstChildElement	tinyxpath/tinyxml.h	/^	const TiXmlElement* FirstChildElement()	const;$/;"	p	class:TiXmlNode	access:public	signature:() const
 Fp_out_html	tinyxpath/main.cc	/^static FILE * Fp_out_html;$/;"	v	file:
+GREP	tinyxpath/Makefile	/^GREP = \/bin\/grep$/;"	m
+GZIP_ENV	tinyxpath/Makefile	/^GZIP_ENV = --best$/;"	m
 GetChar	tinyxpath/tinyxml.h	/^	inline static const char* GetChar( const char* p, char* _value, int* length, TiXmlEncoding encoding )$/;"	f	class:TiXmlBase	access:protected	signature:( const char* p, char* _value, int* length, TiXmlEncoding encoding )
 GetDocument	tinyxpath/tinyxml.cc	/^const TiXmlDocument* TiXmlNode::GetDocument() const$/;"	f	class:TiXmlNode	signature:() const
 GetDocument	tinyxpath/tinyxml.h	/^	TiXmlDocument* GetDocument() {$/;"	f	class:TiXmlNode	access:public	signature:()
@@ -148,8 +186,15 @@ GetText	tinyxpath/tinyxml.cc	/^const char* TiXmlElement::GetText() const$/;"	f	c
 GetText	tinyxpath/tinyxml.h	/^	const char* GetText() const;$/;"	p	class:TiXmlElement	access:public	signature:() const
 GetUserData	tinyxpath/tinyxml.h	/^	const void* GetUserData() const 		{ return userData; }	\/\/\/< Get a pointer to arbitrary user data.$/;"	f	class:TiXmlBase	access:public	signature:() const
 GetUserData	tinyxpath/tinyxml.h	/^	void* GetUserData()						{ return userData; }	\/\/\/< Get a pointer to arbitrary user data.$/;"	f	class:TiXmlBase	access:public	signature:()
+INCLUDES	tinyxpath/Makefile	/^INCLUDES = $(all_includes) $/;"	m
 INCLUDE_BLOOM_FILTER_HPP	bloom_filter.hpp	21;"	d
 INCLUDE_SUBGEN_H	subgen.h	2;"	d
+INSTALL	tinyxpath/Makefile	/^INSTALL = \/usr\/bin\/install -c$/;"	m
+INSTALL_DATA	tinyxpath/Makefile	/^INSTALL_DATA = ${INSTALL} -m 644$/;"	m
+INSTALL_HEADER	tinyxpath/Makefile	/^INSTALL_HEADER = $(INSTALL_DATA)$/;"	m
+INSTALL_PROGRAM	tinyxpath/Makefile	/^INSTALL_PROGRAM = ${INSTALL}$/;"	m
+INSTALL_SCRIPT	tinyxpath/Makefile	/^INSTALL_SCRIPT = ${INSTALL}$/;"	m
+INSTALL_STRIP_PROGRAM	tinyxpath/Makefile	/^INSTALL_STRIP_PROGRAM = $(install_sh) -c -s$/;"	m
 Identify	tinyxpath/tinyxml.h	/^	TiXmlNode* Identify( const char* start, TiXmlEncoding encoding );$/;"	p	class:TiXmlNode	access:protected	signature:( const char* start, TiXmlEncoding encoding )
 Identify	tinyxpath/tinyxmlparser.cc	/^TiXmlNode* TiXmlNode::Identify( const char* p, TiXmlEncoding encoding )$/;"	f	class:TiXmlNode	signature:( const char* p, TiXmlEncoding encoding )
 Indent	tinyxpath/tinyxml.h	/^	const char* Indent()							{ return indent.c_str(); }$/;"	f	class:TiXmlPrinter	access:public	signature:()
@@ -176,6 +221,11 @@ IterateChildren	tinyxpath/tinyxml.h	/^	TiXmlNode* IterateChildren( const std::st
 IterateChildren	tinyxpath/tinyxml.h	/^	const TiXmlNode* IterateChildren( const TiXmlNode* previous ) const;$/;"	p	class:TiXmlNode	access:public	signature:( const TiXmlNode* previous ) const
 IterateChildren	tinyxpath/tinyxml.h	/^	const TiXmlNode* IterateChildren( const char * value, const TiXmlNode* previous ) const;$/;"	p	class:TiXmlNode	access:public	signature:( const char * value, const TiXmlNode* previous ) const
 IterateChildren	tinyxpath/tinyxml.h	/^	const TiXmlNode* IterateChildren( const std::string& _value, const TiXmlNode* previous ) const	{	return IterateChildren (_value.c_str (), previous);	}	\/\/\/< STL std::string form.$/;"	f	class:TiXmlNode	access:public	signature:( const std::string& _value, const TiXmlNode* previous ) const
+LDFLAGS	tinyxpath/Makefile	/^LDFLAGS = $/;"	m
+LIBOBJS	tinyxpath/Makefile	/^LIBOBJS = $/;"	m
+LIBS	tinyxpath/Makefile	/^LIBS = -lm $/;"	m
+LN_S	tinyxpath/Makefile	/^LN_S = ln -s$/;"	m
+LTLIBOBJS	tinyxpath/Makefile	/^LTLIBOBJS = $/;"	m
 Last	tinyxpath/tinyxml.h	/^	TiXmlAttribute* Last()					{ return ( sentinel.prev == &sentinel ) ? 0 : sentinel.prev; }$/;"	f	class:TiXmlAttributeSet	access:public	signature:()
 Last	tinyxpath/tinyxml.h	/^	const TiXmlAttribute* Last() const		{ return ( sentinel.prev == &sentinel ) ? 0 : sentinel.prev; }$/;"	f	class:TiXmlAttributeSet	access:public	signature:() const
 LastAttribute	tinyxpath/tinyxml.h	/^	TiXmlAttribute* LastAttribute()					{ return attributeSet.Last(); }$/;"	f	class:TiXmlElement	access:public	signature:()
@@ -197,9 +247,13 @@ LoadFile	tinyxpath/tinyxml.h	/^	bool LoadFile( FILE*, TiXmlEncoding encoding = T
 LoadFile	tinyxpath/tinyxml.h	/^	bool LoadFile( TiXmlEncoding encoding = TIXML_DEFAULT_ENCODING );$/;"	p	class:TiXmlDocument	access:public	signature:( TiXmlEncoding encoding = TIXML_DEFAULT_ENCODING )
 LoadFile	tinyxpath/tinyxml.h	/^	bool LoadFile( const char * filename, TiXmlEncoding encoding = TIXML_DEFAULT_ENCODING );$/;"	p	class:TiXmlDocument	access:public	signature:( const char * filename, TiXmlEncoding encoding = TIXML_DEFAULT_ENCODING )
 LoadFile	tinyxpath/tinyxml.h	/^	bool LoadFile( const std::string& filename, TiXmlEncoding encoding = TIXML_DEFAULT_ENCODING )			\/\/\/< STL std::string version.$/;"	f	class:TiXmlDocument	access:public	signature:( const std::string& filename, TiXmlEncoding encoding = TIXML_DEFAULT_ENCODING )
+MAKEINFO	tinyxpath/Makefile	/^MAKEINFO = makeinfo$/;"	m
 MAX_ENTITY_LENGTH	tinyxpath/tinyxml.h	/^		MAX_ENTITY_LENGTH = 6$/;"	e	enum:TiXmlBase::__anon4
+MKDIR_P	tinyxpath/Makefile	/^MKDIR_P = \/bin\/mkdir -p$/;"	m
 MsgInfo	XmlPsAppMessageObserver.h	/^        MsgInfo() : key(OverlayKey::UNSPECIFIED_KEY),subSize(0),subscriber() {}$/;"	f	struct:XmlPsAppMessageObserver::MsgInfo
 MsgInfo	XmlPsAppMessageObserver.h	/^        struct MsgInfo {$/;"	s	class:XmlPsAppMessageObserver
+NORMAL_INSTALL	tinyxpath/Makefile	/^NORMAL_INSTALL = :$/;"	m
+NORMAL_UNINSTALL	tinyxpath/Makefile	/^NORMAL_UNINSTALL = :$/;"	m
 NUM_ENTITY	tinyxpath/tinyxml.h	/^		NUM_ENTITY = 5,$/;"	e	enum:TiXmlBase::__anon4
 Name	tinyxpath/tinyxml.h	/^	const char*		Name()  const		{ return name.c_str(); }		\/\/\/< Return the name of this attribute.$/;"	f	class:TiXmlAttribute	access:public	signature:() const
 NameTStr	tinyxpath/tinyxml.h	/^	const TIXML_STRING& NameTStr() const { return name; }$/;"	f	class:TiXmlAttribute	access:public	signature:() const
@@ -226,6 +280,19 @@ Node	tinyxpath/tinyxml.h	/^	TiXmlNode* Node() const			{ return ToNode(); } $/;"	
 NodeKeyPair	XmlPsAppMessageObserver.h	/^        typedef std::pair<int, OverlayKey> NodeKeyPair;$/;"	t	class:XmlPsAppMessageObserver
 NodeMessagePair	XmlPsAppMessageObserver.h	/^        typedef std::pair<long, int>NodeMessagePair;$/;"	t	class:XmlPsAppMessageObserver
 NodeType	tinyxpath/tinyxml.h	/^	enum NodeType$/;"	g	class:TiXmlNode	access:public
+OBJEXT	tinyxpath/Makefile	/^OBJEXT = o$/;"	m
+PACKAGE	tinyxpath/Makefile	/^PACKAGE = tinyxpath$/;"	m
+PACKAGE_BUGREPORT	tinyxpath/Makefile	/^PACKAGE_BUGREPORT = $/;"	m
+PACKAGE_NAME	tinyxpath/Makefile	/^PACKAGE_NAME = $/;"	m
+PACKAGE_STRING	tinyxpath/Makefile	/^PACKAGE_STRING = $/;"	m
+PACKAGE_TARNAME	tinyxpath/Makefile	/^PACKAGE_TARNAME = $/;"	m
+PACKAGE_VERSION	tinyxpath/Makefile	/^PACKAGE_VERSION = $/;"	m
+PATH_SEPARATOR	tinyxpath/Makefile	/^PATH_SEPARATOR = :$/;"	m
+POST_INSTALL	tinyxpath/Makefile	/^POST_INSTALL = :$/;"	m
+POST_UNINSTALL	tinyxpath/Makefile	/^POST_UNINSTALL = :$/;"	m
+PRE_INSTALL	tinyxpath/Makefile	/^PRE_INSTALL = :$/;"	m
+PRE_UNINSTALL	tinyxpath/Makefile	/^PRE_UNINSTALL = :$/;"	m
+PROGRAMS	tinyxpath/Makefile	/^PROGRAMS = $(bin_PROGRAMS)$/;"	m
 Parent	tinyxpath/tinyxml.h	/^	TiXmlNode* Parent()							{ return parent; }$/;"	f	class:TiXmlNode	access:public	signature:()
 Parent	tinyxpath/tinyxml.h	/^	const TiXmlNode* Parent() const				{ return parent; }$/;"	f	class:TiXmlNode	access:public	signature:() const
 Parse	tinyxpath/tinyxml.h	/^	virtual const char* Parse(	const char* p, $/;"	p	class:TiXmlBase	access:public	signature:( const char* p, TiXmlParsingData* data, TiXmlEncoding encoding )
@@ -287,6 +354,7 @@ QueryIntAttribute	tinyxpath/tinyxml.h	/^	int QueryIntAttribute( const std::strin
 QueryIntValue	tinyxpath/tinyxml.cc	/^int TiXmlAttribute::QueryIntValue( int* ival ) const$/;"	f	class:TiXmlAttribute	signature:( int* ival ) const
 QueryIntValue	tinyxpath/tinyxml.h	/^	int QueryIntValue( int* _value ) const;$/;"	p	class:TiXmlAttribute	access:public	signature:( int* _value ) const
 QueryValueAttribute	tinyxpath/tinyxml.h	/^	template< typename T > int QueryValueAttribute( const std::string& name, T* outValue ) const$/;"	f	class:TiXmlElement	access:public	signature:( const std::string& name, T* outValue ) const
+RANLIB	tinyxpath/Makefile	/^RANLIB = ranlib$/;"	m
 ReadName	tinyxpath/tinyxml.h	/^	static const char* ReadName( const char* p, TIXML_STRING* name, TiXmlEncoding encoding );$/;"	p	class:TiXmlBase	access:protected	signature:( const char* p, TIXML_STRING* name, TiXmlEncoding encoding )
 ReadName	tinyxpath/tinyxmlparser.cc	/^const char* TiXmlBase::ReadName( const char* p, TIXML_STRING * name, TiXmlEncoding encoding )$/;"	f	class:TiXmlBase	signature:( const char* p, TIXML_STRING * name, TiXmlEncoding encoding )
 ReadText	tinyxpath/tinyxml.h	/^	static const char* ReadText(	const char* in,				\/\/ where to start$/;"	p	class:TiXmlBase	access:protected	signature:( const char* in, TIXML_STRING* text, bool ignoreWhiteSpace, const char* endTag, bool ignoreCase, TiXmlEncoding encoding )
@@ -306,6 +374,10 @@ ReplaceChild	tinyxpath/tinyxml.h	/^	TiXmlNode* ReplaceChild( TiXmlNode* replaceT
 RootElement	tinyxpath/tinyxml.h	/^	TiXmlElement* RootElement()					{ return FirstChildElement(); }$/;"	f	class:TiXmlDocument	access:public	signature:()
 RootElement	tinyxpath/tinyxml.h	/^	const TiXmlElement* RootElement() const		{ return FirstChildElement(); }$/;"	f	class:TiXmlDocument	access:public	signature:() const
 Row	tinyxpath/tinyxml.h	/^	int Row() const			{ return location.row + 1; }$/;"	f	class:TiXmlBase	access:public	signature:() const
+SET_MAKE	tinyxpath/Makefile	/^SET_MAKE = $/;"	m
+SHELL	tinyxpath/Makefile	/^SHELL = \/bin\/bash$/;"	m
+SOURCES	tinyxpath/Makefile	/^SOURCES = $(tinyxpath_SOURCES)$/;"	m
+STRIP	tinyxpath/Makefile	/^STRIP = $/;"	m
 S_comment	tinyxpath/xpath_expression.h	/^	   TIXML_STRING S_comment;$/;"	m	class:TinyXPath::expression_result	access:protected
 S_compute_xpath	tinyxpath/xpath_processor.cc	/^TIXML_STRING xpath_processor::S_compute_xpath ()$/;"	f	class:xpath_processor	signature:()
 S_compute_xpath	tinyxpath/xpath_processor.h	/^   TIXML_STRING S_compute_xpath ();$/;"	p	class:TinyXPath::xpath_processor	access:public	signature:()
@@ -389,7 +461,7 @@ StringEqual	tinyxpath/tinyxml.h	/^	static bool StringEqual(	const char* p,$/;"	p
 StringEqual	tinyxpath/tinyxmlparser.cc	/^bool TiXmlBase::StringEqual( const char* p,$/;"	f	class:TiXmlBase	signature:( const char* p, const char* tag, bool ignoreCase, TiXmlEncoding encoding )
 SubGen	XmlPsApp.cc	/^SubGen::SubGen():xpe(""),size(0),bloom(OverlayKey::UNSPECIFIED_KEY){}$/;"	f	class:SubGen
 SubGen	XmlPsApp.cc	/^SubGen::SubGen(bloom_filter& filter){$/;"	f	class:SubGen
-SubGen	XmlPsApp.cc	/^SubGen::SubGen(int l, int k, OverlayKey mykey){$/;"	f	class:SubGen
+SubGen	XmlPsApp.cc	/^SubGen::SubGen(int l, int k, OverlayKey mykey, std::string xpelist){$/;"	f	class:SubGen
 SubGen	subgen.h	/^class SubGen {$/;"	c
 Subscription	XmlPsAppMessageObserver.h	/^            Subscription() : size(0), received(0),false_positive(0) {}$/;"	f	struct:XmlPsAppMessageObserver::Subscription
 Subscription	XmlPsAppMessageObserver.h	/^        struct Subscription {$/;"	s	class:XmlPsAppMessageObserver
@@ -1725,6 +1797,7 @@ ToUnknown	tinyxpath/tinyxml.h	/^	virtual const TiXmlUnknown*     ToUnknown()    
 Type	tinyxpath/tinyxml.h	/^	int Type() const	{ return type; }$/;"	f	class:TiXmlNode	access:public	signature:() const
 UNKNOWN	tinyxpath/tinyxml.h	/^		UNKNOWN,$/;"	e	enum:TiXmlNode::NodeType
 Unknown	tinyxpath/tinyxml.h	/^	TiXmlUnknown* Unknown() const	{ return ToUnknown(); }$/;"	f	class:TiXmlHandle	access:public	signature:() const
+VERSION	tinyxpath/Makefile	/^VERSION = 1.1$/;"	m
 Value	tinyxpath/tinyxml.h	/^	const char *Value() const { return value.c_str (); }$/;"	f	class:TiXmlNode	access:public	signature:() const
 Value	tinyxpath/tinyxml.h	/^	const char*		Value() const		{ return value.c_str(); }		\/\/\/< Return the value of this attribute.$/;"	f	class:TiXmlAttribute	access:public	signature:() const
 ValueStr	tinyxpath/tinyxml.h	/^	const std::string& ValueStr() const	{ return value; }				\/\/\/< Return the value of this attribute.$/;"	f	class:TiXmlAttribute	access:public	signature:() const
@@ -1797,12 +1870,32 @@ __XPATH_PROCESSOR_H	tinyxpath/xpath_processor.h	36;"	d
 __XPATH_STACK_H	tinyxpath/xpath_stack.h	31;"	d
 __XPATH_STATIC_H	tinyxpath/xpath_static.h	31;"	d
 _byte_	tinyxpath/lex_util.h	/^typedef unsigned char _byte_;$/;"	t	namespace:TinyXPath
+abs_builddir	tinyxpath/Makefile	/^abs_builddir = \/home\/hill\/sim\/OverSim-20101103\/src\/tier2\/xmlpsapp\/tinyxpath$/;"	m
+abs_srcdir	tinyxpath/Makefile	/^abs_srcdir = \/home\/hill\/sim\/OverSim-20101103\/src\/tier2\/xmlpsapp\/tinyxpath$/;"	m
+abs_top_builddir	tinyxpath/Makefile	/^abs_top_builddir = \/home\/hill\/sim\/OverSim-20101103\/src\/tier2\/xmlpsapp\/tinyxpath$/;"	m
+abs_top_srcdir	tinyxpath/Makefile	/^abs_top_srcdir = \/home\/hill\/sim\/OverSim-20101103\/src\/tier2\/xmlpsapp\/tinyxpath$/;"	m
+ac_ct_CC	tinyxpath/Makefile	/^ac_ct_CC = gcc$/;"	m
+ac_ct_CXX	tinyxpath/Makefile	/^ac_ct_CXX = g++$/;"	m
 action_item	tinyxpath/action_store.h	/^   action_item (int i_in_1, int i_in_2, int i_in_3, const char * cp_string) :$/;"	f	class:TinyXPath::action_item	access:public	signature:(int i_in_1, int i_in_2, int i_in_3, const char * cp_string)
 action_item	tinyxpath/action_store.h	/^class action_item $/;"	c	namespace:TinyXPath
 action_store	tinyxpath/action_store.cc	/^action_store::action_store ()$/;"	f	class:TinyXPath::action_store	signature:()
 action_store	tinyxpath/action_store.h	/^   action_store  ();$/;"	p	class:TinyXPath::action_store	access:public	signature:()
 action_store	tinyxpath/action_store.h	/^class action_store $/;"	c	namespace:TinyXPath
 aipp_list	tinyxpath/action_store.h	/^   action_item ** aipp_list;$/;"	m	class:TinyXPath::action_store	access:protected
+am__CONFIG_DISTCLEAN_FILES	tinyxpath/Makefile	/^am__CONFIG_DISTCLEAN_FILES = config.status config.cache config.log \\$/;"	m
+am__aclocal_m4_deps	tinyxpath/Makefile	/^am__aclocal_m4_deps = $(top_srcdir)\/configure.in$/;"	m
+am__cd	tinyxpath/Makefile	/^am__cd = CDPATH="$${ZSH_VERSION+.}$(PATH_SEPARATOR)" && cd$/;"	m
+am__configure_deps	tinyxpath/Makefile	/^am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \\$/;"	m
+am__depfiles_maybe	tinyxpath/Makefile	/^am__depfiles_maybe = depfiles$/;"	m
+am__include	tinyxpath/Makefile	/^am__include = include$/;"	m
+am__installdirs	tinyxpath/Makefile	/^am__installdirs = "$(DESTDIR)$(bindir)"$/;"	m
+am__leading_dot	tinyxpath/Makefile	/^am__leading_dot = .$/;"	m
+am__mv	tinyxpath/Makefile	/^am__mv = mv -f$/;"	m
+am__quote	tinyxpath/Makefile	/^am__quote = $/;"	m
+am__remove_distdir	tinyxpath/Makefile	/^am__remove_distdir = \\$/;"	m
+am__tar	tinyxpath/Makefile	/^am__tar = ${AMTAR} chof - "$$tardir"$/;"	m
+am__untar	tinyxpath/Makefile	/^am__untar = ${AMTAR} xf -$/;"	m
+am_tinyxpath_OBJECTS	tinyxpath/Makefile	/^am_tinyxpath_OBJECTS = htmlutil.$(OBJEXT) main.$(OBJEXT) \\$/;"	m
 append	tinyxpath/tinystr.cc	/^TiXmlString& TiXmlString::append(const char* str, size_type len)$/;"	f	class:TiXmlString	signature:(const char* str, size_type len)
 append	tinyxpath/tinystr.h	/^	TiXmlString& append (const char* str, size_type len);$/;"	p	class:TiXmlString	access:public	signature:(const char* str, size_type len)
 as_action_store	tinyxpath/xpath_processor.h	/^   action_store as_action_store;$/;"	m	class:TinyXPath::xpath_processor	access:protected
@@ -1813,6 +1906,8 @@ attributeSet	tinyxpath/tinyxml.h	/^	TiXmlAttributeSet attributeSet;$/;"	m	class:
 b_forward	tinyxpath/byte_stream.h	/^   _byte_ b_forward (unsigned u_nb_char)$/;"	f	class:TinyXPath::byte_stream	access:public	signature:(unsigned u_nb_char)
 b_pop	tinyxpath/byte_stream.h	/^   _byte_ b_pop ()$/;"	f	class:TinyXPath::byte_stream	access:public	signature:()
 b_top	tinyxpath/byte_stream.h	/^   _byte_ b_top ()$/;"	f	class:TinyXPath::byte_stream	access:public	signature:()
+bin_PROGRAMS	tinyxpath/Makefile	/^bin_PROGRAMS = tinyxpath$(EXEEXT)$/;"	m
+bindir	tinyxpath/Makefile	/^bindir = ${exec_prefix}\/bin$/;"	m
 bit_mask	bloom_filter.hpp	/^static const unsigned char bit_mask[bits_per_char] = {$/;"	v
 bit_table_	bloom_filter.hpp	/^   unsigned char*          bit_table_;$/;"	m	class:bloom_filter	access:protected
 bits_per_char	bloom_filter.hpp	/^static const std::size_t bits_per_char = 0x08;    \/\/ 8 bits in 1 char(unsigned)$/;"	v
@@ -1868,6 +1963,8 @@ bp_end	tinyxpath/byte_stream.h	/^   _byte_ * bp_end;$/;"	m	class:TinyXPath::byte
 bp_get_backward	tinyxpath/byte_stream.h	/^   const _byte_ * bp_get_backward (unsigned u_amount)$/;"	f	class:TinyXPath::byte_stream	access:public	signature:(unsigned u_amount)
 bp_in	tinyxpath/byte_stream.h	/^   _byte_ * bp_in;$/;"	m	class:TinyXPath::byte_stream	access:private
 buffer	tinyxpath/tinyxml.h	/^	TIXML_STRING buffer;$/;"	m	class:TiXmlPrinter	access:private
+build_alias	tinyxpath/Makefile	/^build_alias = $/;"	m
+builddir	tinyxpath/Makefile	/^builddir = .$/;"	m
 byte_stream	tinyxpath/byte_stream.h	/^   byte_stream (const char * cp_in)$/;"	f	class:TinyXPath::byte_stream	access:public	signature:(const char * cp_in)
 byte_stream	tinyxpath/byte_stream.h	/^class byte_stream$/;"	c	namespace:TinyXPath
 c_str	tinyxpath/tinystr.h	/^	const char * c_str () const { return rep_->str; }$/;"	f	class:TiXmlString	access:public	signature:() const
@@ -1919,10 +2016,18 @@ d_get_value	tinyxpath/node_set.h	/^   double d_get_value (unsigned u_which)$/;"	
 d_xpath_double	tinyxpath/xpath_static.cc	/^   double d_xpath_double (const TiXmlNode * XNp_source_tree, const char * cp_xpath_expr)$/;"	f	namespace:TinyXPath	signature:(const TiXmlNode * XNp_source_tree, const char * cp_xpath_expr)
 d_xpath_double	tinyxpath/xpath_static.h	/^   extern double d_xpath_double (const TiXmlNode * XNp_source_tree, const char * cp_xpath_expr);$/;"	p	namespace:TinyXPath	signature:(const TiXmlNode * XNp_source_tree, const char * cp_xpath_expr)
 data	tinyxpath/tinystr.h	/^	const char * data () const { return rep_->str; }$/;"	f	class:TiXmlString	access:public	signature:() const
+datadir	tinyxpath/Makefile	/^datadir = ${datarootdir}$/;"	m
+datarootdir	tinyxpath/Makefile	/^datarootdir = ${prefix}\/share$/;"	m
+depcomp	tinyxpath/Makefile	/^depcomp = $(SHELL) $(top_srcdir)\/depcomp$/;"	m
 depth	tinyxpath/tinyxml.h	/^	int depth;$/;"	m	class:TiXmlPrinter	access:private
 desired_false_positive_probability_	bloom_filter.hpp	/^   double                  desired_false_positive_probability_;$/;"	m	class:bloom_filter	access:protected
+distcleancheck_listfiles	tinyxpath/Makefile	/^distcleancheck_listfiles = find . -type f -print$/;"	m
+distdir	tinyxpath/Makefile	/^distdir = $(PACKAGE)-$(VERSION)$/;"	m
+distuninstallcheck_listfiles	tinyxpath/Makefile	/^distuninstallcheck_listfiles = find . -type f -print$/;"	m
+docdir	tinyxpath/Makefile	/^docdir = ${datarootdir}\/doc\/${PACKAGE}$/;"	m
 document	tinyxpath/tinyxml.h	/^	TiXmlDocument*	document;	\/\/ A pointer back to a document, for error reporting.$/;"	m	class:TiXmlAttribute	access:private
 dummy	tinyxpath/lex_util.h	/^   dummy$/;"	e	enum:TinyXPath::xpath_sub
+dvidir	tinyxpath/Makefile	/^dvidir = ${docdir}$/;"	m
 e_bool	tinyxpath/xpath_expression.h	/^typedef enum {e_bool, e_string, e_int, e_double, e_node_set, e_invalid} e_expression_type;$/;"	e	enum:TinyXPath::__anon5
 e_double	tinyxpath/xpath_expression.h	/^typedef enum {e_bool, e_string, e_int, e_double, e_node_set, e_invalid} e_expression_type;$/;"	e	enum:TinyXPath::__anon5
 e_error	tinyxpath/xpath_processor.h	/^   enum {e_no_error, e_error_syntax, e_error_overflow, e_error_execution, e_error_stack} e_error;$/;"	m	class:TinyXPath::xpath_processor	typeref:enum:TinyXPath::xpath_processor::__anon6	access:public
@@ -1963,6 +2068,7 @@ errorString	tinyxpath/tinyxmlerror.cc	/^const char* TiXmlBase::errorString[ TIXM
 error_not_yet	tinyxpath/xpath_processor.h	/^class error_not_yet : public execution_error {public : error_not_yet () : execution_error (-2){}};$/;"	c	namespace:TinyXPath	inherits:execution_error
 error_not_yet	tinyxpath/xpath_processor.h	/^class error_not_yet : public execution_error {public : error_not_yet () : execution_error (-2){}};$/;"	f	class:TinyXPath::error_not_yet	access:public	signature:()
 evaluateXpe	XmlPsApp.cc	/^bool XmlPsApp::evaluateXpe(std::string xmlfilename){$/;"	f	class:XmlPsApp
+exec_prefix	tinyxpath/Makefile	/^exec_prefix = ${prefix}$/;"	m
 execution_error	tinyxpath/xpath_processor.h	/^class execution_error {public : execution_error (int i_) {i=i_;} int i;};$/;"	c	namespace:TinyXPath
 execution_error	tinyxpath/xpath_processor.h	/^class execution_error {public : execution_error (int i_) {i=i_;} int i;};$/;"	f	class:TinyXPath::execution_error	access:public	signature:(int i_)
 expandJoin	XmlPsApp.h	/^	bool expandJoin;$/;"	m	class:XmlPsApp
@@ -1991,6 +2097,8 @@ handleMessage	XmlPsAppMessageObserver.cc	/^void XmlPsAppMessageObserver::handleM
 handleReadyMessage	XmlPsApp.cc	/^void XmlPsApp::handleReadyMessage(CompReadyMessage* msg)$/;"	f	class:XmlPsApp
 handleTimerEvent	XmlPsApp.cc	/^void XmlPsApp::handleTimerEvent( cMessage* msg )$/;"	f	class:XmlPsApp
 hash_ap	bloom_filter.hpp	/^   bloom_type hash_ap(const unsigned char* begin, std::size_t remaining_length, bloom_type hash) const$/;"	f	class:bloom_filter	access:protected	signature:(const unsigned char* begin, std::size_t remaining_length, bloom_type hash) const
+host_alias	tinyxpath/Makefile	/^host_alias = $/;"	m
+htmldir	tinyxpath/Makefile	/^htmldir = ${docdir}$/;"	m
 i	tinyxpath/xpath_processor.h	/^class execution_error {public : execution_error (int i_) {i=i_;} int i;};$/;"	m	class:TinyXPath::execution_error	access:public
 i_1	tinyxpath/action_store.h	/^   int i_1, i_2, i_3;$/;"	m	class:TinyXPath::action_item	access:protected
 i_2	tinyxpath/action_store.h	/^   int i_1, i_2, i_3;$/;"	m	class:TinyXPath::action_item	access:protected
@@ -2025,7 +2133,9 @@ i_xml_family_size	tinyxpath/xml_util.cc	/^int i_xml_family_size ($/;"	f	namespac
 i_xml_family_size	tinyxpath/xml_util.h	/^   extern int i_xml_family_size (const TiXmlElement * XEp_elem);$/;"	p	namespace:TinyXPath	signature:(const TiXmlElement * XEp_elem)
 i_xpath_int	tinyxpath/xpath_static.cc	/^   int i_xpath_int (const TiXmlNode * XNp_source_tree, const char * cp_xpath_expr)$/;"	f	namespace:TinyXPath	signature:(const TiXmlNode * XNp_source_tree, const char * cp_xpath_expr)
 i_xpath_int	tinyxpath/xpath_static.h	/^   extern int i_xpath_int (const TiXmlNode * XNp_source_tree, const char * cp_xpath_expr);$/;"	p	namespace:TinyXPath	signature:(const TiXmlNode * XNp_source_tree, const char * cp_xpath_expr)
+includedir	tinyxpath/Makefile	/^includedir = ${prefix}\/include$/;"	m
 indent	tinyxpath/tinyxml.h	/^	TIXML_STRING indent;$/;"	m	class:TiXmlPrinter	access:private
+infodir	tinyxpath/Makefile	/^infodir = ${datarootdir}\/info$/;"	m
 init	tinyxpath/tinystr.h	/^	void init(size_type sz) { init(sz, sz); }$/;"	f	class:TiXmlString	access:private	signature:(size_type sz)
 init	tinyxpath/tinystr.h	/^	void init(size_type sz, size_type cap)$/;"	f	class:TiXmlString	access:private	signature:(size_type sz, size_type cap)
 initialize	XmlPsAppMessageObserver.cc	/^void XmlPsAppMessageObserver::initialize() {$/;"	f	class:XmlPsAppMessageObserver
@@ -2036,6 +2146,10 @@ insert	bloom_filter.hpp	/^   inline void insert(const char* data, const std::siz
 insert	bloom_filter.hpp	/^   inline void insert(const std::string& key)$/;"	f	class:bloom_filter	access:public	signature:(const std::string& key)
 insert	bloom_filter.hpp	/^   inline void insert(const unsigned char* key_begin, const std::size_t& length)$/;"	f	class:bloom_filter	access:public	signature:(const unsigned char* key_begin, const std::size_t& length)
 inserted_element_count_	bloom_filter.hpp	/^   std::size_t             inserted_element_count_;$/;"	m	class:bloom_filter	access:protected
+install_sh	tinyxpath/Makefile	/^install_sh = ${SHELL} \/home\/hill\/sim\/OverSim-20101103\/src\/tier2\/xmlpsapp\/tinyxpath\/install-sh$/;"	m
+install_sh_DATA	tinyxpath/Makefile	/^install_sh_DATA = $(install_sh) -c -m 644$/;"	m
+install_sh_PROGRAM	tinyxpath/Makefile	/^install_sh_PROGRAM = $(install_sh) -c$/;"	m
+install_sh_SCRIPT	tinyxpath/Makefile	/^install_sh_SCRIPT = $(install_sh) -c$/;"	m
 joinGroup	XmlPsApp.cc	/^void XmlPsApp::joinGroup(OverlayKey ovkey)$/;"	f	class:XmlPsApp
 joinGroups	XmlPsApp.h	/^	bool joinGroups;$/;"	m	class:XmlPsApp
 joinedAt	XmlPsAppMessageObserver.h	/^        std::map<NodeKeyPair, simtime_t> joinedAt;$/;"	m	class:XmlPsAppMessageObserver
@@ -2117,7 +2231,11 @@ lex_token	tinyxpath/lex_token.h	/^   lex_token (lexico l_in_enum, const _byte_ *
 lex_token	tinyxpath/lex_token.h	/^class lex_token $/;"	c	namespace:TinyXPath
 lex_under	tinyxpath/lex_util.h	/^            lex_dot, lex_minus, lex_under, lex_colon, lex_scolon, lex_2_quote, lex_1_quote, $/;"	e	enum:TinyXPath::lexico
 lexico	tinyxpath/lex_util.h	/^enum lexico {$/;"	g	namespace:TinyXPath
+libdir	tinyxpath/Makefile	/^libdir = ${exec_prefix}\/lib$/;"	m
+libexecdir	tinyxpath/Makefile	/^libexecdir = ${exec_prefix}\/libexec$/;"	m
 lineBreak	tinyxpath/tinyxml.h	/^	TIXML_STRING lineBreak;$/;"	m	class:TiXmlPrinter	access:private
+localedir	tinyxpath/Makefile	/^localedir = ${datarootdir}\/locale$/;"	m
+localstatedir	tinyxpath/Makefile	/^localstatedir = ${prefix}\/var$/;"	m
 location	tinyxpath/tinyxml.h	/^	TiXmlCursor location;$/;"	m	class:TiXmlBase	access:protected
 ltp_current	tinyxpath/tokenlist.h	/^   lex_token * ltp_current;$/;"	m	class:TinyXPath::token_list	access:protected
 ltp_first	tinyxpath/tokenlist.h	/^   lex_token * ltp_first;$/;"	m	class:TinyXPath::token_list	access:protected
@@ -2129,8 +2247,13 @@ ltp_get_prev	tinyxpath/lex_token.h	/^   lex_token * ltp_get_prev () const$/;"	f	
 ltp_last	tinyxpath/tokenlist.h	/^   lex_token * ltp_last;$/;"	m	class:TinyXPath::token_list	access:protected
 ltp_next	tinyxpath/lex_token.h	/^   lex_token * ltp_next, * ltp_prev;$/;"	m	class:TinyXPath::lex_token	access:private
 ltp_prev	tinyxpath/lex_token.h	/^   lex_token * ltp_next, * ltp_prev;$/;"	m	class:TinyXPath::lex_token	access:private
+main	test.cc	/^int main(int argc, char const *argv[])$/;"	f
 main	tinyxpath/main.cc	/^int main ()$/;"	f	signature:()
+main	tinyxpath/test.cc	/^int main(int argc, char const *argv[])$/;"	f
+mandir	tinyxpath/Makefile	/^mandir = ${datarootdir}\/man$/;"	m
 maxSubscription	XmlPsApp.h	/^	int maxSubscription;$/;"	m	class:XmlPsApp
+mkdir_p	tinyxpath/Makefile	/^mkdir_p = \/bin\/mkdir -p$/;"	m
+mkinstalldirs	tinyxpath/Makefile	/^mkinstalldirs = $(install_sh) -d$/;"	m
 msgList	XmlPsAppMessageObserver.h	/^        std::map<NodeMessagePair, MsgInfo> msgList;$/;"	m	class:XmlPsAppMessageObserver
 msglen	XmlPsApp.h	/^	int msglen;$/;"	m	class:XmlPsApp
 name	tinyxpath/tinyxml.h	/^	TIXML_STRING name;$/;"	m	class:TiXmlAttribute	access:private
@@ -2188,6 +2311,7 @@ o_xpath_node	tinyxpath/xpath_static.cc	/^   bool o_xpath_node (const TiXmlNode *
 o_xpath_node	tinyxpath/xpath_static.h	/^   extern bool o_xpath_node (const TiXmlNode * XNp_source_tree, const char * cp_xpath_expr, const TiXmlNode * & XNp_node);$/;"	p	namespace:TinyXPath	signature:(const TiXmlNode * XNp_source_tree, const char * cp_xpath_expr, const TiXmlNode * & XNp_node)
 o_xpath_string	tinyxpath/xpath_static.cc	/^   bool o_xpath_string (const TiXmlNode * XNp_source_tree, const char * cp_xpath_expr, TIXML_STRING & S_res)$/;"	f	namespace:TinyXPath	signature:(const TiXmlNode * XNp_source_tree, const char * cp_xpath_expr, TIXML_STRING & S_res)
 o_xpath_string	tinyxpath/xpath_static.h	/^   extern bool o_xpath_string (const TiXmlNode * XNp_source_tree, const char * cp_xpath_expr, TIXML_STRING & S_res);$/;"	p	namespace:TinyXPath	signature:(const TiXmlNode * XNp_source_tree, const char * cp_xpath_expr, TIXML_STRING & S_res)
+oldincludedir	tinyxpath/Makefile	/^oldincludedir = \/usr\/include$/;"	m
 op_attrib	tinyxpath/node_set.h	/^   bool * op_attrib;$/;"	m	class:TinyXPath::node_set	access:protected
 operator !	bloom_filter.hpp	/^   inline bool operator!() const$/;"	f	class:bloom_filter	access:public	signature:() const
 operator !=	subgen.h	/^bool operator!= ( const SubGen &other) const$/;"	f	class:SubGen
@@ -2258,9 +2382,17 @@ operator |=	bloom_filter.hpp	/^   bloom_filter& operator |= (const bloom_filter&
 ov_key	XmlPsApp.h	/^  OverlayKey ov_key;$/;"	m	class:XmlPsApp
 parent	tinyxpath/tinyxml.h	/^	TiXmlNode*		parent;$/;"	m	class:TiXmlNode	access:protected
 parseXpe	XmlPsApp.cc	/^void SubGen::parseXpe(std::string xpstr, bloom_filter* bl,std::string parent, int &i){$/;"	f	class:SubGen
+pdfdir	tinyxpath/Makefile	/^pdfdir = ${docdir}$/;"	m
+pkgdatadir	tinyxpath/Makefile	/^pkgdatadir = $(datadir)\/tinyxpath$/;"	m
+pkgincludedir	tinyxpath/Makefile	/^pkgincludedir = $(includedir)\/tinyxpath$/;"	m
+pkglibdir	tinyxpath/Makefile	/^pkglibdir = $(libdir)\/tinyxpath$/;"	m
+pkglibexecdir	tinyxpath/Makefile	/^pkglibexecdir = $(libexecdir)\/tinyxpath$/;"	m
 predicted_element_count_	bloom_filter.hpp	/^   std::size_t             predicted_element_count_;$/;"	m	class:bloom_filter	access:protected
+prefix	tinyxpath/Makefile	/^prefix = \/usr\/local$/;"	m
 prev	tinyxpath/tinyxml.h	/^	TiXmlAttribute*	prev;$/;"	m	class:TiXmlAttribute	access:private
 prev	tinyxpath/tinyxml.h	/^	TiXmlNode*		prev;$/;"	m	class:TiXmlNode	access:protected
+program_transform_name	tinyxpath/Makefile	/^program_transform_name = s,x,x,$/;"	m
+psdir	tinyxpath/Makefile	/^psdir = ${docdir}$/;"	m
 ptr_2_and_flag	tinyxpath/node_set.cc	/^class ptr_2_and_flag $/;"	c	namespace:TinyXPath	file:
 pubList	XmlPsAppMessageObserver.h	/^        std::map<int, Publication> pubList;$/;"	m	class:XmlPsAppMessageObserver
 pubRate	XmlPsApp.h	/^  double pubRate;$/;"	m	class:XmlPsApp
@@ -2283,6 +2415,7 @@ rnp_next	tinyxpath/xpath_stack.cc	/^   result_and_next * rnp_next;$/;"	m	class:T
 row	tinyxpath/tinyxml.h	/^	int row;	\/\/ 0 based.$/;"	m	struct:TiXmlCursor	access:public
 salt_	bloom_filter.hpp	/^   std::vector<bloom_type> salt_;$/;"	m	class:bloom_filter	access:protected
 salt_count_	bloom_filter.hpp	/^   std::size_t             salt_count_;$/;"	m	class:bloom_filter	access:protected
+sbindir	tinyxpath/Makefile	/^sbindir = ${exec_prefix}\/sbin$/;"	m
 sendAt	XmlPsAppMessageObserver.h	/^        std::map<NodeMessagePair, simtime_t> sendAt;$/;"	m	class:XmlPsAppMessageObserver
 sendDataToGroup	XmlPsApp.cc	/^void XmlPsApp::sendDataToGroup(OverlayKey ovkey,std::string data){$/;"	f	class:XmlPsApp
 sendMessages	XmlPsApp.h	/^	bool sendMessages;$/;"	m	class:XmlPsApp
@@ -2290,6 +2423,7 @@ sent	XmlPsAppMessageObserver.h	/^            uint64_t sent;$/;"	m	struct:XmlPsAp
 sentMessage	XmlPsAppMessageObserver.cc	/^void XmlPsAppMessageObserver::sentMessage(XmlPsAppTracedMessage* msg) {$/;"	f	class:XmlPsAppMessageObserver
 sentinel	tinyxpath/tinyxml.h	/^	TiXmlAttribute sentinel;$/;"	m	class:TiXmlAttributeSet	access:private
 set_size	tinyxpath/tinystr.h	/^	void set_size(size_type sz) { rep_->str[ rep_->size = sz ] = '\\0'; }$/;"	f	class:TiXmlString	access:private	signature:(size_type sz)
+sharedstatedir	tinyxpath/Makefile	/^sharedstatedir = ${prefix}\/com$/;"	m
 simpleTextPrint	tinyxpath/tinyxml.h	/^	bool simpleTextPrint;$/;"	m	class:TiXmlPrinter	access:private
 size	XmlPsAppMessageObserver.h	/^            uint32_t size;$/;"	m	struct:XmlPsAppMessageObserver::Publication
 size	XmlPsAppMessageObserver.h	/^            uint32_t size;$/;"	m	struct:XmlPsAppMessageObserver::Subscription
@@ -2300,6 +2434,8 @@ size	tinyxpath/tinystr.h	/^		size_type size, capacity;$/;"	m	struct:TiXmlString:
 size	tinyxpath/tinystr.h	/^	size_type size () const { return rep_->size; }$/;"	f	class:TiXmlString	access:public	signature:() const
 size_list	bloom_filter.hpp	/^   std::vector<std::size_t> size_list;$/;"	m	class:compressible_bloom_filter	access:private
 size_type	tinyxpath/tinystr.h	/^  	typedef size_t size_type;$/;"	t	class:TiXmlString	access:public
+source	tinyxpath/Makefile	/^	source='$<' object='$@' libtool=no \\$/;"	m
+srcdir	tinyxpath/Makefile	/^srcdir = .$/;"	m
 stamp	tinyxpath/tinyxmlparser.cc	/^	const char*		stamp;$/;"	m	class:TiXmlParsingData	file:	access:private
 standalone	tinyxpath/tinyxml.h	/^	TIXML_STRING standalone;$/;"	m	class:TiXmlDeclaration	access:private
 start	tinyxpath/tinystr.h	/^	char* start() const { return rep_->str; }$/;"	f	class:TiXmlString	access:private	signature:() const
@@ -2309,6 +2445,7 @@ strLength	tinyxpath/tinyxml.h	/^		unsigned int	strLength;$/;"	m	struct:TiXmlBase
 subList	XmlPsAppMessageObserver.h	/^        std::map<int, Subscription> subList;$/;"	m	class:XmlPsAppMessageObserver
 subRate	XmlPsApp.h	/^	double subRate;$/;"	m	class:XmlPsApp
 subSize	XmlPsAppMessageObserver.h	/^        uint32_t subSize;$/;"	m	struct:XmlPsAppMessageObserver::MsgInfo
+subdir	tinyxpath/Makefile	/^subdir = .$/;"	m
 subscribe	XmlPsApp.cc	/^void XmlPsApp::subscribe(OverlayKey ovkey){$/;"	f	class:XmlPsApp
 subscribeList	XmlPsApp.h	/^	std::vector<SubGen> subscribeList;$/;"	m	class:XmlPsApp
 subscriber	XmlPsAppMessageObserver.h	/^        std::set<int> subscriber;$/;"	m	struct:XmlPsAppMessageObserver::MsgInfo
@@ -2316,11 +2453,24 @@ swap	tinyxpath/tinystr.h	/^	void swap (TiXmlString& other)$/;"	f	class:TiXmlStri
 syntax_error	tinyxpath/xpath_syntax.h	/^   syntax_error (const char * cp_mess = NULL)$/;"	f	class:TinyXPath::syntax_error	access:public	signature:(const char * cp_mess = NULL)
 syntax_error	tinyxpath/xpath_syntax.h	/^class syntax_error$/;"	c	namespace:TinyXPath
 syntax_overflow	tinyxpath/xpath_syntax.h	/^class syntax_overflow {} ;$/;"	c	namespace:TinyXPath
+sysconfdir	tinyxpath/Makefile	/^sysconfdir = ${prefix}\/etc$/;"	m
 table	bloom_filter.hpp	/^   const cell_type* table() const { return bit_table_; }$/;"	f	class:bloom_filter	access:public	signature:() const
 table_size_	bloom_filter.hpp	/^   std::size_t             table_size_;$/;"	m	class:bloom_filter	access:protected
 tabsize	tinyxpath/tinyxml.h	/^	int tabsize;$/;"	m	class:TiXmlDocument	access:private
 tabsize	tinyxpath/tinyxmlparser.cc	/^	int				tabsize;$/;"	m	class:TiXmlParsingData	file:	access:private
+tardir	tinyxpath/Makefile	/^	tardir=$(distdir) && $(am__tar) | GZIP=$(GZIP_ENV) gzip -c >$(distdir).tar.gz$/;"	m
+tardir	tinyxpath/Makefile	/^	tardir=$(distdir) && $(am__tar) | bzip2 -9 -c >$(distdir).tar.bz2$/;"	m
+tardir	tinyxpath/Makefile	/^	tardir=$(distdir) && $(am__tar) | compress -c >$(distdir).tar.Z$/;"	m
+tardir	tinyxpath/Makefile	/^	tardir=$(distdir) && $(am__tar) | lzma -9 -c >$(distdir).tar.lzma$/;"	m
+tardir	tinyxpath/Makefile	/^	tardir=$(distdir) && $(am__tar) | xz -c >$(distdir).tar.xz$/;"	m
+target_alias	tinyxpath/Makefile	/^target_alias = $/;"	m
 timer	XmlPsApp.h	/^	cMessage* timer;$/;"	m	class:XmlPsApp
+tinyxpath_DEPENDENCIES	tinyxpath/Makefile	/^tinyxpath_DEPENDENCIES =$/;"	m
+tinyxpath_LDADD	tinyxpath/Makefile	/^tinyxpath_LDADD = $/;"	m
+tinyxpath_LDFLAGS	tinyxpath/Makefile	/^tinyxpath_LDFLAGS = $(all_libraries)$/;"	m
+tinyxpath_LINK	tinyxpath/Makefile	/^tinyxpath_LINK = $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) \\$/;"	m
+tinyxpath_OBJECTS	tinyxpath/Makefile	/^tinyxpath_OBJECTS = $(am_tinyxpath_OBJECTS)$/;"	m
+tinyxpath_SOURCES	tinyxpath/Makefile	/^tinyxpath_SOURCES = htmlutil.cc main.cc \\$/;"	m
 tlp_list	tinyxpath/xpath_stream.h	/^   token_syntax_decoder * tlp_list;$/;"	m	class:TinyXPath::xpath_stream	access:protected
 token_list	tinyxpath/tokenlist.h	/^   token_list () $/;"	f	class:TinyXPath::token_list	access:public	signature:()
 token_list	tinyxpath/tokenlist.h	/^class token_list $/;"	c	namespace:TinyXPath
@@ -2328,6 +2478,11 @@ token_redef	tinyxpath/xpath_stream.cc	/^	token_redef ($/;"	f	class:TinyXPath::to
 token_redef	tinyxpath/xpath_stream.cc	/^class token_redef : public token_syntax_decoder $/;"	c	namespace:TinyXPath	file:	inherits:token_syntax_decoder
 token_syntax_decoder	tinyxpath/xpath_syntax.h	/^   token_syntax_decoder () : token_list ()   {}$/;"	f	class:TinyXPath::token_syntax_decoder	access:public	signature:()
 token_syntax_decoder	tinyxpath/xpath_syntax.h	/^class token_syntax_decoder : public token_list$/;"	c	namespace:TinyXPath	inherits:token_list
+top_build_prefix	tinyxpath/Makefile	/^top_build_prefix = $/;"	m
+top_builddir	tinyxpath/Makefile	/^top_builddir = .$/;"	m
+top_distdir	tinyxpath/Makefile	/^top_distdir = $(distdir)$/;"	m
+top_srcdir	tinyxpath/Makefile	/^top_srcdir = .$/;"	m
+transform	tinyxpath/Makefile	/^transform = $(program_transform_name)$/;"	m
 type	tinyxpath/tinyxml.h	/^	NodeType		type;$/;"	m	class:TiXmlNode	access:protected
 u_compute_xpath_node_set	tinyxpath/xpath_processor.cc	/^unsigned xpath_processor::u_compute_xpath_node_set ()$/;"	f	class:xpath_processor	signature:()
 u_compute_xpath_node_set	tinyxpath/xpath_processor.h	/^   unsigned u_compute_xpath_node_set ();$/;"	p	class:TinyXPath::xpath_processor	access:public	signature:()
@@ -2538,6 +2693,7 @@ vp_node	tinyxpath/node_set.cc	/^   const void * vp_node;$/;"	m	class:TinyXPath::
 vpp_node_set	tinyxpath/node_set.h	/^	const void ** vpp_node_set;$/;"	m	class:TinyXPath::node_set	access:protected
 xml2bloom	XmlPsApp.cc	/^OverlayKey XmlPsApp::xml2bloom(std::string xmlfilename){$/;"	f	class:XmlPsApp
 xmlGen	XmlPsApp.cc	/^std::string XmlPsApp::xmlGen()$/;"	f	class:XmlPsApp
+xmllist	XmlPsApp.h	/^  std::string xmllist;$/;"	m	class:XmlPsApp
 xmlpsapp_observer	XmlPsApp.h	/^	XmlPsAppMessageObserver* xmlpsapp_observer;$/;"	m	class:XmlPsApp
 xpath_abbreviated_absolute_location_path	tinyxpath/lex_util.h	/^   xpath_abbreviated_absolute_location_path = 10,$/;"	e	enum:TinyXPath::xpath_construct
 xpath_abbreviated_axis_specifier	tinyxpath/lex_util.h	/^   xpath_abbreviated_axis_specifier = 13,$/;"	e	enum:TinyXPath::xpath_construct
@@ -2694,6 +2850,7 @@ xpath_xml_q_name	tinyxpath/lex_util.h	/^   xpath_xml_q_name = 206,$/;"	e	enum:Ti
 xpath_xml_q_name_colon	tinyxpath/lex_util.h	/^   xpath_xml_q_name_colon,$/;"	e	enum:TinyXPath::xpath_sub
 xpath_xml_q_name_simple	tinyxpath/lex_util.h	/^   xpath_xml_q_name_simple,$/;"	e	enum:TinyXPath::xpath_sub
 xpe	subgen.h	/^	std::string xpe;$/;"	m	class:SubGen
+xpepath	XmlPsApp.h	/^  std::string xpepath;$/;"	m	class:XmlPsApp
 xs_stack	tinyxpath/xpath_processor.h	/^   xpath_stack xs_stack;$/;"	m	class:TinyXPath::xpath_processor	access:protected
 xsp_stream	tinyxpath/xpath_stream.cc	/^	xpath_stream * xsp_stream;$/;"	m	class:TinyXPath::token_redef	file:	access:protected
 ~TiXmlAttributeSet	tinyxpath/tinyxml.cc	/^TiXmlAttributeSet::~TiXmlAttributeSet()$/;"	f	class:TiXmlAttributeSet	signature:()

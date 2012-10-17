@@ -8,8 +8,8 @@ class SubGen {
 public:
 	SubGen();
 	SubGen(bloom_filter& filter);
-  SubGen(int l,int k, OverlayKey mykey);
-	//TODO SubGen(string xpe)
+  SubGen(int l,int k, OverlayKey mykey, std::string xpelist);
+   //    std::ifstream file (filepath.c_str());
 	OverlayKey getBloom() const {return bloom;}
 	std::string getXpe() const {return xpe;}
 	uint32_t  getSize(){return size;}

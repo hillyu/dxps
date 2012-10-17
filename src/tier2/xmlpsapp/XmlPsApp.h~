@@ -42,6 +42,7 @@ public:
 	void initializeApp(int stage);
 	cMessage* timer;
 	int groupNum;
+  OverlayKey ov_key;
 protected:
 
 	//        void joinGroup(const unsigned char *buffer, uint32_t size);
@@ -62,6 +63,8 @@ private:
 	std::vector<SubGen> subscribeList;
 	//std::vector<bloom_filter *> subscribeList;
 	bool joinGroups;
+  string xpepath;
+  string xmllist;
 	bool sendMessages;
 	int msglen;
 	bool evaluateXpe(std::string xmlfilename);

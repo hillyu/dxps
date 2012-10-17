@@ -194,7 +194,7 @@ void XmlPsAppMessageObserver::nodeDead(int moduleId) {
 }
 
 std::ostream& operator<< (std::ostream& os, XmlPsAppMessageObserver::Subscription const & sub) {
-    return os << "Num(Nodes): " << sub.size << "; Messages Received: " << sub.received << ", Fase Possitive rate: "<<(double)sub.false_positive/(double)sub.received;
+    return os << "Num(Nodes): " << sub.size << "; Messages Received: " << sub.received <<", Fase Possitive: "<<sub.false_positive<< ", Fase Possitive rate: "<<(double)sub.false_positive/(double)sub.received;
 }
 std::ostream& operator<< (std::ostream& os, XmlPsAppMessageObserver::Publication const & pub) {
     return os << "Num(Nodes): " << pub.size << "; Messages Sent: " << pub.sent;

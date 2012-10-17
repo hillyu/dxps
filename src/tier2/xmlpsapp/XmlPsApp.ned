@@ -43,6 +43,8 @@ simple XmlPsApp extends BaseApp
         bool expandJoin;
         int bloom_l;
         int bloom_k;
+        string xpepath;
+        string xmllist;
 }
 
 module XmlPsAppModule like ITier

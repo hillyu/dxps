@@ -63,6 +63,8 @@ private:
 	std::vector<SubGen> subscribeList;
 	//std::vector<bloom_filter *> subscribeList;
 	bool joinGroups;
+  std::string xpepath;
+  std::string xmllist;
 	bool sendMessages;
 	int msglen;
 	bool evaluateXpe(std::string xmlfilename);

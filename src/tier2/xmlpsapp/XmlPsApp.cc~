@@ -56,6 +56,8 @@ void XmlPsApp::initializeApp(int stage)
     WATCH(ov_key);
     bloom_l=par("bloom_l");
     bloom_k=par("bloom_k");
+    xpepath=par("xpepath").stdstringValue(); 
+    xmllist=par("xmllist").stdstringValue();
 
 }
 
@@ -75,7 +77,7 @@ void XmlPsApp::handleReadyMessage(CompReadyMessage* msg)
     if( (getThisCompType() - msg->getComp() == 1) && msg->getReady() ) {
         groupNum = 0;
         cancelEvent(timer);
-        scheduleAt(simTime() + 1, timer);
+        scheduleAt(simTime() + 2000, timer);//wait for 3000s
         ov_key=overlay->getThisNode().getKey();
     }
     delete msg;
@@ -92,7 +94,7 @@ void XmlPsApp::handleTimerEvent( cMessage* msg )
     //if (overlay->getThisNode().getKey().toDouble()==2 && subscribeList.empty()) {//FIXME;; test should use following line
     if (subscribeList.empty()) {
     //if (random < subRate && joinGroups) {
-        SubGen sub (bloom_l,bloom_k,overlay->getThisNode().getKey());
+        SubGen sub (bloom_l,bloom_k,overlay->getThisNode().getKey(),   xpepath);
         OverlayKey filter= OverlayKey(sub.getBloom());
         std::vector<SubGen>::iterator it;
         it =find(subscribeList.begin(),subscribeList.end(),sub);
@@ -145,11 +147,19 @@ void XmlPsApp::handleTimerEvent( cMessage* msg )
             //subscribeList.erase (subscribeList.begin()+i);
 
         //}
-        else if (random < subRate+pubRate && sendMessages ) {//FIXME only let 15 send.
+        //else if (random < subRate+pubRate && sendMessages ) {//FIXME only let 15 send.
+        else if (sendMessages ) {//FIXME only let 15 send.
             //int i=(intuniform(1, subscribeList.size())-1);
             //sendDataToGroup( subscribeList[i].getBloom());
+          while (1){
             std::string xmlfile=xmlGen();
-            sendDataToGroup(xml2bloom(xmlfile),xmlfile);
+            std::cout<<"I got the file to bloom"<<xmlfile<<"\n";
+            OverlayKey tmpkey=xml2bloom(xmlfile);
+            if (!tmpkey.isUnspecified()){
+            sendDataToGroup(tmpkey,xmlfile);
+            break;
+            }
+          }
 
             //EV <<"data send to"<<(unsigned long)*subscribeList[i].getBloom()<<"\n";
             //
@@ -254,13 +264,15 @@ void XmlPsApp::handleMCast( ALMMulticastMessage* mcast )
 
 std::string XmlPsApp::xmlGen()
 {
-    std::string pathlist = "/home/hill/sim/OverSim-20101103/samplefiles/xmldocs/filelist2.txt";
+    std::string pathlist = xmllist;//"/home/hill/sim/OverSim-20101103/samplefiles/xmldocs/filelist2.txt";
     std::string xmlfile=SubGen::random_line(pathlist);
+    std::cout <<xmlfile<<"\n";
     EV << "The PathList is "<<pathlist<<"\n";
     EV << "The XMLFILE INPUT is"<<xmlfile<<"\n";
     struct stat filestatus;
     stat( xmlfile.c_str(), &filestatus );
     msglen=filestatus.st_size;
+    std::cout<<"size is"<<msglen<<"\n";
     return xmlfile;
 }
 
@@ -288,16 +300,22 @@ bool XmlPsApp::evaluateXpe(std::string xmlfilename){
 OverlayKey XmlPsApp::xml2bloom(std::string xmlfilename){
     bloom_filter bloomfilter (bloom_l,bloom_k);
     TiXmlDocument  XDp_doc;
-    XDp_doc.LoadFile (xmlfilename);
-    EV<<"TheRootElementis:"<<XDp_doc.RootElement()->ValueStr()<<"\n";
+    std::cout<<"the file to load:"<<xmlfilename<<"\n";
+    if (XDp_doc.LoadFile (xmlfilename.c_str(),TIXML_ENCODING_UTF8 )){
+      std::cout<<"TheRootElementis:"<<XDp_doc.RootElement()->ValueStr()<<"\n";
     recursivex2b(XDp_doc.RootElement (),bloomfilter);
     return OverlayKey (bloomfilter.table(), bloomfilter.size()/bits_per_char);
+    }
+    //else throw new cRuntimeError("file %s can not be opened",xmlfilename.c_str());
+    return OverlayKey::UNSPECIFIED_KEY;
 }
 void XmlPsApp::recursivex2b(TiXmlElement* parent, bloom_filter & bloomfilter){
 
     TiXmlElement* child = 0;
+    std::cout<<"parent"<<parent->ValueStr()<<"\n";
     bloomfilter.insert(parent->ValueStr());
     for( child = parent->FirstChildElement(); child; child = child->NextSiblingElement() ){
+      std::cout<<"child"<<child->ValueStr()<<"\n";
         bloomfilter.insert(child->ValueStr());
         bloomfilter.insert(parent->ValueStr()+child->ValueStr());
         if (!child->NoChildren()){
@@ -335,9 +353,9 @@ SubGen::SubGen(bloom_filter& filter){
     //std::copy(filter.table(),filter.table() + (filter.size() / bits_per_char),bloom);
     //bloom = (unsigned char*) filter.table();
 }
-SubGen::SubGen(int l, int k, OverlayKey mykey){
+SubGen::SubGen(int l, int k, OverlayKey mykey, std::string xpelist){
    //    std::ifstream file (filepath.c_str());
-  std::string filepath="/home/hill/sim/OverSim-20101103/samplefiles/xpaths/bib.xpelist";
+  std::string filepath=xpelist;//"/home/hill/sim/OverSim-20101103/samplefiles/xpaths/bib.xpelist";
   std::ifstream file (filepath.c_str());
   std::string line ;
   while( getline( file, line ) ){
@@ -347,7 +365,7 @@ SubGen::SubGen(int l, int k, OverlayKey mykey){
     parseXpe(tmpxpe+"/",filter,"",i);
     size=filter->size()/bits_per_char;
     OverlayKey tmpkey=OverlayKey (filter->table(), size);
-    std::cout<<tmpxpe<<"xpe_bloom: "<<tmpkey<<" mykey :"<<mykey<<"\n";
+    //std::cout<<tmpxpe<<"xpe_bloom: "<<tmpkey<<" mykey :"<<mykey<<"\n";
     if (tmpkey==mykey){
       bloom=tmpkey;
       xpe=tmpxpe;
@@ -366,12 +384,12 @@ void SubGen::parseXpe(std::string xpstr, bloom_filter* bl,std::string parent, in
 
             if (!(parent.empty()||current.empty())) {
                 bl->insert(parent+current);
-                std::cout<<parent+current<<"bloom: "<<OverlayKey(bl->table(),bl->size()/bits_per_char)<<"\n";
+                //std::cout<<parent+current<<"bloom: "<<OverlayKey(bl->table(),bl->size()/bits_per_char)<<"\n";
             }
             if (!current.empty()) {
                 bl->insert(current);
-                std::cout<<current<<"\n";
-                std::cout<<parent+current<<"bloom: "<<OverlayKey(bl->table(),bl->size()/bits_per_char)<<"\n";
+                //std::cout<<current<<"\n";
+                //std::cout<<parent+current<<"bloom: "<<OverlayKey(bl->table(),bl->size()/bits_per_char)<<"\n";
             }
             parent=current;
             current.clear();
@@ -380,13 +398,13 @@ void SubGen::parseXpe(std::string xpstr, bloom_filter* bl,std::string parent, in
         else if (xpstr[ i ]=='[') {
             if (!(parent.empty()||current.empty())) {
                 bl->insert(parent+current);
-                std::cout<<parent+current<<"\n";
-                std::cout<<parent+current<<"bloom: "<<OverlayKey(bl->table(),bl->size()/bits_per_char)<<"\n";
+                //std::cout<<parent+current<<"\n";
+                //std::cout<<parent+current<<"bloom: "<<OverlayKey(bl->table(),bl->size()/bits_per_char)<<"\n";
             }
             if (!current.empty()) {
                 bl->insert(current);
-                std::cout<<current<<"\n";
-                std::cout<<parent+current<<"bloom: "<<OverlayKey(bl->table(),bl->size()/bits_per_char)<<"\n";
+                //std::cout<<current<<"\n";
+                //std::cout<<parent+current<<"bloom: "<<OverlayKey(bl->table(),bl->size()/bits_per_char)<<"\n";
             }
             parent=current;
             i++;
@@ -397,13 +415,13 @@ void SubGen::parseXpe(std::string xpstr, bloom_filter* bl,std::string parent, in
         else if (xpstr[ i ]==']'){
             if (!(parent.empty()||current.empty())) {
                 bl->insert(parent+current);
-                std::cout<<parent+current<<"\n";
-                std::cout<<parent+current<<"bloom: "<<OverlayKey(bl->table(),bl->size()/bits_per_char)<<"\n";
+                //std::cout<<parent+current<<"\n";
+                //std::cout<<parent+current<<"bloom: "<<OverlayKey(bl->table(),bl->size()/bits_per_char)<<"\n";
             }
             if (!current.empty()) {
                 bl->insert(current);
-                std::cout<<current<<"\n";
-                std::cout<<parent+current<<"bloom: "<<OverlayKey(bl->table(),bl->size()/bits_per_char)<<"\n";
+                //std::cout<<current<<"\n";
+                //std::cout<<parent+current<<"bloom: "<<OverlayKey(bl->table(),bl->size()/bits_per_char)<<"\n";
             }
             i++;
             return;
