@@ -45,6 +45,7 @@ simple XmlPsApp extends BaseApp
         int bloom_k;
         string xpepath;
         string xmllist;
+        int appStartDelay;
 }
 
 module XmlPsAppModule like ITier

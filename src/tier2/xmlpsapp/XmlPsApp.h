@@ -60,6 +60,14 @@ friend std::ostream& operator<< (std::ostream& os, SubGen const & subg);
 
 	XmlPsAppMessageObserver* xmlpsapp_observer;
 private:
+  /***************************************************************************
+ *                              testfunctions                              *
+ ***************************************************************************/
+  void testxmldoc(std::string xmldoclist);
+  /***************************************************************************
+ *                            test function end                            *
+ ***************************************************************************/
+  
 	std::vector<SubGen> subscribeList;
 	//std::vector<bloom_filter *> subscribeList;
 	bool joinGroups;
@@ -74,6 +82,7 @@ private:
 	void recursiveJoin(OverlayKey ovkey, int i);
   int bloom_l;
   int bloom_k;
+  int appStartDelay;
 
 };
 std::ostream& operator<< (std::ostream& os, SubGen const & subg);

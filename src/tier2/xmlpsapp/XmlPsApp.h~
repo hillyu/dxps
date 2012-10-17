@@ -60,11 +60,19 @@ friend std::ostream& operator<< (std::ostream& os, SubGen const & subg);
 
 	XmlPsAppMessageObserver* xmlpsapp_observer;
 private:
+  /***************************************************************************
+ *                              testfunctions                              *
+ ***************************************************************************/
+  void testxmldoc(std::string xmldoclist);
+  /***************************************************************************
+ *                            test function end                            *
+ ***************************************************************************/
+  
 	std::vector<SubGen> subscribeList;
 	//std::vector<bloom_filter *> subscribeList;
 	bool joinGroups;
-  string xpepath;
-  string xmllist;
+  std::string xpepath;
+  std::string xmllist;
 	bool sendMessages;
 	int msglen;
 	bool evaluateXpe(std::string xmlfilename);

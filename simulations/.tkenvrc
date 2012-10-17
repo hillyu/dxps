@@ -1,7 +1,5 @@
 # Partial Tkenv config file -- see $HOME/.tkenvrc as well
-inspector "SimpleUnderlayNetwork.globalObserver.globalFunctions[0].function.observer" "XmlPsAppMessageObserver" "1" "883x315+2277+25:normal"
-inspector "SimpleUnderlayNetwork" "SimpleUnderlayNetwork" "2" "686x341+2226+632:normal"
-inspector "SimpleUnderlayNetwork.overlayTerminal[155]" "SimpleOverlayHost" "2" "801x341+2161+641:normal"
+inspector "SimpleUnderlayNetwork.globalObserver.globalFunctions[0].function.observer" "XmlPsAppMessageObserver" "1" "887x315+-64+415:normal"
 inspector "SimpleUnderlayNetwork.overlayTerminal[1].tier1" "MulticastScribe" "2" "814x284+68+96:normal"
 inspector "SimpleUnderlayNetwork.overlayTerminal[1].tier1" "MulticastScribe" "3" "808x266+89+119:normal"
 

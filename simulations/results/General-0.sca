@@ -1,20 +1,22 @@
 version 2
-run General-0-20121016-03:42:58-28406
+run General-0-20121017-23:55:45-11441
 attr configname General
-attr datetime 20121016-03:42:58
+attr datetime 20121017-23:55:45
 attr experiment General
 attr inifile dxps.ini
-attr iterationvars ""
-attr iterationvars2 $repetition=0
-attr measurement ""
+attr iterationvars $n=12
+attr iterationvars2 "$n=12, $repetition=0"
+attr measurement $n=12
+attr n 12
 attr network oversim.underlay.simpleunderlay.SimpleUnderlayNetwork
-attr processid 28406
+attr processid 11441
 attr repetition 0
 attr replication #0
 attr resultdir results
 attr runnumber 0
 attr seedset 0
 
-scalar SimpleUnderlayNetwork.underlayConfigurator 	"Terminals added" 	225
+scalar . 	n 	12
+scalar SimpleUnderlayNetwork.underlayConfigurator 	"Terminals added" 	2287
 scalar SimpleUnderlayNetwork.underlayConfigurator 	"Terminals removed" 	0
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"GlobalStatistics: Simulation Time" 	22.402865622
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"GlobalStatistics: Simulation Time" 	2313.616494793

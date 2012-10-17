@@ -58,7 +58,7 @@ void XmlPsApp::initializeApp(int stage)
     bloom_k=par("bloom_k");
     xpepath=par("xpepath").stdstringValue(); 
     xmllist=par("xmllist").stdstringValue();
-
+    appStartDelay=par("appStartDelay");
 }
 
 
@@ -77,7 +77,10 @@ void XmlPsApp::handleReadyMessage(CompReadyMessage* msg)
     if( (getThisCompType() - msg->getComp() == 1) && msg->getReady() ) {
         groupNum = 0;
         cancelEvent(timer);
-        scheduleAt(simTime() + 2000, timer);//wait for 3000s
+        //test functions please comment out
+        //testxmldoc(xmllist);
+        //texst function end;
+        scheduleAt(simTime() + appStartDelay, timer);//wait for 3000s
         ov_key=overlay->getThisNode().getKey();
     }
     delete msg;
@@ -147,13 +150,13 @@ void XmlPsApp::handleTimerEvent( cMessage* msg )
             //subscribeList.erase (subscribeList.begin()+i);
 
         //}
-        //else if (random < subRate+pubRate && sendMessages ) {//FIXME only let 15 send.
-        else if (sendMessages ) {//FIXME only let 15 send.
+        else if (random < subRate+pubRate && sendMessages ) {//FIXME only let 15 send.
+        //else if (sendMessages ) {//FIXME only let 15 send.
             //int i=(intuniform(1, subscribeList.size())-1);
             //sendDataToGroup( subscribeList[i].getBloom());
           while (1){
             std::string xmlfile=xmlGen();
-            std::cout<<"I got the file to bloom"<<xmlfile<<"\n";
+            //std::cout<<"I got the file to bloom"<<xmlfile<<"\n";
             OverlayKey tmpkey=xml2bloom(xmlfile);
             if (!tmpkey.isUnspecified()){
             sendDataToGroup(tmpkey,xmlfile);
@@ -325,6 +328,35 @@ void XmlPsApp::recursivex2b(TiXmlElement* parent, bloom_filter & bloomfilter){
     }
 }
 
+/***************************************************************************
+ *                              testfunctions                              *
+ ***************************************************************************/
+void XmlPsApp::testxmldoc(std::string xmldoclist){
+  //std::string filepath="/home/hill/sim/OverSim-20101103/samplefiles/xmldocs/filelist.txt";
+  bloom_filter bloomfilter (bloom_l,bloom_k);
+  std::ifstream file (xmldoclist.c_str());
+  std::string filetoload ;
+  while( getline( file, filetoload ) ){
+
+  std::cout<<"file to load"<<filetoload<<"\n";
+    TiXmlDocument  XDp_doc;
+   if (XDp_doc.LoadFile (filetoload.c_str(),TIXML_ENCODING_UTF8 )){
+      //std::cout<<"TheRootElementis:"<<XDp_doc.RootElement()->ValueStr()<<"\n";
+    recursivex2b(XDp_doc.RootElement (),bloomfilter);
+    std::cout<<"bloom: ["<< OverlayKey (bloomfilter.table(), bloomfilter.size()/bits_per_char);
+    }
+   else {
+   std::cout<<"bloom: [fail]";
+  }
+    std::cout<<"] success"<<"\n";
+  }
+  file.close();
+  throw new cRuntimeError("all files passed test");
+  return ;
+}
+/***************************************************************************
+ *                            test function end                            *
+ ***************************************************************************/
 
 
 

@@ -1896,6 +1896,7 @@ am__remove_distdir	tinyxpath/Makefile	/^am__remove_distdir = \\$/;"	m
 am__tar	tinyxpath/Makefile	/^am__tar = ${AMTAR} chof - "$$tardir"$/;"	m
 am__untar	tinyxpath/Makefile	/^am__untar = ${AMTAR} xf -$/;"	m
 am_tinyxpath_OBJECTS	tinyxpath/Makefile	/^am_tinyxpath_OBJECTS = htmlutil.$(OBJEXT) main.$(OBJEXT) \\$/;"	m
+appStartDelay	XmlPsApp.h	/^  int appStartDelay;$/;"	m	class:XmlPsApp
 append	tinyxpath/tinystr.cc	/^TiXmlString& TiXmlString::append(const char* str, size_type len)$/;"	f	class:TiXmlString	signature:(const char* str, size_type len)
 append	tinyxpath/tinystr.h	/^	TiXmlString& append (const char* str, size_type len);$/;"	p	class:TiXmlString	access:public	signature:(const char* str, size_type len)
 as_action_store	tinyxpath/xpath_processor.h	/^   action_store as_action_store;$/;"	m	class:TinyXPath::xpath_processor	access:protected
@@ -2464,6 +2465,7 @@ tardir	tinyxpath/Makefile	/^	tardir=$(distdir) && $(am__tar) | compress -c >$(di
 tardir	tinyxpath/Makefile	/^	tardir=$(distdir) && $(am__tar) | lzma -9 -c >$(distdir).tar.lzma$/;"	m
 tardir	tinyxpath/Makefile	/^	tardir=$(distdir) && $(am__tar) | xz -c >$(distdir).tar.xz$/;"	m
 target_alias	tinyxpath/Makefile	/^target_alias = $/;"	m
+testxmldoc	XmlPsApp.cc	/^void XmlPsApp::testxmldoc(std::string xmldoclist){$/;"	f	class:XmlPsApp
 timer	XmlPsApp.h	/^	cMessage* timer;$/;"	m	class:XmlPsApp
 tinyxpath_DEPENDENCIES	tinyxpath/Makefile	/^tinyxpath_DEPENDENCIES =$/;"	m
 tinyxpath_LDADD	tinyxpath/Makefile	/^tinyxpath_LDADD = $/;"	m
