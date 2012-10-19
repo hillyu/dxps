@@ -338,8 +338,6 @@ Print	tinyxpath/tinyxml.h	/^	virtual void Print( FILE* cfile, int depth = 0 ) co
 Print	tinyxpath/tinyxml.h	/^	virtual void Print( FILE* cfile, int depth, TIXML_STRING* str ) const;$/;"	p	class:TiXmlDeclaration	access:public	signature:( FILE* cfile, int depth, TIXML_STRING* str ) const
 Print	tinyxpath/tinyxml.h	/^	void Print( FILE* cfile, int depth, TIXML_STRING* str ) const;$/;"	p	class:TiXmlAttribute	access:public	signature:( FILE* cfile, int depth, TIXML_STRING* str ) const
 Print	tinyxpath/tinyxml.h	/^	void Print() const						{ Print( stdout, 0 ); }$/;"	f	class:TiXmlDocument	access:public	signature:() const
-Publication	XmlPsAppMessageObserver.h	/^            Publication() : size(0), sent(0) {}$/;"	f	struct:XmlPsAppMessageObserver::Publication
-Publication	XmlPsAppMessageObserver.h	/^        struct Publication {$/;"	s	class:XmlPsAppMessageObserver
 QueryDoubleAttribute	tinyxpath/tinyxml.cc	/^int TiXmlElement::QueryDoubleAttribute( const char* name, double* dval ) const$/;"	f	class:TiXmlElement	signature:( const char* name, double* dval ) const
 QueryDoubleAttribute	tinyxpath/tinyxml.cc	/^int TiXmlElement::QueryDoubleAttribute( const std::string& name, double* dval ) const$/;"	f	class:TiXmlElement	signature:( const std::string& name, double* dval ) const
 QueryDoubleAttribute	tinyxpath/tinyxml.h	/^	int QueryDoubleAttribute( const char* name, double* _value ) const;$/;"	p	class:TiXmlElement	access:public	signature:( const char* name, double* _value ) const
@@ -463,7 +461,7 @@ SubGen	XmlPsApp.cc	/^SubGen::SubGen():xpe(""),size(0),bloom(OverlayKey::UNSPECIF
 SubGen	XmlPsApp.cc	/^SubGen::SubGen(bloom_filter& filter){$/;"	f	class:SubGen
 SubGen	XmlPsApp.cc	/^SubGen::SubGen(int l, int k, OverlayKey mykey, std::string xpelist){$/;"	f	class:SubGen
 SubGen	subgen.h	/^class SubGen {$/;"	c
-Subscription	XmlPsAppMessageObserver.h	/^            Subscription() : size(0), received(0),false_positive(0) {}$/;"	f	struct:XmlPsAppMessageObserver::Subscription
+Subscription	XmlPsAppMessageObserver.h	/^            Subscription() : size(0), sent(0), received(0),false_positive(0) {}$/;"	f	struct:XmlPsAppMessageObserver::Subscription
 Subscription	XmlPsAppMessageObserver.h	/^        struct Subscription {$/;"	s	class:XmlPsAppMessageObserver
 TEXT	tinyxpath/tinyxml.h	/^		TEXT,$/;"	e	enum:TiXmlNode::NodeType
 TINYXML_INCLUDED	tinyxpath/tinyxml.h	27;"	d
@@ -2335,7 +2333,6 @@ operator <	tinyxpath/tinyxml.h	/^	bool operator<( const TiXmlAttribute& rhs )	 c
 operator <<	XmlPsApp.cc	/^std::ostream & operator <<(std::ostream & os,  SubGen  & subg)$/;"	f
 operator <<	XmlPsAppMessageObserver.cc	/^std::ostream& operator<< (std::ostream& os, XmlPsAppMessageObserver::MsgInfo const & msgInfo) {$/;"	f
 operator <<	XmlPsAppMessageObserver.cc	/^std::ostream& operator<< (std::ostream& os, XmlPsAppMessageObserver::NodeMessagePair const & nmp) {$/;"	f
-operator <<	XmlPsAppMessageObserver.cc	/^std::ostream& operator<< (std::ostream& os, XmlPsAppMessageObserver::Publication const & pub) {$/;"	f
 operator <<	XmlPsAppMessageObserver.cc	/^std::ostream& operator<< (std::ostream& os, XmlPsAppMessageObserver::Subscription const & sub) {$/;"	f
 operator <<	tinyxpath/tinystr.h	/^	TiXmlOutStream & operator << (const TiXmlString & in)$/;"	f	class:TiXmlOutStream	access:public	signature:(const TiXmlString & in)
 operator <<	tinyxpath/tinystr.h	/^	TiXmlOutStream & operator << (const char * in)$/;"	f	class:TiXmlOutStream	access:public	signature:(const char * in)
@@ -2395,7 +2392,6 @@ prev	tinyxpath/tinyxml.h	/^	TiXmlNode*		prev;$/;"	m	class:TiXmlNode	access:prote
 program_transform_name	tinyxpath/Makefile	/^program_transform_name = s,x,x,$/;"	m
 psdir	tinyxpath/Makefile	/^psdir = ${docdir}$/;"	m
 ptr_2_and_flag	tinyxpath/node_set.cc	/^class ptr_2_and_flag $/;"	c	namespace:TinyXPath	file:
-pubList	XmlPsAppMessageObserver.h	/^        std::map<int, Publication> pubList;$/;"	m	class:XmlPsAppMessageObserver
 pubRate	XmlPsApp.h	/^  double pubRate;$/;"	m	class:XmlPsApp
 quit	tinyxpath/tinystr.h	/^	void quit()$/;"	f	class:TiXmlString	access:private	signature:()
 random_line	XmlPsApp.cc	/^std::string SubGen::random_line(std::string filepath)$/;"	f	class:SubGen
@@ -2420,13 +2416,12 @@ sbindir	tinyxpath/Makefile	/^sbindir = ${exec_prefix}\/sbin$/;"	m
 sendAt	XmlPsAppMessageObserver.h	/^        std::map<NodeMessagePair, simtime_t> sendAt;$/;"	m	class:XmlPsAppMessageObserver
 sendDataToGroup	XmlPsApp.cc	/^void XmlPsApp::sendDataToGroup(OverlayKey ovkey,std::string data){$/;"	f	class:XmlPsApp
 sendMessages	XmlPsApp.h	/^	bool sendMessages;$/;"	m	class:XmlPsApp
-sent	XmlPsAppMessageObserver.h	/^            uint64_t sent;$/;"	m	struct:XmlPsAppMessageObserver::Publication
+sent	XmlPsAppMessageObserver.h	/^            uint64_t sent;$/;"	m	struct:XmlPsAppMessageObserver::Subscription
 sentMessage	XmlPsAppMessageObserver.cc	/^void XmlPsAppMessageObserver::sentMessage(XmlPsAppTracedMessage* msg) {$/;"	f	class:XmlPsAppMessageObserver
 sentinel	tinyxpath/tinyxml.h	/^	TiXmlAttribute sentinel;$/;"	m	class:TiXmlAttributeSet	access:private
 set_size	tinyxpath/tinystr.h	/^	void set_size(size_type sz) { rep_->str[ rep_->size = sz ] = '\\0'; }$/;"	f	class:TiXmlString	access:private	signature:(size_type sz)
 sharedstatedir	tinyxpath/Makefile	/^sharedstatedir = ${prefix}\/com$/;"	m
 simpleTextPrint	tinyxpath/tinyxml.h	/^	bool simpleTextPrint;$/;"	m	class:TiXmlPrinter	access:private
-size	XmlPsAppMessageObserver.h	/^            uint32_t size;$/;"	m	struct:XmlPsAppMessageObserver::Publication
 size	XmlPsAppMessageObserver.h	/^            uint32_t size;$/;"	m	struct:XmlPsAppMessageObserver::Subscription
 size	bloom_filter.hpp	/^   inline virtual std::size_t size() const$/;"	f	class:bloom_filter	access:public	signature:() const
 size	bloom_filter.hpp	/^   inline virtual std::size_t size() const$/;"	f	class:compressible_bloom_filter	access:public	signature:() const

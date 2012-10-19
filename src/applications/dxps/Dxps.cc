@@ -89,13 +89,13 @@ void Dxps::finishApp()
 
     globalStatistics->addStdDev("Dxps: Received JOIN Messages/s",
             numJoins / time);
-    globalStatistics->addStdDev("Dxps: Forwarded Multicast Messages/s",
+    globalStatistics->addStdDev("Dxps: Forwarded Publication Messages/s",
             numForward / time);
-    globalStatistics->addStdDev("Dxps: Forwarded Multicast Bytes/s",
+    globalStatistics->addStdDev("Dxps: Forwarded Publication Bytes/s",
             forwardBytes / time);
-    globalStatistics->addStdDev("Dxps: Received Multicast Messages/s (subscribed groups only)",
+    globalStatistics->addStdDev("Dxps: Received Publication Messages/s (subscribed groups only)",
             numReceived / time);
-    globalStatistics->addStdDev("Dxps: Received Multicast Bytes/s (subscribed groups only)",
+    globalStatistics->addStdDev("Dxps: Received Publication Bytes/s (subscribed groups only)",
             receivedBytes / time);
     globalStatistics->addStdDev("Dxps: Send Heartbeat Messages/s",
             numHeartbeat / time);

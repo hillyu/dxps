@@ -41,7 +41,7 @@ XmlPsAppMessageObserver::~XmlPsAppMessageObserver() {
 
 void XmlPsAppMessageObserver::initialize() {
     WATCH_MAP(subList);
-    WATCH_MAP(pubList);
+    //WATCH_MAP(pubList);
     WATCH_MAP(msgList);
     WATCH_MAP(joinedAt);
     WATCH_MAP(sendAt);
@@ -64,25 +64,44 @@ void XmlPsAppMessageObserver::finish() { //TODO:need to rewrite the scalar gener
     uint64_t totalReceived = 0;
     for (std::map<int, Subscription>::iterator i = subList.begin(); i != subList.end(); ++i) {
         std::stringstream message;
-        message << "XmlPsAppMessageObserver: Node " << i->first;
+
+        cModule* module = OPP::cSimulation::getActiveSimulation()->getModule(i->first);
+        message << "XmlPsAppMessageObserver: Node " <<module->getParentModule()->getParentModule()->getIndex();
         std::string name;
 
-        //name = message.str() + " Sent Messages";
-        //recordScalar(name.c_str(), (double)i->second.sent);
+        name = message.str() + " Sent Subscription";
+        recordScalar(name.c_str(), (double)i->second.size);
+
 
         name = message.str() + " Received Messages";
         recordScalar(name.c_str(), (double)i->second.received);
 
-        //name = message.str() + " Delivered Percentage";
-        //recordScalar(name.c_str(), ((double)i->second.received * 100.0) / (double)i->second.sent);
+        name = message.str() + " False Positives";
+        recordScalar(name.c_str(), (double)i->second.false_positive) ;
 
-        //totalSent += i->second.sent;
+        name = message.str() + " Sent Publication";
+        recordScalar(name.c_str(), (double)i->second.sent);
+
+        totalSent += i->second.sent;
         totalReceived += i->second.received;
     }
+    for (std::map<NodeMessagePair, MsgInfo>::iterator i = msgList.begin(); i != msgList.end(); ++i) {
+        std::stringstream message;
+        std::stringstream content;
 
-    //recordScalar("XmlPsAppMessageObserver: Total Sent Messages", (double)totalSent);
+        std::string name;
+
+        //message << "XmlPsAppMessageObserver: Message " <<i->first;
+        //message <<" toKey "<< i->second.key.toString();
+        
+        //name = message.str() + " Subscriber";
+        globalStatistics->addStdDev("XmlPsAppMessageObserver: Subscribers/Publishing" , (double)i->second.subSize);
+       
+    }
+
+    recordScalar("XmlPsAppMessageObserver: Total Sent Messages", (double)totalSent);
     recordScalar("XmlPsAppMessageObserver: Total Received Messages", (double)totalReceived);
-    recordScalar("XmlPsAppMessageObserver: Total Delivered Percentage", ((double)totalReceived * 100.0) / (double)totalSent);
+    recordScalar("XmlPsAppMessageObserver: Total pub/sub ratio", ((double)totalSent * 100.0) / ((double)totalReceived * 100.0));
 
     simtime_t time = globalStatistics->calcMeasuredLifetime(creationTime);
     if ( time >= GlobalStatistics::MIN_MEASURED ) {
@@ -143,8 +162,7 @@ void XmlPsAppMessageObserver::sentMessage(XmlPsAppTracedMessage* msg) {
         error("%s called with null message.", __PRETTY_FUNCTION__);
     }         
     int moduleId=(msg->getSenderId());
-     pubList[moduleId].size += 1;
-     pubList[moduleId].sent +=1;
+     subList[moduleId].sent +=1;
      NodeMessagePair nmp=NodeMessagePair(msg->getMcastId(),moduleId);
     sendAt[nmp] = OPP::simTime();
     msgList[nmp].key=msg->getGroupId();
@@ -196,9 +214,9 @@ void XmlPsAppMessageObserver::nodeDead(int moduleId) {
 std::ostream& operator<< (std::ostream& os, XmlPsAppMessageObserver::Subscription const & sub) {
     return os << "Num(Nodes): " << sub.size << "; Messages Received: " << sub.received <<", Fase Possitive: "<<sub.false_positive<< ", Fase Possitive rate: "<<(double)sub.false_positive/(double)sub.received;
 }
-std::ostream& operator<< (std::ostream& os, XmlPsAppMessageObserver::Publication const & pub) {
-    return os << "Num(Nodes): " << pub.size << "; Messages Sent: " << pub.sent;
-}
+//std::ostream& operator<< (std::ostream& os, XmlPsAppMessageObserver::Publication const & pub) {
+    //return os << "Num(Nodes): " << pub.size << "; Messages Sent: " << pub.sent;
+//}
 std::ostream& operator<< (std::ostream& os, XmlPsAppMessageObserver::MsgInfo const & msgInfo) {
     os << "Msg key: "<<msgInfo.key<<" Num(Subscribers): " << msgInfo.subSize << "; Subscriber List: (" ;
         std::set<int>::iterator subiit=msgInfo.subscriber.begin();

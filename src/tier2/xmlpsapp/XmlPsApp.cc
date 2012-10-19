@@ -201,8 +201,8 @@ void XmlPsApp::joinGroup(OverlayKey ovkey)
 
     ALMSubscribeMessage* msg = new ALMSubscribeMessage;
     msg->setGroupId(ovkey);
-Filter * filter=new Filter;
-filter->setFilter(OverlayKey(1));//TODO: temperarily set it to 1
+    Filter * filter=new Filter;
+    filter->setFilter(OverlayKey(1));//TODO: temperarily set it to 1
     msg->encapsulate(filter);
     send(msg, "to_lowerTier");
 

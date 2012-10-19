@@ -156,7 +156,7 @@ void XmlPsApp::handleTimerEvent( cMessage* msg )
             //sendDataToGroup( subscribeList[i].getBloom());
           while (1){
             std::string xmlfile=xmlGen();
-            std::cout<<"I got the file to bloom"<<xmlfile<<"\n";
+            //std::cout<<"I got the file to bloom"<<xmlfile<<"\n";
             OverlayKey tmpkey=xml2bloom(xmlfile);
             if (!tmpkey.isUnspecified()){
             sendDataToGroup(tmpkey,xmlfile);

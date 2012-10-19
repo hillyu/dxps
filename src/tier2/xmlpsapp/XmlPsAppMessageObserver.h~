@@ -75,29 +75,30 @@ class XmlPsAppMessageObserver : public cSimpleModule {
          * Tracks data related to a single group
          */
         struct Subscription {
-            Subscription() : size(0), received(0),false_positive(0) {}
+            Subscription() : size(0), sent(0), received(0),false_positive(0) {}
 
             // Number of nodes in the group
             uint32_t size;
+            // Number of messges sent total by certain nodes
+            uint64_t sent;
 
-
-            // Number of messages recieved total by all nodes
+            // Number of messages recieved total by certain nodes
             uint64_t received;
 
             //number of messages receibed that is false positive error.
-            uint64_t false_positive;
+            long false_positive;
 
         }; 
-        struct Publication {
-            Publication() : size(0), sent(0) {}
-//add delay.
-            // Number of nodes in the group
-            uint32_t size;
+        //struct Publication {
+            //Publication() : size(0), sent(0) {}
+////add delay.
+            //// Number of nodes in the group
+            //uint32_t size;
 
-            // Number of messages that should have been received
-            uint64_t sent;
+            //// Number of messages that should have been received
+            //uint64_t sent;
 
-        };
+        //};
         struct MsgInfo {
         MsgInfo() : key(OverlayKey::UNSPECIFIED_KEY),subSize(0),subscriber() {}
         OverlayKey key;
@@ -115,7 +116,7 @@ class XmlPsAppMessageObserver : public cSimpleModule {
         // Info about a specific subscriptions
         std::map<int, Subscription> subList;
         // Info about a specific publications
-        std::map<int, Publication> pubList;
+        //std::map<int, Publication> pubList;
 
         // When a node subscribed with certain subscription.
         std::map<NodeKeyPair, simtime_t> joinedAt;
@@ -140,14 +141,14 @@ class XmlPsAppMessageObserver : public cSimpleModule {
         GlobalStatistics* globalStatistics;
 
         friend std::ostream& operator<< (std::ostream& os, XmlPsAppMessageObserver::Subscription const & mg);
-        friend std::ostream& operator<< (std::ostream& os, XmlPsAppMessageObserver::Publication const & mg);
+        //friend std::ostream& operator<< (std::ostream& os, XmlPsAppMessageObserver::Publication const & mg);
         friend std::ostream& operator<< (std::ostream& os, XmlPsAppMessageObserver::MsgInfo const & msgInfo);
         friend std::ostream& operator<< (std::ostream& os, XmlPsAppMessageObserver::NodeKeyPair const & ngp);
         friend std::ostream& operator<< (std::ostream& os, XmlPsAppMessageObserver::NodeMessagePair const & nmp);
 };
 
 std::ostream& operator<< (std::ostream& os, XmlPsAppMessageObserver::Subscription const & sub);
-std::ostream& operator<< (std::ostream& os, XmlPsAppMessageObserver::Publication const & pub);
+//std::ostream& operator<< (std::ostream& os, XmlPsAppMessageObserver::Publication const & pub);
 std::ostream& operator<< (std::ostream& os, XmlPsAppMessageObserver::MsgInfo const & msgInfo);
 std::ostream& operator<< (std::ostream& os, XmlPsAppMessageObserver::NodeKeyPair const & ngp);
 std::ostream& operator<< (std::ostream& os, XmlPsAppMessageObserver::NodeMessagePair const & nmp);
