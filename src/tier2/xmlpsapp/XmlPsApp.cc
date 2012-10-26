@@ -59,6 +59,7 @@ void XmlPsApp::initializeApp(int stage)
     xpepath=par("xpepath").stdstringValue(); 
     xmllist=par("xmllist").stdstringValue();
     appStartDelay=par("appStartDelay");
+    filter_l=par("filter_l");
 }
 
 
@@ -95,80 +96,39 @@ void XmlPsApp::handleTimerEvent( cMessage* msg )
     if (subscribeList.size()>=maxSubscription)
       joinGroups=false;
     //if (overlay->getThisNode().getKey().toDouble()==2 && subscribeList.empty()) {//FIXME;; test should use following line
-    if (subscribeList.empty()) {
-    //if (random < subRate && joinGroups) {
-        SubGen sub (bloom_l,bloom_k,overlay->getThisNode().getKey(),   xpepath);
-        OverlayKey filter= OverlayKey(sub.getBloom());
-        std::vector<SubGen>::iterator it;
-        it =find(subscribeList.begin(),subscribeList.end(),sub);
-        if (!filter.isUnspecified() && it==subscribeList.end())
-        {
-          EV <<"the xpe is:"<<sub.getXpe().c_str()<<"\n";
-          EV <<"the bloom filter from list is:"<<subscribeList.back().getBloom().toString()<<"\n";
-          subscribe(filter);
-          subscribeList.push_back (sub);
-        }
+    //if (subscribeList.empty()) {
+      if (random < subRate && joinGroups) {
+      SubGen sub (bloom_l,bloom_k,overlay->getThisNode().getKey(),   xpepath);
+      OverlayKey filter= OverlayKey(sub.getBloom());
+      std::vector<SubGen>::iterator it;
+      it =find(subscribeList.begin(),subscribeList.end(),sub);
+      if (!filter.isUnspecified() && it==subscribeList.end())
+      {
+        EV <<"the xpe is:"<<sub.getXpe().c_str()<<"\n";
+        EV <<"the bloom filter from list is:"<<subscribeList.back().getBloom().toString()<<"\n";
+        subscribe(filter);
+        subscribeList.push_back (sub);
+      }
     }
-      //else if( (random < subRate && joinGroups) ) {
-      ////if( (random < subRate && joinGroups)||groupNum<1){
-
-            //bloom_filter bloomfilter (bloom_l,bloom_k);
-            //SubGen sub (bloomfilter);
-            //bool isrepeat=false;
-            //bool isblrepeat=false;
-            //for (size_t i = 0; i < subscribeList.size(); ++i) {
-                //if ((subscribeList[i].getBloom()== sub.getBloom())){
-                    //isblrepeat=true;
-
-                //}
-                //if (subscribeList[i].getXpe()==sub.getXpe()) {
-                    //isrepeat=true;
-                //}
-            //}
-            //if (!isrepeat) {
-                //if (!isblrepeat) {
-                    //subscribe(sub.getBloom());
-                //}
-                //subscribeList.push_back (sub);
-            //}
-
-    //}
-//TODO Temperarily turn this off 
-
-
-
-        //TODO have no leavemsg handling at current pahse.
-        //else if( random < subRate+unsubRate && joinGroups ) {
-            //int i=intuniform(1, subscribeList.size());
-            //i=i-1;
-            //leaveGroup( subscribeList[i].getBloom());
-
-            //EV<<"the size of sublist is"<<subscribeList.size()<<"\n";
-            //EV<<"the xpe of sublist is"<<subscribeList[i].getXpe()<<"\n";
-            ////EV <<"unsubscribe to"<<(unsigned long)*(subscribeList[i].getBloom())<<"\n";
-            //EV <<"unsubscribe to: "<<subscribeList[i].getBloom().toString()<<"\n";
-            //subscribeList.erase (subscribeList.begin()+i);
-
-        //}
-        else if (random < subRate+pubRate && sendMessages ) {//FIXME only let 15 send.
+      else if (random < subRate+pubRate && sendMessages ) {//FIXME only let 15 send.
         //else if (sendMessages ) {//FIXME only let 15 send.
-            //int i=(intuniform(1, subscribeList.size())-1);
-            //sendDataToGroup( subscribeList[i].getBloom());
-          while (1){
-            std::string xmlfile=xmlGen();
-            //std::cout<<"I got the file to bloom"<<xmlfile<<"\n";
-            OverlayKey tmpkey=xml2bloom(xmlfile);
-            if (!tmpkey.isUnspecified()){
+        //int i=(intuniform(1, subscribeList.size())-1);
+        //sendDataToGroup( subscribeList[i].getBloom());
+        while (1){
+          std::string xmlfile=xmlGen();
+          //std::cout<<"I got the file to bloom"<<xmlfile<<"\n";
+          OverlayKey tmpkey=xml2bloom(xmlfile);
+          if (!tmpkey.isUnspecified()){
             sendDataToGroup(tmpkey,xmlfile);
             break;
-            }
           }
-
-            //EV <<"data send to"<<(unsigned long)*subscribeList[i].getBloom()<<"\n";
-            //
         }
-        scheduleAt( simTime() + 10, timer );
-    }
+
+        //EV <<"data send to"<<(unsigned long)*subscribeList[i].getBloom()<<"\n";
+        //
+      }
+      scheduleAt( simTime() + 10, timer );
+      }
 
 }
 void XmlPsApp::subscribe(OverlayKey ovkey){
@@ -199,7 +159,7 @@ void XmlPsApp::recursiveJoin(OverlayKey ovkey, int i){
 void XmlPsApp::joinGroup(OverlayKey ovkey)
 {
 
-    ALMSubscribeMessage* msg = new ALMSubscribeMessage;
+    ALMSubscribeMessage* msg = new ALMSubscribeMessage("Subscribe Message");
     msg->setGroupId(ovkey);
     Filter * filter=new Filter;
     filter->setFilter(OverlayKey(1));//TODO: temperarily set it to 1
@@ -220,10 +180,11 @@ void XmlPsApp::leaveGroup(OverlayKey ovkey)
     xmlpsapp_observer->leftGroup(getId(), ovkey);
 }
 
+	    //dataMsg->setDstLogicalNodeKey(subMsg->getGroupId());
 //void XmlPsApp::sendDataToGroup(const unsigned char *buffer, uint32_t size){
 void XmlPsApp::sendDataToGroup(OverlayKey ovkey,std::string data){
 
-    ALMMulticastMessage* msg = new ALMMulticastMessage("Multicast message");
+    ALMMulticastMessage* msg = new ALMMulticastMessage("Publication message");
     //msg->setGroupId(OverlayKey (buffer, size));
     msg->setGroupId(ovkey);
     //TODO maybe have something to do with the ned file definition of the msg type.
@@ -235,7 +196,8 @@ void XmlPsApp::sendDataToGroup(OverlayKey ovkey,std::string data){
     traced->setXmlFileName(data.c_str());
     traced->setByteLength(msglen);
     Filter* filter=new Filter;
-    filter->setFilter(OverlayKey(1));//TODO: temperarily set it to 1
+    filter->setFilter(OverlayKey(3));//TODO: temperarily set it to 1
+    filter->setBitLength(filter_l);
     traced->encapsulate(filter);
     msg->encapsulate(traced);
 
@@ -397,7 +359,7 @@ SubGen::SubGen(int l, int k, OverlayKey mykey, std::string xpelist){
     parseXpe(tmpxpe+"/",filter,"",i);
     size=filter->size()/bits_per_char;
     OverlayKey tmpkey=OverlayKey (filter->table(), size);
-    //std::cout<<tmpxpe<<"xpe_bloom: "<<tmpkey<<" mykey :"<<mykey<<"\n";
+    std::cout<<tmpxpe<<"xpe_bloom: "<<tmpkey<<" mykey :"<<mykey<<"\n";
     if (tmpkey==mykey){
       bloom=tmpkey;
       xpe=tmpxpe;

@@ -31,10 +31,10 @@ class DxpsTimer;
 // Length definition
 static const int DXPS_WRONGROOT_L = 8;
 static const int DXPS_EMPTYFLAG_L = 8;
-static const int DXPS_FILTER_L = 8;//TODO: should be bloom filter lenght
+//static const int DXPS_FILTER_L = 8;//TODO: should be bloom filter lenght
 
 // HACK: logicalNodeKey field nor counted in length calculation (see message definition)
-#define DXPS_JOINCALL_L(msg) (2*KEY_L+BASECALL_L(msg))
+#define DXPS_JOINCALL_L(msg) (BASECALL_L(msg))
 #define DXPS_JOINRESPONSE_L(msg) (BASECALL_L(msg))
 #define DXPS_PUBLISHCALL_L(msg) (BASECALL_L(msg))
 #define DXPS_PUBLISHRESPONSE_L(msg) (BASECALL_L(msg) + DXPS_WRONGROOT_L)
@@ -42,7 +42,7 @@ static const int DXPS_FILTER_L = 8;//TODO: should be bloom filter lenght
 #define DXPS_SUBSCRIPTIONREFRESH_L(msg) (NODEHANDLE_L + KEY_L)
 #define DXPS_LEAVE_L(msg) (NODEHANDLE_L + KEY_L)
 #define DXPS_DATA_L(msg) (KEY_L + DXPS_EMPTYFLAG_L)
-#define DXPS_SUBSCRIPTIONMESSAGE_L(msg) (KEY_L+DXPS_FILTER_L)
+#define DXPS_SUBSCRIPTIONMESSAGE_L(msg) (KEY_L + DXPS_EMPTYFLAG_L)
 }}
 
 

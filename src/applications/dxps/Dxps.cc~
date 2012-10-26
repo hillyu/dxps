@@ -89,26 +89,26 @@ void Dxps::finishApp()
 
     globalStatistics->addStdDev("Dxps: Received JOIN Messages/s",
             numJoins / time);
-    globalStatistics->addStdDev("Dxps: Forwarded Multicast Messages/s",
+    globalStatistics->addStdDev("Dxps: Forwarded Publication Messages/s",
             numForward / time);
-    globalStatistics->addStdDev("Dxps: Forwarded Multicast Bytes/s",
+    globalStatistics->addStdDev("Dxps: Forwarded Publication Bytes/s",
             forwardBytes / time);
-    globalStatistics->addStdDev("Dxps: Received Multicast Messages/s (subscribed groups only)",
+    globalStatistics->addStdDev("Dxps: Received Publication Messages/s (subscribed groups only)",
             numReceived / time);
-    globalStatistics->addStdDev("Dxps: Received Multicast Bytes/s (subscribed groups only)",
+    globalStatistics->addStdDev("Dxps: Received Publication Bytes/s (subscribed groups only)",
             receivedBytes / time);
-    globalStatistics->addStdDev("Dxps: Send Heartbeat Messages/s",
-            numHeartbeat / time);
-    globalStatistics->addStdDev("Dxps: Send Heartbeat Bytes/s",
-            heartbeatBytes / time);
-    globalStatistics->addStdDev("Dxps: Send Subscription Refresh Messages/s",
-            numSubscriptionRefresh / time);
-    globalStatistics->addStdDev("Dxps: Send Subscription Refresh Bytes/s",
-            subscriptionRefreshBytes / time);
-    globalStatistics->addStdDev("Dxps: Number of Child Timeouts/s",
-            numChildTimeout / time);
-    globalStatistics->addStdDev("Dxps: Number of Parent Timeouts/s",
-            numParentTimeout / time);
+    //globalStatistics->addStdDev("Dxps: Send Heartbeat Messages/s",
+            //numHeartbeat / time);
+    //globalStatistics->addStdDev("Dxps: Send Heartbeat Bytes/s",
+            //heartbeatBytes / time);
+    //globalStatistics->addStdDev("Dxps: Send Subscription Refresh Messages/s",
+            //numSubscriptionRefresh / time);
+    //globalStatistics->addStdDev("Dxps: Send Subscription Refresh Bytes/s",
+            //subscriptionRefreshBytes / time);
+    //globalStatistics->addStdDev("Dxps: Number of Child Timeouts/s",
+            //numChildTimeout / time);
+    //globalStatistics->addStdDev("Dxps: Number of Parent Timeouts/s",
+            //numParentTimeout / time);
 }
 
 //void Dxps::forward(OverlayKey* key, cPacket** msg,
@@ -377,7 +377,7 @@ void Dxps::handleTimerEvent( cMessage *msg )
 void Dxps::handleJoinCall( DxpsJoinCall* joinMsg)
 {
 
-    RECORD_STATS(++numJoins);//TODO: need to tweak all RECORD_STATS;
+    RECORD_STATS(++numJoins);
     OverlayKey key = joinMsg->getDstLogicalNodeKey();
     OverlayKey fromKey= joinMsg->getSrcLogicalNodeKey();
     DxpsSubscriptionMessage* dataMsg=dynamic_cast<DxpsSubscriptionMessage*>(joinMsg->decapsulate());
@@ -395,7 +395,6 @@ void Dxps::handleJoinCall( DxpsJoinCall* joinMsg)
     pair<RoutingTableList::iterator, bool> routingInserter; //TODO: to check if it is a vitural node.
     routingInserter = routingTableList.insert( make_pair(key, DxpsRoutingTable(key)) );
     OverlayKey mykey=routingInserter.first->second.getLogicalNodeKey();
-    //TODO start heartbeat
     //forward join request to parent
    getParents(mykey, fromKey,dataMsg);
     //set forwarder, not used currently.
@@ -547,23 +546,23 @@ void Dxps::handlePublishResponse( DxpsPublishResponse* publishResponse )
 //}
 
 void Dxps::subscribeToGroup( ALMSubscribeMessage* subMsg )
-{
-	DxpsSubscriptionMessage* dataMsg = new DxpsSubscriptionMessage( subMsg->getName() );//TODO: edit application subpacket
+{   
+  //decapsulate received upper layer message and recapsulate it in
+  //DxpsSubscriptionMessage;
+	DxpsSubscriptionMessage* dataMsg = new DxpsSubscriptionMessage( subMsg->getName() );//get the name of upper message and use it.
 	    dataMsg->setLogicalNodeKey(overlay->getThisNode().getKey());//For later User. use subscriber's key to add to its RN's routing table as a child.
-	    //dataMsg->setDstLogicalNodeKey(subMsg->getGroupId());
 	    dataMsg->setBitLength( DXPS_SUBSCRIPTIONMESSAGE_L( dataMsg ));
 	    dataMsg->encapsulate( subMsg->decapsulate() );
       
-//	    filter = dynamic_cast<Filter*>(dataMsg->decapsulate());
-//	    dataMsg->encapsulate(filter);
 
 
-	    // Send subscribe ...
+	    // Using DxpsJoinCall (RPC) to send supscriptions in KBR layer. Uses KBR
+      // routing.
 	    DxpsJoinCall* msg = new DxpsJoinCall;
 	    //msg->setSrcLogicalNodeKey( overlay->getThisNode().getKey());
 	    msg->setSrcLogicalNodeKey(OverlayKey());//using unspecified key, needed for spanning tree generation.
 	    msg->setDstLogicalNodeKey(subMsg->getGroupId());
-	    msg->setBitLength( DXPS_PUBLISHCALL_L(msg) );
+	    msg->setBitLength(  DXPS_JOINCALL_L(msg) );
 	    msg->encapsulate( dataMsg );
 
 	//    TODO: set subscription flag, create routingtable if not exists.

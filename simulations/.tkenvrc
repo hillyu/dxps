@@ -1,7 +1,12 @@
 # Partial Tkenv config file -- see $HOME/.tkenvrc as well
-inspector "SimpleUnderlayNetwork" "SimpleUnderlayNetwork" "2" "690x341+1280+154:normal"
-inspector "SimpleUnderlayNetwork.globalObserver" "GlobalObserver" "2" "641x341+2284+424:normal"
-inspector "SimpleUnderlayNetwork.globalObserver.globalFunctions[0]" "GlobalFunctions" "2" "684x341+1300+20:normal"
+inspector "SimpleUnderlayNetwork.globalObserver.globalFunctions[0].function" "XmlPsAppMessageObserverModule" "2" "872x341+1280+0:normal"
+inspector "SimpleUnderlayNetwork" "SimpleUnderlayNetwork" "2" "690x341+1300+42:normal"
+inspector "SimpleUnderlayNetwork.globalObserver" "GlobalObserver" "2" "641x341+2284+446:normal"
+inspector "SimpleUnderlayNetwork.globalObserver.globalFunctions[0]" "GlobalFunctions" "2" "684x341+1300+42:normal"
+inspector "SimpleUnderlayNetwork.overlayTerminal[9]" "SimpleOverlayHost" "2" "780x341+1300+20:normal"
+inspector "SimpleUnderlayNetwork.overlayTerminal[9].tier2.xmlPsApp.subscribeList" "std::vector<SubGen>" "1" "640x315+1809+215:normal"
+inspector "SimpleUnderlayNetwork.overlayTerminal[9].tier2" "XmlPsAppModule" "2" "674x341+1280+0:normal"
+inspector "SimpleUnderlayNetwork.overlayTerminal[9].tier2.xmlPsApp" "XmlPsApp" "1" "688x315+1280+0:normal"
 inspector "SimpleUnderlayNetwork.overlayTerminal[1].tier1" "MulticastScribe" "2" "814x284+68+96:normal"
 inspector "SimpleUnderlayNetwork.overlayTerminal[1].tier1" "MulticastScribe" "3" "808x266+89+119:normal"
 

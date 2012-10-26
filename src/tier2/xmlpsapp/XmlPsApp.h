@@ -82,6 +82,7 @@ private:
 	void recursiveJoin(OverlayKey ovkey, int i);
   int bloom_l;
   int bloom_k;
+  int filter_l;
   int appStartDelay;
 
 };

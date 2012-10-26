@@ -2076,6 +2076,7 @@ expression_result	tinyxpath/xpath_expression.h	/^ 	expression_result (const TiXm
 expression_result	tinyxpath/xpath_expression.h	/^   expression_result ()$/;"	f	class:TinyXPath::expression_result	access:public	signature:()
 expression_result	tinyxpath/xpath_expression.h	/^class expression_result$/;"	c	namespace:TinyXPath
 false_positive	XmlPsAppMessageObserver.h	/^            long false_positive;$/;"	m	struct:XmlPsAppMessageObserver::Subscription
+filter_l	XmlPsApp.h	/^  int filter_l;$/;"	m	class:XmlPsApp
 find	tinyxpath/tinystr.h	/^	size_type find (char lookup) const$/;"	f	class:TiXmlString	access:public	signature:(char lookup) const
 find	tinyxpath/tinystr.h	/^	size_type find (char tofind, size_type offset) const$/;"	f	class:TiXmlString	access:public	signature:(char tofind, size_type offset) const
 find_optimal_parameters	bloom_filter.hpp	/^   void find_optimal_parameters()$/;"	f	class:bloom_filter	access:protected	signature:()
