@@ -48,7 +48,7 @@ protected:
 	//        void joinGroup(const unsigned char *buffer, uint32_t size);
 	//        void leaveGroup(const unsigned char *buffer, uint32_t size);
 	//        void sendDataToGroup(const unsigned char *buffer, uint32_t size);
-	void joinGroup(OverlayKey ovkey);
+	void joinGroup(OverlayKey ovkey,std::string xpath);
 	void leaveGroup(OverlayKey ovkey);
 	void sendDataToGroup(OverlayKey ovkey,std::string data);
 	void handleMCast( ALMMulticastMessage* mcast );
@@ -76,12 +76,16 @@ private:
 	bool sendMessages;
 	int msglen;
 	bool evaluateXpe(std::string xmlfilename);
-	OverlayKey xml2bloom(std::string xmlfilename);
+	OverlayKey xml2bloom(std::string xmlfilename,int l, int k);
 	void recursivex2b(TiXmlElement* parent, bloom_filter & bloomfilter);
-	void subscribe(OverlayKey ovkey);
+	//void subscribe(OverlayKey ovkey);//used for original expansion method, not
+  //working
 	void recursiveJoin(OverlayKey ovkey, int i);
   int bloom_l;
+  int bloom2_l;
   int bloom_k;
+  int bloom2_k;
+  int filter_l; filter size in Bit. to calc packet length.
   int appStartDelay;
 
 };

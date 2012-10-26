@@ -64,6 +64,12 @@ std::pair<std::map<OverlayKey, NfPair>::iterator, bool> DxpsRoutingTable::modChi
     return children.insert(nodepair);
 }
 
+std::pair<std::set<OverlayKey>::iterator,bool> DxpsRoutingTable::insertToOwnFilterList(const OverlayKey& ft){
+ return ownFilterList.insert(ft);
+}
+FilterList DxpsRoutingTable::getOwnFilterList(){
+  return ownFilterList;
+}
 void DxpsRoutingTable::removeChild( const Children& nodepair )
 {
    // children.erase(nodepair);

@@ -44,6 +44,8 @@ simple XmlPsApp extends BaseApp
         int bloom_l;
         int filter_l;
         int bloom_k;
+        int bloom2_l;
+        int bloom2_k;
         string xpepath;
         string xmllist;
         int appStartDelay;

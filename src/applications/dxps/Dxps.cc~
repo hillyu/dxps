@@ -553,6 +553,8 @@ void Dxps::subscribeToGroup( ALMSubscribeMessage* subMsg )
 	    dataMsg->setLogicalNodeKey(overlay->getThisNode().getKey());//For later User. use subscriber's key to add to its RN's routing table as a child.
 	    dataMsg->setBitLength( DXPS_SUBSCRIPTIONMESSAGE_L( dataMsg ));
 	    dataMsg->encapsulate( subMsg->decapsulate() );
+      Filter* filter = dynamic_cast<Filter*>(dataMsg->getEncapsulatedPacket());
+      OverlayKey FilterKey = filter->getFilter();
       
 
 
@@ -565,11 +567,13 @@ void Dxps::subscribeToGroup( ALMSubscribeMessage* subMsg )
 	    msg->setBitLength(  DXPS_JOINCALL_L(msg) );
 	    msg->encapsulate( dataMsg );
 
+
 	//    TODO: set subscription flag, create routingtable if not exists.
 	    pair<RoutingTableList::iterator, bool> groupInserter;
 	    OverlayKey mykey=overlay->getThisNode().getKey();
 	    groupInserter = routingTableList.insert( make_pair(mykey, DxpsRoutingTable(mykey)) );
 	    groupInserter.first->second.setSubscription(true);
+      groupInserter.first->second.insertToOwnFilterList(FilterKey);
 
 	//    if( !groupInserter.first->second.getRendezvousPoint().isUnspecified() ) {
 	//        // ... directly to the rendevouz point, if known ...
@@ -828,12 +832,20 @@ void Dxps::deliverALMDataToGroup( DxpsDataMessage* dataMsg )
     }
 
     // deliver to myself if I'm subscribed to that group //TODO: create a new talbe for subscribers and check that talbe here. and deliver.
+    ismatched=false;//above ismatch in for is temparary variable
     if( it->second.getSubscription() ) {
+      if (subscriptionfilter){
+        Filter* filter = dynamic_cast<Filter*>(dataMsg->getEncapsulatedPacket()->getEncapsulatedPacket());
+        ismatched=matchit(it->second.getOwnFilterList(),filter->getFilter());
+      }
+      
+      if(!subscriptionfilter || ismatched){
         ALMMulticastMessage* mcastMsg = new ALMMulticastMessage( dataMsg->getName() );
         mcastMsg->setGroupId(dataMsg->getLogicalNodeKey());//FIXME:Dose not reveal teh real Group, since I don't have group at all, this is just the parent(logical) nodes.
         mcastMsg->encapsulate( dataMsg->decapsulate() );
         RECORD_STATS(++numReceived; receivedBytes += dataMsg->getByteLength());
         send( mcastMsg, "to_upperTier" );
+      }
     }
 
     delete dataMsg;

@@ -51,6 +51,7 @@ class DxpsRoutingTable
         bool subscription;
         bool amISource;
         bool isForwarder;
+        FilterList ownFilterList;
 
 //        DxpsTimer* parentTimer;
         DxpsTimer* heartbeatTimer;
@@ -73,7 +74,9 @@ class DxpsRoutingTable
 //        std::pair<std::map<OverlayKey, NfPair>::iterator, bool> addParent( const Children& node );
         std::pair<std::map<OverlayKey, NfPair>::iterator, bool> addChild( const Children& node );
         std::pair<std::map<OverlayKey, NfPair>::iterator, bool> modChild( const Children& node );
+        std::pair<std::set<OverlayKey>::iterator,bool> insertToOwnFilterList(const OverlayKey& ft);
 
+        FilterList getOwnFilterList();
         /**
          * Removes a child from the multicast tree
          *

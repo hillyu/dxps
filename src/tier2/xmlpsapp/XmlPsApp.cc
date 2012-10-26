@@ -56,6 +56,8 @@ void XmlPsApp::initializeApp(int stage)
     WATCH(ov_key);
     bloom_l=par("bloom_l");
     bloom_k=par("bloom_k");
+    bloom2_l=par("bloom2_l");
+    bloom2_k=par("bloom2_k");
     xpepath=par("xpepath").stdstringValue(); 
     xmllist=par("xmllist").stdstringValue();
     appStartDelay=par("appStartDelay");
@@ -99,14 +101,14 @@ void XmlPsApp::handleTimerEvent( cMessage* msg )
     //if (subscribeList.empty()) {
       if (random < subRate && joinGroups) {
       SubGen sub (bloom_l,bloom_k,overlay->getThisNode().getKey(),   xpepath);
-      OverlayKey filter= OverlayKey(sub.getBloom());
+      OverlayKey filter= sub.getBloom();
       std::vector<SubGen>::iterator it;
       it =find(subscribeList.begin(),subscribeList.end(),sub);
       if (!filter.isUnspecified() && it==subscribeList.end())
       {
         EV <<"the xpe is:"<<sub.getXpe().c_str()<<"\n";
         EV <<"the bloom filter from list is:"<<subscribeList.back().getBloom().toString()<<"\n";
-        subscribe(filter);
+        joinGroup(filter,sub.getXpe());
         subscribeList.push_back (sub);
       }
     }
@@ -117,7 +119,7 @@ void XmlPsApp::handleTimerEvent( cMessage* msg )
         while (1){
           std::string xmlfile=xmlGen();
           //std::cout<<"I got the file to bloom"<<xmlfile<<"\n";
-          OverlayKey tmpkey=xml2bloom(xmlfile);
+          OverlayKey tmpkey=xml2bloom(xmlfile,bloom_l, bloom_k);
           if (!tmpkey.isUnspecified()){
             sendDataToGroup(tmpkey,xmlfile);
             break;
@@ -131,38 +133,45 @@ void XmlPsApp::handleTimerEvent( cMessage* msg )
       }
 
 }
-void XmlPsApp::subscribe(OverlayKey ovkey){
-    if (expandJoin){
-        recursiveJoin(ovkey,0);
-        EV<<"Original Key to subscribe is : "<<ovkey<<"\n";
-    }
-    else joinGroup(ovkey);
-}
+//void XmlPsApp::subscribe(OverlayKey ovkey){
+    //if (expandJoin){
+        //recursiveJoin(ovkey,0);
+        //EV<<"Original Key to subscribe is : "<<ovkey<<"\n";
+    //}
+    //else joinGroup(ovkey);
+//}
 void XmlPsApp::recursiveJoin(OverlayKey ovkey, int i){
     //while( i <=ovkey.getLength()) {
-    while( i <=bloom_l) {
+    //while( i <=bloom_l) {
 
        // if(i==ovkey.getLength())
-        if(i==bloom_l){
-                    joinGroup(ovkey);
-        EV<<"Genreated Subscrition is:"<<ovkey.toString(2)<<"\n";}
-        else if (ovkey[ovkey.getLength()-i-1]==0){
-            OverlayKey tmpkey=ovkey;
-        tmpkey[ovkey.getLength()-i-1]=1;
-        recursiveJoin(ovkey,i+1);
-        recursiveJoin(tmpkey,i+1);
-        break;
-        }
-        ++i;
-    }
+        //if(i==bloom_l){
+                    //joinGroup(ovkey);
+        //EV<<"Genreated Subscrition is:"<<ovkey.toString(2)<<"\n";}
+        //else if (ovkey[ovkey.getLength()-i-1]==0){
+            //OverlayKey tmpkey=ovkey;
+        //tmpkey[ovkey.getLength()-i-1]=1;
+        //recursiveJoin(ovkey,i+1);
+        //recursiveJoin(tmpkey,i+1);
+        //break;
+        //}
+        //++i;
+    //}
 }
-void XmlPsApp::joinGroup(OverlayKey ovkey)
+void XmlPsApp::joinGroup(OverlayKey ovkey,std::string xpath)
 {
 
     ALMSubscribeMessage* msg = new ALMSubscribeMessage("Subscribe Message");
     msg->setGroupId(ovkey);
     Filter * filter=new Filter;
-    filter->setFilter(OverlayKey(1));//TODO: temperarily set it to 1
+
+    int i=0;//Very important used by recursive funcition, need to reset every new run.
+    bloom_filter filtertmplate (bloom2_l,bloom2_k);
+    SubGen sub;//create a empty subgen object to use its parse function.
+    sub.parseXpe(xpath+"/",&filtertmplate,"",i);
+    int size=filtertmplate.size()/bits_per_char;
+    OverlayKey secondfilter=OverlayKey (filtertmplate.table(), size);
+    filter->setFilter(secondfilter);//TODO: temperarily set it to 1
     msg->encapsulate(filter);
     send(msg, "to_lowerTier");
 
@@ -196,7 +205,7 @@ void XmlPsApp::sendDataToGroup(OverlayKey ovkey,std::string data){
     traced->setXmlFileName(data.c_str());
     traced->setByteLength(msglen);
     Filter* filter=new Filter;
-    filter->setFilter(OverlayKey(3));//TODO: temperarily set it to 1
+    filter->setFilter(xml2bloom(data,bloom2_l,bloom2_k));//TODO: temperarily set it to 1
     filter->setBitLength(filter_l);
     traced->encapsulate(filter);
     msg->encapsulate(traced);
@@ -262,8 +271,8 @@ bool XmlPsApp::evaluateXpe(std::string xmlfilename){
     return true;
 }
 
-OverlayKey XmlPsApp::xml2bloom(std::string xmlfilename){
-    bloom_filter bloomfilter (bloom_l,bloom_k);
+OverlayKey XmlPsApp::xml2bloom(std::string xmlfilename,int l, int k){
+    bloom_filter bloomfilter (l,k);
     TiXmlDocument  XDp_doc;
     //std::cout<<"the file to load:"<<xmlfilename<<"\n";
     if (XDp_doc.LoadFile (xmlfilename.c_str(),TIXML_ENCODING_UTF8 )){
@@ -300,17 +309,17 @@ void XmlPsApp::testxmldoc(std::string xmldoclist){
   std::string filetoload ;
   while( getline( file, filetoload ) ){
 
-  std::cout<<"file to load"<<filetoload<<"\n";
+  //std::cout<<"file to load"<<filetoload<<"\n";
     TiXmlDocument  XDp_doc;
    if (XDp_doc.LoadFile (filetoload.c_str(),TIXML_ENCODING_UTF8 )){
       //std::cout<<"TheRootElementis:"<<XDp_doc.RootElement()->ValueStr()<<"\n";
     recursivex2b(XDp_doc.RootElement (),bloomfilter);
-    std::cout<<"bloom: ["<< OverlayKey (bloomfilter.table(), bloomfilter.size()/bits_per_char);
+    //std::cout<<"bloom: ["<< OverlayKey (bloomfilter.table(), bloomfilter.size()/bits_per_char);
     }
    else {
-   std::cout<<"bloom: [fail]";
+   //std::cout<<"bloom: [fail]";
   }
-    std::cout<<"] success"<<"\n";
+    //std::cout<<"] success"<<"\n";
   }
   file.close();
   throw new cRuntimeError("all files passed test");
@@ -355,15 +364,14 @@ SubGen::SubGen(int l, int k, OverlayKey mykey, std::string xpelist){
   while( getline( file, line ) ){
     std::string tmpxpe = line ;
     int i=0;//Very important used by recursive funcition, need to reset every new run.
-    bloom_filter* filter =new bloom_filter(l,k);
-    parseXpe(tmpxpe+"/",filter,"",i);
-    size=filter->size()/bits_per_char;
-    OverlayKey tmpkey=OverlayKey (filter->table(), size);
-    std::cout<<tmpxpe<<"xpe_bloom: "<<tmpkey<<" mykey :"<<mykey<<"\n";
+    bloom_filter filter (l,k);
+    parseXpe(tmpxpe+"/",&filter,"",i);
+    size=filter.size()/bits_per_char;
+    OverlayKey tmpkey=OverlayKey (filter.table(), size);
+    //std::cout<<tmpxpe<<"xpe_bloom: "<<tmpkey<<" mykey :"<<mykey<<"\n";
     if (tmpkey==mykey){
       bloom=tmpkey;
       xpe=tmpxpe;
-      delete filter;
       break;            
     }
   }

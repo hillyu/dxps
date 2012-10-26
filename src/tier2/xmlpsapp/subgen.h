@@ -13,6 +13,7 @@ public:
 	OverlayKey getBloom() const {return bloom;}
 	std::string getXpe() const {return xpe;}
 	uint32_t  getSize(){return size;}
+	void parseXpe(std::string xpe,bloom_filter* b,std::string parent, int& i);
 inline bool operator== ( const SubGen &other) const
 {
       return (this->getBloom() == other.getBloom() && this->getXpe() == other.getXpe());
@@ -26,7 +27,6 @@ private:
 	//unsigned char bloom[];
 	OverlayKey bloom;
 	std::string xpe;
-	void parseXpe(std::string xpe,bloom_filter* b,std::string parent, int& i);
 
 	uint32_t size;
 };
