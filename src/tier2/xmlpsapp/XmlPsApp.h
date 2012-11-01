@@ -23,12 +23,13 @@
 #include "XmlPsAppMessageObserver.h"
 #include "subgen.h"
 #include <vector>
-#include "bloom_filter.hpp"
+#include "bloom_filter.h"
 #include <iostream>
 #include <fstream>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include "bloom_filter.h"
 
 class XmlPsApp : public BaseApp {
 public:
@@ -77,6 +78,7 @@ private:
 	int msglen;
 	bool evaluateXpe(std::string xmlfilename);
 	OverlayKey xml2bloom(std::string xmlfilename,int l, int k);
+	bloom_filter xml2bloom2(std::string xmlfilename,int l, int k);
 	void recursivex2b(TiXmlElement* parent, bloom_filter & bloomfilter);
 	//void subscribe(OverlayKey ovkey);//used for original expansion method, not
   //working

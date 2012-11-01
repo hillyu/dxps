@@ -43,7 +43,7 @@ std::ostream& operator<< (std::ostream& o, std::map<OverlayKey, DxpsRoutingTable
        // o << "  Parent: " << it->second.getParent() << "\n";
         o << "  Status: " << (it->second.getSubscription() ? "subscriber\n" : "\n")<< (it->second.getIsForwarder() ? "Forwarder\n" : "\n");
         o << "  Children (" << it->second.numChildren() << "):\n";
-        typedef std::set <OverlayKey> FilterList;//OverlayKey type is used to represent the bit-array.
+        typedef std::set <bloom_filter> FilterList;//OverlayKey type is used to represent the bit-array.
                 typedef std::pair<NodeHandle, FilterList> NfPair;
 
         std::map<OverlayKey, NfPair>::iterator iit = it->second.getChildrenBegin();
@@ -53,10 +53,15 @@ std::ostream& operator<< (std::ostream& o, std::map<OverlayKey, DxpsRoutingTable
             FilterList::iterator filter_iterator=iit->second.second.begin();
             for (size_t ti = 0; ti < iit->second.second.size(); ++ti)
             {
-              o<<" "<<*filter_iterator;
+              o<<"[";
+              for (size_t ii = 0; ii < filter_iterator->size()/bits_per_char; ++ii)
+              {
+              o<<(int) (filter_iterator->table()[ii]);
+              }
+              o<<"]";
               filter_iterator++;
             }
-            ++iit;
+            //++iit;
             o<<"\n";
         }
     }
@@ -69,7 +74,8 @@ class Dxps : public BaseApp
     private:
         typedef std::map<OverlayKey, DxpsRoutingTable> RoutingTableList;
         RoutingTableList routingTableList;
-        typedef std::set <OverlayKey> FilterList;//OverlayKey type is used to represent the bit-array.
+        typedef bloom_filter filtertype;
+        typedef std::set <bloom_filter> FilterList;//OverlayKey type is used to represent the bit-array.
         typedef std::pair<NodeHandle, FilterList> NfPair;
         typedef std::pair<OverlayKey, NfPair> Children;
         typedef std::multimap<NodeHandle, DxpsTimer*> ChildTimeoutList;
@@ -94,7 +100,7 @@ class Dxps : public BaseApp
         int subscriptionRefreshBytes;
         std::vector<long int> msgLog;
         //bool isForwarder;// in routingTable already.
-        bool keycompare(OverlayKey subKey,OverlayKey pubKey);
+        bool keycompare(bloom_filter subKey,bloom_filter pubKey);
 
     public:
         Dxps( );
@@ -121,7 +127,7 @@ class Dxps : public BaseApp
 
         virtual void finishApp( );
 
-        bool  matchit(FilterList fromTable, OverlayKey pubKey);
+        bool  matchit(FilterList fromTable, bloom_filter pubKey);
     protected:
         /**
          * Handles a response to a join call send by this node

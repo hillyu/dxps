@@ -1,6 +1,6 @@
 #ifndef INCLUDE_SUBGEN_H
 #define INCLUDE_SUBGEN_H
-#include "bloom_filter.hpp"
+#include "bloom_filter.h"
 #include <iostream>
 #include <fstream>
 #include "OverlayKey.h"

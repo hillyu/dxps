@@ -25,7 +25,7 @@
 #include <assert.h>
 #include "ALMTest.h"
 #include "ALMTestTracedMessage_m.h"
-#include "Filter_m.h"
+//#include "Filter_m.h"
 
 Define_Module(ALMTest);
 
@@ -139,17 +139,17 @@ void ALMTest::handleUpperMessage(cMessage* msg)
 
 void ALMTest::joinGroup(int i)
 {
-    ALMSubscribeMessage* msg = new ALMSubscribeMessage;
-    //msg->setGroupId(OverlayKey(i));Fixme: hardcoded method once implement pubdelivery you can switchback.
-    //create a msg to encapsule "secondary" filter.
-    Filter* filter =new Filter;
-    filter->setFilter(OverlayKey(1));
-    msg->setGroupId(overlay->getThisNode().getKey());
-    msg->encapsulate(filter);
-    send(msg, "to_lowerTier");
+    //ALMSubscribeMessage* msg = new ALMSubscribeMessage;
+    ////msg->setGroupId(OverlayKey(i));Fixme: hardcoded method once implement pubdelivery you can switchback.
+    ////create a msg to encapsule "secondary" filter.
+    ////Filter* filter =new Filter;
+    ////filter->setFilter(OverlayKey(1));
+    //msg->setGroupId(overlay->getThisNode().getKey());
+    //msg->encapsulate(filter);
+    //send(msg, "to_lowerTier");
 
-    //observer->joinedGroup(getId(), OverlayKey(i));
-    observer->joinedGroup(getId(), overlay->getThisNode().getKey());
+    ////observer->joinedGroup(getId(), OverlayKey(i));
+    //observer->joinedGroup(getId(), overlay->getThisNode().getKey());
 }
 
 void ALMTest::leaveGroup(int i)
@@ -163,21 +163,21 @@ void ALMTest::leaveGroup(int i)
 
 void ALMTest::sendDataToGroup( int i )
 {
-    ALMMulticastMessage* msg = new ALMMulticastMessage("Multicast message");
-    msg->setGroupId(OverlayKey(i));
-    ALMTestTracedMessage* traced = new ALMTestTracedMessage("Traced message");
-    traced->setTimestamp();
-    traced->setGroupId(OverlayKey(i));
-    traced->setMcastId(traced->getId());
-    traced->setSenderId(getId());
-    traced->setByteLength(msglen);
-    Filter * filter=new Filter();
-    filter->setFilter(OverlayKey(1));
-    traced->encapsulate(filter);
-    msg->encapsulate(traced);
-    send(msg, "to_lowerTier");
+    //ALMMulticastMessage* msg = new ALMMulticastMessage("Multicast message");
+    //msg->setGroupId(OverlayKey(i));
+    //ALMTestTracedMessage* traced = new ALMTestTracedMessage("Traced message");
+    //traced->setTimestamp();
+    //traced->setGroupId(OverlayKey(i));
+    //traced->setMcastId(traced->getId());
+    //traced->setSenderId(getId());
+    //traced->setByteLength(msglen);
+    //Filter * filter=new Filter();
+    //filter->setFilter(OverlayKey(1));
+    //traced->encapsulate(filter);
+    //msg->encapsulate(traced);
+    //send(msg, "to_lowerTier");
 
-    observer->sentMessage(traced);
+    //observer->sentMessage(traced);
 }
 
 void ALMTest::handleMCast( ALMMulticastMessage* mcast )

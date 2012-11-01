@@ -14,7 +14,7 @@
 // 
 #include "./tinyxpath/xpath_static.h"
 #include "XmlPsApp.h"
-#include "../almtest/Filter_m.h"
+#include "Filter_m.h"
 #include "XmlPsAppTracedMessage_m.h"
 Define_Module(XmlPsApp);
 
@@ -126,8 +126,7 @@ void XmlPsApp::handleTimerEvent( cMessage* msg )
           }
         }
 
-        //EV <<"data send to"<<(unsigned long)*subscribeList[i].getBloom()<<"\n";
-        //
+        
       }
       scheduleAt( simTime() + 10, timer );
       }
@@ -170,11 +169,25 @@ void XmlPsApp::joinGroup(OverlayKey ovkey,std::string xpath)
     SubGen sub;//create a empty subgen object to use its parse function.
     sub.parseXpe(xpath+"/",&filtertmplate,"",i);
     int size=filtertmplate.size()/bits_per_char;
-    OverlayKey secondfilter=OverlayKey (filtertmplate.table(), size);
-    filter->setFilter(secondfilter);//TODO: temperarily set it to 1
-    msg->encapsulate(filter);
-    send(msg, "to_lowerTier");
+    //OverlayKey secondfilter=OverlayKey (filtertmplate.table(), size);
+    filter->setFilterArraySize(size);
+    std::cout<<"filer size"<<filter->getFilterArraySize();
+    for (size_t i = 0; i < size; ++i)
+    {
+      //std::cout<<"original: "<<(int)filtertmplate.table()[i];
+      filter->setFilter(i,filtertmplate.table()[i]);
+      std::cout<<"filter echo:" <<(int)filter->getFilter(i)<<"\n";
+    }
+    //filter->setFilter(filtertmplate.table());//TODO: temperarily set it to 1
 
+    filter->setFilterSize(bloom2_l);
+    msg->encapsulate(filter);
+//TODO: for test purpose.
+    Filter* testfilter = dynamic_cast<Filter*>(msg->getEncapsulatedPacket());
+    std::cout<<"test getencap"<<testfilter->getFilterSize();
+    //test end
+    send(msg, "to_lowerTier");
+    std::cout<<"create sub filter success \n";
     xmlpsapp_observer->joinedGroup(getId(), ovkey);
 }
 
@@ -205,13 +218,19 @@ void XmlPsApp::sendDataToGroup(OverlayKey ovkey,std::string data){
     traced->setXmlFileName(data.c_str());
     traced->setByteLength(msglen);
     Filter* filter=new Filter;
-    filter->setFilter(xml2bloom(data,bloom2_l,bloom2_k));//TODO: temperarily set it to 1
+    const unsigned char* bloomtable=xml2bloom2(data,bloom2_l,bloom2_k).table();
+    filter->setFilterArraySize(bloom2_l/bits_per_char);
+    for (size_t i = 0; i <bloom2_l/bits_per_char ; ++i)
+    {
+    filter->setFilter(i,bloomtable[i]);  
+    }
+    filter->setFilterSize(bloom2_l);
     filter->setBitLength(filter_l);
     traced->encapsulate(filter);
     msg->encapsulate(traced);
 
     send(msg, "to_lowerTier");
-
+    std::cout<<"create data filter success\n";
     xmlpsapp_observer->sentMessage(traced);
 }
 
@@ -283,6 +302,18 @@ OverlayKey XmlPsApp::xml2bloom(std::string xmlfilename,int l, int k){
     //else throw new cRuntimeError("file %s can not be opened",xmlfilename.c_str());
     return OverlayKey::UNSPECIFIED_KEY;
 }
+ bloom_filter XmlPsApp::xml2bloom2(std::string xmlfilename,int l, int k){
+    bloom_filter bloomfilter (l,k);
+    TiXmlDocument  XDp_doc;
+    //std::cout<<"the file to load:"<<xmlfilename<<"\n";
+    if (XDp_doc.LoadFile (xmlfilename.c_str(),TIXML_ENCODING_UTF8 )){
+      //std::cout<<"TheRootElementis:"<<XDp_doc.RootElement()->ValueStr()<<"\n";
+    recursivex2b(XDp_doc.RootElement (),bloomfilter);
+    return bloomfilter;
+    }
+    else throw new cRuntimeError("file %s can not be opened in creating a second filter",xmlfilename.c_str());
+    //return OverlayKey::UNSPECIFIED_KEY;
+}
 void XmlPsApp::recursivex2b(TiXmlElement* parent, bloom_filter & bloomfilter){
 
     TiXmlElement* child = 0;
@@ -306,7 +337,7 @@ void XmlPsApp::testxmldoc(std::string xmldoclist){
   //std::string filepath="/home/hill/sim/OverSim-20101103/samplefiles/xmldocs/filelist.txt";
   bloom_filter bloomfilter (bloom_l,bloom_k);
   std::ifstream file (xmldoclist.c_str());
-  std::string filetoload ;
+  std::string filetoload;
   while( getline( file, filetoload ) ){
 
   //std::cout<<"file to load"<<filetoload<<"\n";
@@ -372,7 +403,6 @@ SubGen::SubGen(int l, int k, OverlayKey mykey, std::string xpelist){
     if (tmpkey==mykey){
       bloom=tmpkey;
       xpe=tmpxpe;
-      delete filter;
       break;            
     }
   }

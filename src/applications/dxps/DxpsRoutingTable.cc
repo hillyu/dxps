@@ -25,7 +25,7 @@
 
 #include "DxpsRoutingTable.h"
 
-typedef std::set <OverlayKey> FilterList;//OverlayKey type is used to represent the bit-array.
+typedef std::set <bloom_filter> FilterList;//OverlayKey type is used to represent the bit-array.
         typedef std::pair<NodeHandle, FilterList> NfPair;
         typedef std::pair<OverlayKey, NfPair> Children;
 DxpsRoutingTable::DxpsRoutingTable( OverlayKey id ) : logicalNodeKey(id)
@@ -64,7 +64,7 @@ std::pair<std::map<OverlayKey, NfPair>::iterator, bool> DxpsRoutingTable::modChi
     return children.insert(nodepair);
 }
 
-std::pair<std::set<OverlayKey>::iterator,bool> DxpsRoutingTable::insertToOwnFilterList(const OverlayKey& ft){
+std::pair<std::set<bloom_filter>::iterator,bool> DxpsRoutingTable::insertToOwnFilterList(const bloom_filter& ft){
  return ownFilterList.insert(ft);
 }
 FilterList DxpsRoutingTable::getOwnFilterList(){

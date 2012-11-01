@@ -28,7 +28,7 @@
 #include <set>
 #include "OverlayKey.h"
 #include "NodeHandle.h"
-
+#include "../../tier2/xmlpsapp/bloom_filter.h"
 class DxpsRoutingTable;
 
 #include "DxpsMessage_m.h"
@@ -44,7 +44,7 @@ class DxpsRoutingTable
         NodeHandle rendezvousPoint;
 
 //        std::map<OverlayKey, NfPair> parents;
-        typedef std::set <OverlayKey> FilterList;//OverlayKey type is used to represent the bit-array.
+        typedef std::set <bloom_filter> FilterList;//OverlayKey type is used to represent the bit-array.
         typedef std::pair<NodeHandle, FilterList> NfPair;
         typedef std::pair<OverlayKey, NfPair> Children;
         std::map<OverlayKey, NfPair> children;
@@ -74,7 +74,7 @@ class DxpsRoutingTable
 //        std::pair<std::map<OverlayKey, NfPair>::iterator, bool> addParent( const Children& node );
         std::pair<std::map<OverlayKey, NfPair>::iterator, bool> addChild( const Children& node );
         std::pair<std::map<OverlayKey, NfPair>::iterator, bool> modChild( const Children& node );
-        std::pair<std::set<OverlayKey>::iterator,bool> insertToOwnFilterList(const OverlayKey& ft);
+        std::pair<std::set<bloom_filter>::iterator,bool> insertToOwnFilterList(const bloom_filter& ft);
 
         FilterList getOwnFilterList();
         /**
@@ -255,6 +255,7 @@ class DxpsRoutingTable
          *
          * @param a the group to compare
          * @return True if the (local) group id is smaller than the a's logicalNodeKey, false else.
+         *
          */
         bool operator< (const DxpsRoutingTable& a) const { return logicalNodeKey < a.getLogicalNodeKey(); };
 };

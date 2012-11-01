@@ -300,7 +300,6 @@ OBJS = \
     $O/underlay/singlehostunderlay/stun/stun.o \
     $O/underlay/singlehostunderlay/stun/udp.o \
     $O/applications/almtest/ALMTestTracedMessage_m.o \
-    $O/applications/almtest/Filter_m.o \
     $O/applications/dht/DHTMessage_m.o \
     $O/applications/dxps/DxpsMessage_m.o \
     $O/applications/i3/I3Message_m.o \
@@ -334,12 +333,12 @@ OBJS = \
     $O/tier2/dhttestapp/DHTTestAppMessages_m.o \
     $O/tier2/p2pns/P2pnsMessage_m.o \
     $O/tier2/simmud/SimMud_m.o \
+    $O/tier2/xmlpsapp/Filter_m.o \
     $O/tier2/xmlpsapp/XmlPsAppTracedMessage_m.o
 
 # Message files
 MSGFILES = \
     applications/almtest/ALMTestTracedMessage.msg \
-    applications/almtest/Filter.msg \
     applications/dht/DHTMessage.msg \
     applications/dxps/DxpsMessage.msg \
     applications/i3/I3Message.msg \
@@ -373,6 +372,7 @@ MSGFILES = \
     tier2/dhttestapp/DHTTestAppMessages.msg \
     tier2/p2pns/P2pnsMessage.msg \
     tier2/simmud/SimMud.msg \
+    tier2/xmlpsapp/Filter.msg \
     tier2/xmlpsapp/XmlPsAppTracedMessage.msg
 
 #------------------------------------------------------------------------------
@@ -529,7 +529,6 @@ $O/applications/almtest/ALMTest.o: applications/almtest/ALMTest.cc \
   ../../INET-OverSim-20101019/src/transport/contract/TCPCommand_m.h \
   common/ProxNodeHandle.h \
   applications/almtest/MessageObserver.h \
-  applications/almtest/Filter_m.h \
   common/IterativeLookupConfiguration.h \
   common/Comparator.h \
   common/RpcMacros.h \
@@ -539,9 +538,6 @@ $O/applications/almtest/ALMTest.o: applications/almtest/ALMTest.cc \
 $O/applications/almtest/ALMTestTracedMessage_m.o: applications/almtest/ALMTestTracedMessage_m.cc \
   applications/almtest/ALMTestTracedMessage_m.h \
   common/OverlayKey.h
-$O/applications/almtest/Filter_m.o: applications/almtest/Filter_m.cc \
-  common/OverlayKey.h \
-  applications/almtest/Filter_m.h
 $O/applications/almtest/MessageObserver.o: applications/almtest/MessageObserver.cc \
   common/GlobalStatistics.h \
   applications/almtest/ALMTestTracedMessage_m.h \
@@ -653,15 +649,16 @@ $O/applications/dxps/Dxps.o: applications/dxps/Dxps.cc \
   common/oversim_byteswap.h \
   common/NodeHandle.h \
   common/BaseTcpSupport.h \
+  applications/dxps/../../tier2/xmlpsapp/Filter_m.h \
   common/BinaryValue.h \
   applications/dxps/DxpsRoutingTable.h \
   common/ChurnGenerator.h \
   common/PeerStorage.h \
   common/Vector2D.h \
   ../../INET-OverSim-20101019/src/transport/contract/TCPCommand_m.h \
+  applications/dxps/../../tier2/xmlpsapp/bloom_filter.h \
   common/ProxNodeHandle.h \
   common/PeerInfo.h \
-  applications/dxps/../almtest/Filter_m.h \
   common/IterativeLookupConfiguration.h \
   common/Comparator.h \
   common/RpcMacros.h \
@@ -697,6 +694,7 @@ $O/applications/dxps/DxpsRoutingTable.o: applications/dxps/DxpsRoutingTable.cc \
   common/NodeHandle.h \
   common/BinaryValue.h \
   applications/dxps/DxpsRoutingTable.h \
+  applications/dxps/../../tier2/xmlpsapp/bloom_filter.h \
   common/Vector2D.h \
   ../../INET-OverSim-20101019/src/networklayer/contract/IPAddress.h \
   common/OverSimMessage_m.h
@@ -4720,7 +4718,6 @@ $O/tier2/simmud/SimMud_m.o: tier2/simmud/SimMud_m.cc \
   common/OverSimMessage_m.h
 $O/tier2/xmlpsapp/XmlPsApp.o: tier2/xmlpsapp/XmlPsApp.cc \
   ../../INET-OverSim-20101019/src/base/INETDefs.h \
-  tier2/xmlpsapp/bloom_filter.hpp \
   ../../INET-OverSim-20101019/src/networklayer/contract/IPvXAddress.h \
   common/AbstractLookup.h \
   ../../INET-OverSim-20101019/src/transport/contract/TCPSocketMap.h \
@@ -4738,6 +4735,7 @@ $O/tier2/xmlpsapp/XmlPsApp.o: tier2/xmlpsapp/XmlPsApp.cc \
   ../../INET-OverSim-20101019/src/base/INotifiable.h \
   common/BaseApp.h \
   common/NodeVector.h \
+  tier2/xmlpsapp/bloom_filter.h \
   ../../INET-OverSim-20101019/src/transport/contract/TCPSocket.h \
   applications/almtest/ALMTestTracedMessage_m.h \
   tier2/xmlpsapp/./tinyxpath/byte_stream.h \
@@ -4750,7 +4748,6 @@ $O/tier2/xmlpsapp/XmlPsApp.o: tier2/xmlpsapp/XmlPsApp.cc \
   common/CommonMessages_m.h \
   tier2/xmlpsapp/./tinyxpath/lex_util.h \
   common/ExtTCPSocketMap.h \
-  applications/almtest/../almtest/Filter_m.h \
   common/NodeHandle.h \
   tier2/xmlpsapp/./tinyxpath/xpath_stack.h \
   common/BaseTcpSupport.h \
@@ -4763,6 +4760,7 @@ $O/tier2/xmlpsapp/XmlPsApp.o: tier2/xmlpsapp/XmlPsApp.cc \
   common/Vector2D.h \
   tier2/xmlpsapp/XmlPsAppMessageObserver.h \
   common/ProxNodeHandle.h \
+  tier2/xmlpsapp/Filter_m.h \
   tier2/xmlpsapp/./tinyxpath/tinyxml.h \
   common/IterativeLookupConfiguration.h \
   tier2/xmlpsapp/./tinyxpath/xpath_processor.h \

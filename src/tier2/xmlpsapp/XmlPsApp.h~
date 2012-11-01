@@ -23,7 +23,7 @@
 #include "XmlPsAppMessageObserver.h"
 #include "subgen.h"
 #include <vector>
-#include "bloom_filter.hpp"
+#include "bloom_filter.h"
 #include <iostream>
 #include <fstream>
 #include <sys/types.h>
@@ -77,6 +77,7 @@ private:
 	int msglen;
 	bool evaluateXpe(std::string xmlfilename);
 	OverlayKey xml2bloom(std::string xmlfilename,int l, int k);
+	bloom_filter xml2bloom2(std::string xmlfilename,int l, int k);
 	void recursivex2b(TiXmlElement* parent, bloom_filter & bloomfilter);
 	//void subscribe(OverlayKey ovkey);//used for original expansion method, not
   //working
@@ -85,7 +86,7 @@ private:
   int bloom2_l;
   int bloom_k;
   int bloom2_k;
-  int filter_l; filter size in Bit. to calc packet length.
+  int filter_l; //filter size in Bit. to calc packet length.
   int appStartDelay;
 
 };
