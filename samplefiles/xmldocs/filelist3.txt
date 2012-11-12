@@ -1,0 +1,2 @@
+/home/hill/research.cs.wisc.edu/niagara/data/lindoc/SPARC-HOWTO.xml
+/home/hill/research.cs.wisc.edu/niagara/data/lindoc/PA-RISC-Linux-Boot-HOWTO.xml
