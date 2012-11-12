@@ -79,6 +79,7 @@ void XmlPsApp::handleReadyMessage(CompReadyMessage* msg)
 {
     if( (getThisCompType() - msg->getComp() == 1) && msg->getReady() ) {
         groupNum = 0;
+        subPool=SubGen::getPool(bloom_l,bloom_k,overlay->getThisNode().getKey(),xpepath);
         cancelEvent(timer);
         //test functions please comment out
         //testxmldoc(xmllist);
@@ -99,8 +100,12 @@ void XmlPsApp::handleTimerEvent( cMessage* msg )
       joinGroups=false;
     //if (overlay->getThisNode().getKey().toDouble()==2 && subscribeList.empty()) {//FIXME;; test should use following line
     //if (subscribeList.empty()) {
-      if (random < subRate && joinGroups) {
-      SubGen sub (bloom_l,bloom_k,overlay->getThisNode().getKey(),   xpepath);
+      if ((!subPool.empty()) && random < subRate && joinGroups) {
+      //SubGen sub (bloom_l,bloom_k,overlay->getThisNode().getKey(),   xpepath);
+        double rindex=uniform(0,subPool.size());
+        SubGen sub=subPool[rindex];
+        //std::cout<<subPool.size()<<"\n";
+        //std::cout<<sub.getXpe()<<"\n";
       OverlayKey filter= sub.getBloom();
       std::vector<SubGen>::iterator it;
       it =find(subscribeList.begin(),subscribeList.end(),sub);
@@ -167,27 +172,32 @@ void XmlPsApp::joinGroup(OverlayKey ovkey,std::string xpath)
     int i=0;//Very important used by recursive funcition, need to reset every new run.
     bloom_filter filtertmplate (bloom2_l,bloom2_k);
     SubGen sub;//create a empty subgen object to use its parse function.
+    std::cout<<"the xpe to test is:\n"<<xpath;
+    
     sub.parseXpe(xpath+"/",&filtertmplate,"",i);
     int size=filtertmplate.size()/bits_per_char;
     //OverlayKey secondfilter=OverlayKey (filtertmplate.table(), size);
     filter->setFilterArraySize(size);
-    std::cout<<"filer size"<<filter->getFilterArraySize();
+    //std::cout<<"filer size"<<filter->getFilterArraySize();
+    //std::cout<<"subkey is:\n";
     for (size_t i = 0; i < size; ++i)
     {
       //std::cout<<"original: "<<(int)filtertmplate.table()[i];
       filter->setFilter(i,filtertmplate.table()[i]);
-      std::cout<<"filter echo:" <<(int)filter->getFilter(i)<<"\n";
+      //std::cout<<std::hex<<(int) filtertmplate.table()[i];
+      //std::cout<<"filter echo:" <<(int)filter->getFilter(i)<<"\n";
     }
+    //std::cout<<"\n";
     //filter->setFilter(filtertmplate.table());//TODO: temperarily set it to 1
 
     filter->setFilterSize(bloom2_l);
     msg->encapsulate(filter);
 //TODO: for test purpose.
     Filter* testfilter = dynamic_cast<Filter*>(msg->getEncapsulatedPacket());
-    std::cout<<"test getencap"<<testfilter->getFilterSize();
+    //std::cout<<"test getencap"<<testfilter->getFilterSize();
     //test end
     send(msg, "to_lowerTier");
-    std::cout<<"create sub filter success \n";
+    //std::cout<<"create sub filter success \n";
     xmlpsapp_observer->joinedGroup(getId(), ovkey);
 }
 
@@ -218,19 +228,34 @@ void XmlPsApp::sendDataToGroup(OverlayKey ovkey,std::string data){
     traced->setXmlFileName(data.c_str());
     traced->setByteLength(msglen);
     Filter* filter=new Filter;
-    const unsigned char* bloomtable=xml2bloom2(data,bloom2_l,bloom2_k).table();
+    bloom_filter tmpbl=xml2bloom2(data,bloom2_l,bloom2_k);
     filter->setFilterArraySize(bloom2_l/bits_per_char);
+    //std::cout<<"pubKeyfor"<<data<<"\n";
     for (size_t i = 0; i <bloom2_l/bits_per_char ; ++i)
     {
-    filter->setFilter(i,bloomtable[i]);  
+    filter->setFilter(i,tmpbl.table()[i]);  
+    //std::cout<<std::hex<<(int) tmpbl.table()[i];
     }
+    //std::cout<<"\n test answer is; \n";
+    //int i=0;//Very important used by recursive funcition, need to reset every new run.
+    //bloom_filter filtertmplate (bloom2_l,bloom2_k);
+    //SubGen sub;//create a empty subgen object to use its parse function.
+    //std::string xpath1="/club/clubname";
+    //sub.parseXpe(xpath1+"/",&filtertmplate,"",i);
+    //int size=filtertmplate.size()/bits_per_char;
+    //for (size_t i = 0; i < size; ++i)
+    //{
+     //std::cout<<std::hex<<(int) ((tmpbl.table()[i]&filtertmplate.table()[i])^filtertmplate.table()[i]);
+      ////std::cout<<std::hex<<(int) filtertmplate.table()[i];
+    //}
+    //std::cout<<"\n";
     filter->setFilterSize(bloom2_l);
     filter->setBitLength(filter_l);
     traced->encapsulate(filter);
     msg->encapsulate(traced);
 
     send(msg, "to_lowerTier");
-    std::cout<<"create data filter success\n";
+    //std::cout<<"create data filter success\n";
     xmlpsapp_observer->sentMessage(traced);
 }
 
@@ -303,13 +328,19 @@ OverlayKey XmlPsApp::xml2bloom(std::string xmlfilename,int l, int k){
     return OverlayKey::UNSPECIFIED_KEY;
 }
  bloom_filter XmlPsApp::xml2bloom2(std::string xmlfilename,int l, int k){
-    bloom_filter bloomfilter (l,k);
+    bloom_filter bft (l,k);
     TiXmlDocument  XDp_doc;
     //std::cout<<"the file to load:"<<xmlfilename<<"\n";
     if (XDp_doc.LoadFile (xmlfilename.c_str(),TIXML_ENCODING_UTF8 )){
       //std::cout<<"TheRootElementis:"<<XDp_doc.RootElement()->ValueStr()<<"\n";
-    recursivex2b(XDp_doc.RootElement (),bloomfilter);
-    return bloomfilter;
+    recursivex2b(XDp_doc.RootElement (),bft);
+    //std::cout<<"the bloom inside xml2bloom2:\n";
+    //for (size_t i = 0; i <bloom2_l/bits_per_char ; ++i)
+    //{
+      //std::cout<<std::hex<<(int)bft.table()[i];
+    //}
+    //std::cout<<"\n";
+    return bft;
     }
     else throw new cRuntimeError("file %s can not be opened in creating a second filter",xmlfilename.c_str());
     //return OverlayKey::UNSPECIFIED_KEY;
@@ -375,6 +406,11 @@ void XmlPsApp::testxmldoc(std::string xmldoclist){
 
 SubGen::SubGen():xpe(""),size(0),bloom(OverlayKey::UNSPECIFIED_KEY){}
 
+SubGen::SubGen(OverlayKey key, std::string myxpe){
+  bloom=key;
+  xpe=myxpe;
+  size=key.getLength()/bits_per_char;
+}
 SubGen::SubGen(bloom_filter& filter){
     //reading from a subscription pool
     //std::string SUBFILE="/home/hill/sim/OverSim-20101103/samplefiles/xpaths/bib.xpelist";
@@ -467,7 +503,27 @@ void SubGen::parseXpe(std::string xpstr, bloom_filter* bl,std::string parent, in
 }
 
 
-
+std::vector<SubGen> SubGen::getPool(int l, int k, OverlayKey mykey, std::string xpelist)
+{
+  std::vector<SubGen> pool;
+  std::string filepath=xpelist;//"/home/hill/sim/OverSim-20101103/samplefiles/xpaths/bib.xpelist";
+  std::ifstream file (filepath.c_str());
+  std::string line ;
+  while( getline( file, line ) ){
+    std::string tmpxpe = line ;
+    int i=0;//Very important used by recursive funcition, need to reset every new run.
+    bloom_filter filter (l,k);
+    parseXpe(tmpxpe+"/",&filter,"",i);
+    size_t mysize=filter.size()/bits_per_char;
+    OverlayKey tmpkey=OverlayKey (filter.table(), mysize);
+    //std::cout<<tmpxpe<<"xpe_bloom: "<<tmpkey<<" mykey :"<<mykey<<"\n";
+    if (tmpkey==mykey){
+      pool.push_back(SubGen(tmpkey,tmpxpe));
+    }
+  }
+  file.close();
+  return pool;
+}
 
 std::string SubGen::random_line(std::string filepath)
 {

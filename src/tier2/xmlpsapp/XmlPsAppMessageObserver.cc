@@ -62,28 +62,30 @@ void XmlPsAppMessageObserver::initialize() {
 void XmlPsAppMessageObserver::finish() { //TODO:need to rewrite the scalar generator.
     uint64_t totalSent = 0;
     uint64_t totalReceived = 0;
+    uint64_t totalFp =0;
     for (std::map<int, Subscription>::iterator i = subList.begin(); i != subList.end(); ++i) {
-        std::stringstream message;
+        //std::stringstream message;
 
-        cModule* module = OPP::cSimulation::getActiveSimulation()->getModule(i->first);
-        message << "XmlPsAppMessageObserver: Node " <<module->getParentModule()->getParentModule()->getIndex();
-        std::string name;
+        //cModule* module = OPP::cSimulation::getActiveSimulation()->getModule(i->first);
+        //message << "XmlPsAppMessageObserver: Node " <<module->getParentModule()->getParentModule()->getIndex();
+        //std::string name;
 
-        name = message.str() + " Sent Subscription";
-        recordScalar(name.c_str(), (double)i->second.size);
+        //name = message.str() + " Sent Subscription";
+        //recordScalar(name.c_str(), (double)i->second.size);
 
 
-        name = message.str() + " Received Messages";
-        recordScalar(name.c_str(), (double)i->second.received);
+        //name = message.str() + " Received Messages";
+        //recordScalar(name.c_str(), (double)i->second.received);
 
-        name = message.str() + " False Positives";
-        recordScalar(name.c_str(), (double)i->second.false_positive) ;
+        //name = message.str() + " False Positives";
+        //recordScalar(name.c_str(), (double)i->second.false_positive) ;
 
-        name = message.str() + " Sent Publication";
-        recordScalar(name.c_str(), (double)i->second.sent);
+        //name = message.str() + " Sent Publication";
+        //recordScalar(name.c_str(), (double)i->second.sent);
 
         totalSent += i->second.sent;
         totalReceived += i->second.received;
+        totalFp +=i->second.false_positive;
     }
     for (std::map<NodeMessagePair, MsgInfo>::iterator i = msgList.begin(); i != msgList.end(); ++i) {
         std::stringstream message;
@@ -102,6 +104,7 @@ void XmlPsAppMessageObserver::finish() { //TODO:need to rewrite the scalar gener
     recordScalar("XmlPsAppMessageObserver: Total Sent Messages", (double)totalSent);
     recordScalar("XmlPsAppMessageObserver: Total Received Messages", (double)totalReceived);
     recordScalar("XmlPsAppMessageObserver: Total pub/sub ratio", ((double)totalSent * 100.0) / ((double)totalReceived * 100.0));
+    recordScalar("XmlPsAppMessageObserver: Total False Positive rate", ((double)totalFp * 100.0) / ((double)totalReceived * 100.0));
 
     simtime_t time = globalStatistics->calcMeasuredLifetime(creationTime);
     if ( time >= GlobalStatistics::MIN_MEASURED ) {

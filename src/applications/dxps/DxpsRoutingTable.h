@@ -73,7 +73,7 @@ class DxpsRoutingTable
          */
 //        std::pair<std::map<OverlayKey, NfPair>::iterator, bool> addParent( const Children& node );
         std::pair<std::map<OverlayKey, NfPair>::iterator, bool> addChild( const Children& node );
-        std::pair<std::map<OverlayKey, NfPair>::iterator, bool> modChild( const Children& node );
+        void modChild( const Children& node );
         std::pair<std::set<bloom_filter>::iterator,bool> insertToOwnFilterList(const bloom_filter& ft);
 
         FilterList getOwnFilterList();

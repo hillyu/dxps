@@ -29,6 +29,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include "bloom_filter.h"
 
 class XmlPsApp : public BaseApp {
 public:

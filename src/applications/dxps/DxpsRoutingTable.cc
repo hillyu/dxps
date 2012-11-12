@@ -55,13 +55,13 @@ std::pair<std::map<OverlayKey, NfPair>::iterator, bool> DxpsRoutingTable::addChi
 }
 //modify the childern list if the request indicates the insertion of an known child.
 //only update the filter list/routing table.
-std::pair<std::map<OverlayKey, NfPair>::iterator, bool> DxpsRoutingTable::modChild( const Children& nodepair )
+void DxpsRoutingTable::modChild( const Children& nodepair )
 {
    std::map<OverlayKey, NfPair>::iterator it;
    it=children.find(nodepair.first);
    it->second.second.insert(*(nodepair.second.second.begin()));
 
-    return children.insert(nodepair);
+    return;
 }
 
 std::pair<std::set<bloom_filter>::iterator,bool> DxpsRoutingTable::insertToOwnFilterList(const bloom_filter& ft){

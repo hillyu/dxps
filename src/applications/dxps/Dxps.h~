@@ -61,7 +61,7 @@ std::ostream& operator<< (std::ostream& o, std::map<OverlayKey, DxpsRoutingTable
               o<<"]";
               filter_iterator++;
             }
-            //++iit;
+            ++iit;
             o<<"\n";
         }
     }

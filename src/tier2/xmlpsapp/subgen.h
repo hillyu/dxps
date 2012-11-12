@@ -7,13 +7,15 @@
 class SubGen {
 public:
 	SubGen();
+  SubGen(OverlayKey key, std::string myxpe);
 	SubGen(bloom_filter& filter);
   SubGen(int l,int k, OverlayKey mykey, std::string xpelist);
    //    std::ifstream file (filepath.c_str());
 	OverlayKey getBloom() const {return bloom;}
+  static std::vector<SubGen> getPool(int l, int k,OverlayKey mykey, std::string  xpelist); 
 	std::string getXpe() const {return xpe;}
 	uint32_t  getSize(){return size;}
-	void parseXpe(std::string xpe,bloom_filter* b,std::string parent, int& i);
+	static void parseXpe(std::string xpe,bloom_filter* b,std::string parent, int& i);
 inline bool operator== ( const SubGen &other) const
 {
       return (this->getBloom() == other.getBloom() && this->getXpe() == other.getXpe());

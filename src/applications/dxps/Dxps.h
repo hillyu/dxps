@@ -56,12 +56,12 @@ std::ostream& operator<< (std::ostream& o, std::map<OverlayKey, DxpsRoutingTable
               o<<"[";
               for (size_t ii = 0; ii < filter_iterator->size()/bits_per_char; ++ii)
               {
-              o<<(int) (filter_iterator->table()[ii]);
+              o<<std::hex<<(int) (filter_iterator->table()[ii]);
               }
               o<<"]";
               filter_iterator++;
             }
-            //++iit;
+            ++iit;
             o<<"\n";
         }
     }

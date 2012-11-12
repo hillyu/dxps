@@ -4716,6 +4716,8 @@ $O/tier2/simmud/SimMud_m.o: tier2/simmud/SimMud_m.cc \
   common/Vector2D.h \
   ../../INET-OverSim-20101019/src/networklayer/contract/IPAddress.h \
   common/OverSimMessage_m.h
+$O/tier2/xmlpsapp/Filter_m.o: tier2/xmlpsapp/Filter_m.cc \
+  tier2/xmlpsapp/Filter_m.h
 $O/tier2/xmlpsapp/XmlPsApp.o: tier2/xmlpsapp/XmlPsApp.cc \
   ../../INET-OverSim-20101019/src/base/INETDefs.h \
   ../../INET-OverSim-20101019/src/networklayer/contract/IPvXAddress.h \
@@ -4734,8 +4736,8 @@ $O/tier2/xmlpsapp/XmlPsApp.o: tier2/xmlpsapp/XmlPsApp.cc \
   tier2/xmlpsapp/XmlPsAppTracedMessage_m.h \
   ../../INET-OverSim-20101019/src/base/INotifiable.h \
   common/BaseApp.h \
-  common/NodeVector.h \
   tier2/xmlpsapp/bloom_filter.h \
+  common/NodeVector.h \
   ../../INET-OverSim-20101019/src/transport/contract/TCPSocket.h \
   applications/almtest/ALMTestTracedMessage_m.h \
   tier2/xmlpsapp/./tinyxpath/byte_stream.h \

@@ -566,7 +566,7 @@ void Dxps::subscribeToGroup( ALMSubscribeMessage* subMsg )
   dataMsg->encapsulate( subMsg->decapsulate() );
   Filter* filter = dynamic_cast<Filter*>(dataMsg->getEncapsulatedPacket());
   //std::cout<<"test getencap inside"<<filter->getFilterArraySize();
-  std::cout<<"got sub filter \n";
+  //std::cout<<"got sub filter \n";
   unsigned char  bltable[filter->getFilterArraySize()];
 
   for (size_t i = 0; i < filter->getFilterArraySize(); ++i)
@@ -574,10 +574,10 @@ void Dxps::subscribeToGroup( ALMSubscribeMessage* subMsg )
     bltable[i]=filter->getFilter(i);   
     //std::cout<<"bloom filter is:"<<(int)bltable[i];
   }
-  std::cout<<"fitlersize is:"<<filter->getFilterSize();
+  //std::cout<<"fitlersize is:"<<filter->getFilterSize();
   bloom_filter FilterKey (bltable,filter->getFilterSize());
 
-  std::cout<< "I am here";
+  //std::cout<< "I am here";
 
   // Using DxpsJoinCall (RPC) to send supscriptions in KBR layer. Uses KBR
   // routing.
@@ -624,8 +624,7 @@ void Dxps::addChildToRoutingTable( const Children& child, DxpsRoutingTable& rout
   //    }
 
   // add child to group's children list
-  std::pair<std::map<OverlayKey, NfPair>::iterator, bool> inserter =
-      routingTable.addChild( child );
+  std::pair<std::map<OverlayKey, NfPair>::iterator, bool> inserter = routingTable.addChild( child );
   if (!inserter.second){
     routingTable.modChild( child);
   }
@@ -842,8 +841,11 @@ void Dxps::deliverALMDataToGroup( DxpsDataMessage* dataMsg )
       Filter* filter = dynamic_cast<Filter*>(dataMsg->getEncapsulatedPacket()->getEncapsulatedPacket());
       unsigned char  bltable[filter->getFilterArraySize()];
       for (size_t i = 0; i < filter->getFilterArraySize(); ++i) {
+      //for (size_t i = 0; i < 128; ++i) {
         bltable[i]=filter->getFilter(i);   
+        //std::cout<<std::hex<<(int) bltable[i];
       }
+      //std::cout<<"\n";
       ismatched=matchit(cit->second.second,bloom_filter(bltable,filter->getFilterSize()));
     }
 
@@ -864,7 +866,8 @@ void Dxps::deliverALMDataToGroup( DxpsDataMessage* dataMsg )
       unsigned char  bltable[filter->getFilterArraySize()];
       for (size_t i = 0; i < filter->getFilterArraySize(); ++i) {
         bltable[i]=filter->getFilter(i);   
-      }
+      } 
+      //std::cout<<"gonna compare for final destination\n";
       ismatched=matchit(it->second.getOwnFilterList(),bloom_filter(bltable,filter->getFilterSize()));
     }
 
@@ -885,8 +888,22 @@ bool  Dxps::matchit(FilterList fromTable, bloom_filter pubKey)
   FilterList::iterator Filter_it=fromTable.begin();
   for (size_t i = 0; i < fromTable.size(); ++i) {
     if (keycompare(*Filter_it,pubKey)) return true;    
+    //start of debuging code
+    //std::cout<<"subkey After to\n";
+              //for (size_t ii = 0; ii < Filter_it->size()/bits_per_char; ++ii)
+              //{
+                ////std::cout<<std::hex<<(int) (Filter_it->table()[ii]);
+              //}
+              //std::cout<<"\n vs pub size:"<<pubKey.size()<<"\n";
+              //for (size_t ij = 0; ij < pubKey.size()/bits_per_char; ++ij)
+              //{
+                //std::cout<<std::hex<<(int) (pubKey.table()[ij]);
+              //}
+              //std::cout<<"\n";
+              //end of testing.
     Filter_it++;
   }
+  //std::cout<<"EpicFailAll\n";
   return false;
 
 
@@ -900,6 +917,20 @@ bool Dxps::keycompare(bloom_filter subKey,bloom_filter pubKey){
   //if (subKey.getBit(i)==1 && pubKey(i)==1) return false;
   //}
   //return true;
+//std::cout<<"pubkeyafter:\n";
+  //for (size_t ij = 0; ij < pubKey.size()/bits_per_char; ++ij)
+    //{
+      ////std::cout<<std::hex<<(int) (pubKey.table()[ij]);
+    //}
+  //std::cout<<"\n";
+  //std::cout<<"matching result should be 128 0 \n";
+  //for (size_t ii = 0; ii < pubKey.size()/bits_per_char; ++ii)
+  //{
+    
+    ////std::cout<<std::hex<<(int) ((pubKey.table()[ii]&subKey.table()[ii])^subKey.table()[ii]);
+    ////if ((pubKey.table()[ii]&subKey.table()[ii])^subKey.table()[ii]!=0) return false;
+  //}
+  //std::cout<<"\n";
   if ((pubKey & subKey ^ subKey).isZero()) return true;
-  return false;
+  return true;
 }
