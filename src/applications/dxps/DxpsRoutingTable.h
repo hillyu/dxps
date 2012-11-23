@@ -48,10 +48,13 @@ class DxpsRoutingTable
         typedef std::pair<NodeHandle, FilterList> NfPair;
         typedef std::pair<OverlayKey, NfPair> Children;
         std::map<OverlayKey, NfPair> children;
+        std::map<OverlayKey, NfPair> subChildren;//used for subscription, like children list
         bool subscription;
         bool amISource;
         bool isForwarder;
-        FilterList ownFilterList;
+        FilterList ownFilterList;//TODO: put this in side sublist
+
+        
 
 //        DxpsTimer* parentTimer;
         DxpsTimer* heartbeatTimer;
@@ -74,6 +77,8 @@ class DxpsRoutingTable
 //        std::pair<std::map<OverlayKey, NfPair>::iterator, bool> addParent( const Children& node );
         std::pair<std::map<OverlayKey, NfPair>::iterator, bool> addChild( const Children& node );
         void modChild( const Children& node );
+        std::pair<std::map<OverlayKey, NfPair>::iterator, bool> addSubChild( const Children& node );
+        void modSubChild( const Children& node );
         std::pair<std::set<bloom_filter>::iterator,bool> insertToOwnFilterList(const bloom_filter& ft);
 
         FilterList getOwnFilterList();
@@ -92,6 +97,7 @@ class DxpsRoutingTable
          */
 //        std::map<OverlayKey, NfPair>::iterator getParentsBegin();
         std::map<OverlayKey, NfPair>::iterator getChildrenBegin();
+        std::map<OverlayKey, NfPair>::iterator getSubChildrenBegin();
 
         /**
          * Returns an iterator to the end of the children list
@@ -100,6 +106,7 @@ class DxpsRoutingTable
          */
 //        std::map<OverlayKey, NfPair>::iterator getParentsEnd();
         std::map<OverlayKey, NfPair>::iterator getChildrenEnd();
+        std::map<OverlayKey, NfPair>::iterator getSubChildrenEnd();
 
         /**
          * Get the number of children

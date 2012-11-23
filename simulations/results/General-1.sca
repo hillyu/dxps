@@ -1,7 +1,7 @@
 version 2
-run General-1-20121109-14:49:31-11478
+run General-1-20121120-16:53:38-8772
 attr configname General
-attr datetime 20121109-14:49:31
+attr datetime 20121120-16:53:38
 attr experiment General
 attr inifile dxps.ini
 attr iterationvars $n=6
@@ -9,7 +9,7 @@ attr iterationvars2 "$n=6, $repetition=0"
 attr measurement $n=6
 attr n 6
 attr network oversim.underlay.simpleunderlay.SimpleUnderlayNetwork
-attr processid 11478
+attr processid 8772
 attr repetition 0
 attr replication #0
 attr resultdir results
@@ -19,10 +19,10 @@ attr seedset 1
 scalar . 	n 	6
 scalar SimpleUnderlayNetwork.underlayConfigurator 	"Terminals added" 	64
 scalar SimpleUnderlayNetwork.underlayConfigurator 	"Terminals removed" 	0
-scalar SimpleUnderlayNetwork.globalObserver.globalFunctions[0].function.observer 	"XmlPsAppMessageObserver: Total Sent Messages" 	9101
-scalar SimpleUnderlayNetwork.globalObserver.globalFunctions[0].function.observer 	"XmlPsAppMessageObserver: Total Received Messages" 	282677
-scalar SimpleUnderlayNetwork.globalObserver.globalFunctions[0].function.observer 	"XmlPsAppMessageObserver: Total pub/sub ratio" 	0.032195756994733
-scalar SimpleUnderlayNetwork.globalObserver.globalFunctions[0].function.observer 	"XmlPsAppMessageObserver: Total False Positive rate" 	0.99333161169816
+scalar SimpleUnderlayNetwork.globalObserver.globalFunctions[0].function.observer 	"XmlPsAppMessageObserver: Total Sent Messages" 	9226
+scalar SimpleUnderlayNetwork.globalObserver.globalFunctions[0].function.observer 	"XmlPsAppMessageObserver: Total Received Messages" 	6171
+scalar SimpleUnderlayNetwork.globalObserver.globalFunctions[0].function.observer 	"XmlPsAppMessageObserver: Total pub/sub ratio" 	1.4950575271431
+scalar SimpleUnderlayNetwork.globalObserver.globalFunctions[0].function.observer 	"XmlPsAppMessageObserver: Total False Positive rate" 	0.34354237562794
 scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"GlobalStatistics: Simulation Time" 	8200.637936673
 scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseApp (bootstrapList): Received Bytes/s from Overlay.mean" 	0
 scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseApp (bootstrapList): Received Bytes/s from Overlay.stddev" 	0
@@ -56,34 +56,34 @@ scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseApp (bootstra
 scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseApp (bootstrapList): Sent Messages/s to UDP.stddev" 	0
 scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseApp (bootstrapList): Sent Messages/s to UDP.min" 	0
 scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseApp (bootstrapList): Sent Messages/s to UDP.max" 	0
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseApp (dxps): Received Bytes/s from Overlay.mean" 	28870.766660156
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseApp (dxps): Received Bytes/s from Overlay.stddev" 	65128.416357993
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseApp (dxps): Received Bytes/s from Overlay.min" 	-281617.79666667
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseApp (dxps): Received Bytes/s from Overlay.max" 	266946.09652778
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseApp (dxps): Received Bytes/s from Overlay.mean" 	683.61704427083
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseApp (dxps): Received Bytes/s from Overlay.stddev" 	2148.1894741157
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseApp (dxps): Received Bytes/s from Overlay.min" 	0.24305555555556
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseApp (dxps): Received Bytes/s from Overlay.max" 	14555.043611111
 scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseApp (dxps): Received Bytes/s from UDP.mean" 	0
 scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseApp (dxps): Received Bytes/s from UDP.stddev" 	0
 scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseApp (dxps): Received Bytes/s from UDP.min" 	0
 scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseApp (dxps): Received Bytes/s from UDP.max" 	0
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseApp (dxps): Received Messages/s from Overlay.mean" 	3.2504644097222
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseApp (dxps): Received Messages/s from Overlay.stddev" 	5.3079471411493
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseApp (dxps): Received Messages/s from Overlay.mean" 	0.053943142361111
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseApp (dxps): Received Messages/s from Overlay.stddev" 	0.1478269389384
 scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseApp (dxps): Received Messages/s from Overlay.min" 	0.017361111111111
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseApp (dxps): Received Messages/s from Overlay.max" 	26.586944444444
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseApp (dxps): Received Messages/s from Overlay.max" 	1.1704166666667
 scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseApp (dxps): Received Messages/s from UDP.mean" 	0
 scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseApp (dxps): Received Messages/s from UDP.stddev" 	0
 scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseApp (dxps): Received Messages/s from UDP.min" 	0
 scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseApp (dxps): Received Messages/s from UDP.max" 	0
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseApp (dxps): Sent Bytes/s to Overlay.mean" 	42790.329422743
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseApp (dxps): Sent Bytes/s to Overlay.stddev" 	43339.402057537
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseApp (dxps): Sent Bytes/s to Overlay.min" 	182.91944444444
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseApp (dxps): Sent Bytes/s to Overlay.max" 	163883.06916667
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseApp (dxps): Sent Bytes/s to Overlay.mean" 	4786.5451432292
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseApp (dxps): Sent Bytes/s to Overlay.stddev" 	13207.350220396
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseApp (dxps): Sent Bytes/s to Overlay.min" 	186.61388888889
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseApp (dxps): Sent Bytes/s to Overlay.max" 	92476.691527778
 scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseApp (dxps): Sent Bytes/s to UDP.mean" 	0
 scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseApp (dxps): Sent Bytes/s to UDP.stddev" 	0
 scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseApp (dxps): Sent Bytes/s to UDP.min" 	0
 scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseApp (dxps): Sent Bytes/s to UDP.max" 	0
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseApp (dxps): Sent Messages/s to Overlay.mean" 	3.2540603298611
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseApp (dxps): Sent Messages/s to Overlay.stddev" 	3.5732874359414
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseApp (dxps): Sent Messages/s to Overlay.mean" 	0.054032118055556
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseApp (dxps): Sent Messages/s to Overlay.stddev" 	0.16677934346816
 scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseApp (dxps): Sent Messages/s to Overlay.min" 	0.017361111111111
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseApp (dxps): Sent Messages/s to Overlay.max" 	13.301805555556
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseApp (dxps): Sent Messages/s to Overlay.max" 	1.3319444444444
 scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseApp (dxps): Sent Messages/s to UDP.mean" 	0
 scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseApp (dxps): Sent Messages/s to UDP.stddev" 	0
 scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseApp (dxps): Sent Messages/s to UDP.min" 	0
@@ -152,18 +152,18 @@ scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseApp (tier3): 
 scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseApp (tier3): Sent Messages/s to UDP.stddev" 	0
 scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseApp (tier3): Sent Messages/s to UDP.min" 	0
 scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseApp (tier3): Sent Messages/s to UDP.max" 	0
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseApp (xmlPsApp): Received Bytes/s from Overlay.mean" 	26292.059646267
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseApp (xmlPsApp): Received Bytes/s from Overlay.stddev" 	65058.976631836
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseApp (xmlPsApp): Received Bytes/s from Overlay.min" 	-281671.20333333
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseApp (xmlPsApp): Received Bytes/s from Overlay.max" 	266901.47819444
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseApp (xmlPsApp): Received Bytes/s from Overlay.mean" 	377.60794487847
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseApp (xmlPsApp): Received Bytes/s from Overlay.stddev" 	1213.441401668
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseApp (xmlPsApp): Received Bytes/s from Overlay.min" 	0
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseApp (xmlPsApp): Received Bytes/s from Overlay.max" 	8578.3823611111
 scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseApp (xmlPsApp): Received Bytes/s from UDP.mean" 	0
 scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseApp (xmlPsApp): Received Bytes/s from UDP.stddev" 	0
 scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseApp (xmlPsApp): Received Bytes/s from UDP.min" 	0
 scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseApp (xmlPsApp): Received Bytes/s from UDP.max" 	0
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseApp (xmlPsApp): Received Messages/s from Overlay.mean" 	3.0197504340278
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseApp (xmlPsApp): Received Messages/s from Overlay.stddev" 	5.3398441160261
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseApp (xmlPsApp): Received Messages/s from Overlay.mean" 	0.013391927083333
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseApp (xmlPsApp): Received Messages/s from Overlay.stddev" 	0.03176428960316
 scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseApp (xmlPsApp): Received Messages/s from Overlay.min" 	0
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseApp (xmlPsApp): Received Messages/s from Overlay.max" 	26.5675
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseApp (xmlPsApp): Received Messages/s from Overlay.max" 	0.12055555555556
 scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseApp (xmlPsApp): Received Messages/s from UDP.mean" 	0
 scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseApp (xmlPsApp): Received Messages/s from UDP.stddev" 	0
 scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseApp (xmlPsApp): Received Messages/s from UDP.min" 	0
@@ -232,22 +232,22 @@ scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Meas
 scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Measured Session Time.stddev" 	0.19432510987225
 scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Measured Session Time.min" 	8200
 scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Measured Session Time.max" 	8200.637936673
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Received App Data Bytes/s.mean" 	28883.252102865
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Received App Data Bytes/s.stddev" 	65137.805301338
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Received App Data Bytes/s.min" 	-281484.86722222
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Received App Data Bytes/s.max" 	267057.03013889
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Received App Data Messages/s.mean" 	3.2497222222222
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Received App Data Messages/s.stddev" 	5.308106485575
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Received App Data Bytes/s.mean" 	681.24388237847
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Received App Data Bytes/s.stddev" 	2132.0761785809
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Received App Data Bytes/s.min" 	0.32986111111111
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Received App Data Bytes/s.max" 	14397.522222222
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Received App Data Messages/s.mean" 	0.053209635416667
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Received App Data Messages/s.stddev" 	0.14370975507237
 scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Received App Data Messages/s.min" 	0.017361111111111
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Received App Data Messages/s.max" 	26.586666666667
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Received App Lookup Bytes/s.mean" 	2.1694227430556
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Received App Lookup Bytes/s.stddev" 	2.5997489493241
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Received App Lookup Bytes/s.min" 	0.5825
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Received App Lookup Bytes/s.max" 	19.177916666667
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Received App Lookup Messages/s.mean" 	0.1141796875
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Received App Lookup Messages/s.stddev" 	0.15469064972931
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Received App Lookup Messages/s.min" 	0.029166666666667
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Received App Lookup Messages/s.max" 	1.1268055555556
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Received App Data Messages/s.max" 	1.1368055555556
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Received App Lookup Bytes/s.mean" 	2.1988541666667
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Received App Lookup Bytes/s.stddev" 	2.6310279376642
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Received App Lookup Bytes/s.min" 	0.59458333333333
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Received App Lookup Bytes/s.max" 	19.409861111111
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Received App Lookup Messages/s.mean" 	0.11572916666667
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Received App Lookup Messages/s.stddev" 	0.1566548185258
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Received App Lookup Messages/s.min" 	0.029583333333333
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Received App Lookup Messages/s.max" 	1.1409722222222
 scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Received Maintenance Bytes/s.mean" 	10.05
 scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Received Maintenance Bytes/s.stddev" 	0
 scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Received Maintenance Bytes/s.min" 	10.05
@@ -256,30 +256,30 @@ scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Rece
 scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Received Maintenance Messages/s.stddev" 	0
 scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Received Maintenance Messages/s.min" 	0.36666666666667
 scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Received Maintenance Messages/s.max" 	0.36666666666667
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Received Total Bytes/s.mean" 	28895.471525608
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Received Total Bytes/s.stddev" 	65137.671469492
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Received Total Bytes/s.min" 	-281472.85041667
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Received Total Bytes/s.max" 	267068.75819444
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Received Total Messages/s.mean" 	3.7305685763889
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Received Total Messages/s.stddev" 	5.3001383385783
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Received Total Messages/s.min" 	0.44416666666667
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Received Total Messages/s.max" 	27.052361111111
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Sent App Data Bytes/s.mean" 	42802.898244358
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Sent App Data Bytes/s.stddev" 	43352.485919176
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Sent App Data Bytes/s.min" 	183.24930555556
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Sent App Data Bytes/s.max" 	163949.85486111
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Sent App Data Messages/s.mean" 	3.2533246527778
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Sent App Data Messages/s.stddev" 	3.572419722673
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Received Total Bytes/s.mean" 	693.49273654514
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Received Total Bytes/s.stddev" 	2133.8814555598
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Received Total Bytes/s.min" 	11.520972222222
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Received Total Bytes/s.max" 	14426.982083333
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Received Total Messages/s.mean" 	0.53560546875
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Received Total Messages/s.stddev" 	0.28511884381683
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Received Total Messages/s.min" 	0.42930555555556
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Received Total Messages/s.max" 	2.6444444444444
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Sent App Data Bytes/s.mean" 	4784.1622048611
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Sent App Data Bytes/s.stddev" 	13208.098684941
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Sent App Data Bytes/s.min" 	186.98069444444
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Sent App Data Bytes/s.max" 	92478.705972222
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Sent App Data Messages/s.mean" 	0.053298611111111
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Sent App Data Messages/s.stddev" 	0.16261696298661
 scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Sent App Data Messages/s.min" 	0.017361111111111
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Sent App Data Messages/s.max" 	13.301527777778
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Sent App Lookup Bytes/s.mean" 	2.1692947048611
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Sent App Lookup Bytes/s.stddev" 	3.2804693731712
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Sent App Lookup Bytes/s.min" 	0.52583333333333
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Sent App Lookup Bytes/s.max" 	23.640694444444
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Sent App Lookup Messages/s.mean" 	0.11417317708333
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Sent App Lookup Messages/s.stddev" 	0.15469215546222
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Sent App Lookup Messages/s.min" 	0.029166666666667
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Sent App Lookup Messages/s.max" 	1.1268055555556
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Sent App Data Messages/s.max" 	1.2983333333333
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Sent App Lookup Bytes/s.mean" 	2.1988541666667
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Sent App Lookup Bytes/s.stddev" 	3.3238025928733
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Sent App Lookup Bytes/s.min" 	0.52958333333333
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Sent App Lookup Bytes/s.max" 	23.947083333333
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Sent App Lookup Messages/s.mean" 	0.11572916666667
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Sent App Lookup Messages/s.stddev" 	0.15665500420962
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Sent App Lookup Messages/s.min" 	0.029583333333333
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Sent App Lookup Messages/s.max" 	1.1409722222222
 scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Sent FailedNode Bytes/s.mean" 	0
 scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Sent FailedNode Bytes/s.stddev" 	0
 scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Sent FailedNode Bytes/s.min" 	0
@@ -296,22 +296,22 @@ scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Sent
 scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Sent FailedNodeResponse Messages/s.stddev" 	0
 scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Sent FailedNodeResponse Messages/s.min" 	0
 scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Sent FailedNodeResponse Messages/s.max" 	0
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Sent FindNode Bytes/s.mean" 	1.6787868923611
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Sent FindNode Bytes/s.stddev" 	0.34536170432745
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Sent FindNode Bytes/s.min" 	0.80277777777778
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Sent FindNode Bytes/s.max" 	2.4791666666667
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Sent FindNode Messages/s.mean" 	0.098752170138889
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Sent FindNode Messages/s.stddev" 	0.020315394372203
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Sent FindNode Messages/s.min" 	0.047222222222222
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Sent FindNode Messages/s.max" 	0.14583333333333
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Sent FindNodeResponse Bytes/s.mean" 	2.0738411458333
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Sent FindNodeResponse Bytes/s.stddev" 	3.4343754754954
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Sent FindNode Bytes/s.mean" 	1.69203125
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Sent FindNode Bytes/s.stddev" 	0.35078941648001
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Sent FindNode Bytes/s.min" 	0.765
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Sent FindNode Bytes/s.max" 	2.5169444444444
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Sent FindNode Messages/s.mean" 	0.09953125
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Sent FindNode Messages/s.stddev" 	0.020634671557647
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Sent FindNode Messages/s.min" 	0.045
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Sent FindNode Messages/s.max" 	0.14805555555556
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Sent FindNodeResponse Bytes/s.mean" 	2.09015625
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Sent FindNodeResponse Bytes/s.stddev" 	3.4866409208958
 scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Sent FindNodeResponse Bytes/s.min" 	0.875
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Sent FindNodeResponse Bytes/s.max" 	24.42125
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Sent FindNodeResponse Messages/s.mean" 	0.098754340277778
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Sent FindNodeResponse Messages/s.stddev" 	0.1635416893093
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Sent FindNodeResponse Bytes/s.max" 	24.765416666667
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Sent FindNodeResponse Messages/s.mean" 	0.09953125
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Sent FindNodeResponse Messages/s.stddev" 	0.16603052004266
 scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Sent FindNodeResponse Messages/s.min" 	0.041666666666667
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Sent FindNodeResponse Messages/s.max" 	1.1629166666667
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Sent FindNodeResponse Messages/s.max" 	1.1793055555556
 scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Sent Maintenance Bytes/s.mean" 	10.05
 scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Sent Maintenance Bytes/s.stddev" 	0
 scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Sent Maintenance Bytes/s.min" 	10.05
@@ -336,14 +336,14 @@ scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Sent
 scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Sent Ping Response Messages/s.stddev" 	0
 scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Sent Ping Response Messages/s.min" 	0
 scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Sent Ping Response Messages/s.max" 	0
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Sent Total Bytes/s.mean" 	42815.117539062
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Sent Total Bytes/s.stddev" 	43352.887481438
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Sent Total Bytes/s.min" 	194.53875
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Sent Total Bytes/s.max" 	163961.46291667
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Sent Total Messages/s.mean" 	3.7341644965278
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Sent Total Messages/s.stddev" 	3.6004170807433
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Sent Total Messages/s.min" 	0.44458333333333
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Sent Total Messages/s.max" 	13.752361111111
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Sent Total Bytes/s.mean" 	4796.4110590278
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Sent Total Bytes/s.stddev" 	13207.912550584
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Sent Total Bytes/s.min" 	198.59138888889
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Sent Total Bytes/s.max" 	92490.039166667
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Sent Total Messages/s.mean" 	0.53569444444444
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Sent Total Messages/s.stddev" 	0.30405848583158
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Sent Total Messages/s.min" 	0.42930555555556
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"BaseOverlay: Sent Total Messages/s.max" 	2.8059722222222
 scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"Chord: Sent FIX_FINGERS Bytes/s.mean" 	2.4166666666667
 scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"Chord: Sent FIX_FINGERS Bytes/s.stddev" 	0
 scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"Chord: Sent FIX_FINGERS Bytes/s.min" 	2.4166666666667
@@ -384,26 +384,26 @@ scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"Chord: Sent STABI
 scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"Chord: Sent STABILIZE Messages/s.stddev" 	5.3100037954733e-09
 scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"Chord: Sent STABILIZE Messages/s.min" 	0.1
 scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"Chord: Sent STABILIZE Messages/s.max" 	0.1
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"Dxps: Forwarded Publication Bytes/s.mean" 	38458.185922309
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"Dxps: Forwarded Publication Bytes/s.stddev" 	42663.275418046
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"Dxps: Forwarded Publication Bytes/s.mean" 	444.33321831597
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"Dxps: Forwarded Publication Bytes/s.stddev" 	942.47519087479
 scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"Dxps: Forwarded Publication Bytes/s.min" 	0
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"Dxps: Forwarded Publication Bytes/s.max" 	163658.20305556
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"Dxps: Forwarded Publication Messages/s.mean" 	3.2136870659722
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"Dxps: Forwarded Publication Messages/s.stddev" 	3.5499639462122
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"Dxps: Forwarded Publication Bytes/s.max" 	5185.4008333333
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"Dxps: Forwarded Publication Messages/s.mean" 	0.013125
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"Dxps: Forwarded Publication Messages/s.stddev" 	0.032942204836568
 scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"Dxps: Forwarded Publication Messages/s.min" 	0
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"Dxps: Forwarded Publication Messages/s.max" 	13.281111111111
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"Dxps: Forwarded Publication Messages/s.max" 	0.16152777777778
 scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"Dxps: Received JOIN Messages/s.mean" 	0.00047960069444444
 scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"Dxps: Received JOIN Messages/s.stddev" 	0.00078837020898021
 scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"Dxps: Received JOIN Messages/s.min" 	0
 scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"Dxps: Received JOIN Messages/s.max" 	0.0048611111111111
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"Dxps: Received Publication Bytes/s (subscribed groups only).mean" 	6.0395008680556
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"Dxps: Received Publication Bytes/s (subscribed groups only).stddev" 	10.679688232052
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"Dxps: Received Publication Bytes/s (subscribed groups only).mean" 	0.026783854166667
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"Dxps: Received Publication Bytes/s (subscribed groups only).stddev" 	0.06352857920632
 scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"Dxps: Received Publication Bytes/s (subscribed groups only).min" 	0
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"Dxps: Received Publication Bytes/s (subscribed groups only).max" 	53.135
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"Dxps: Received Publication Messages/s (subscribed groups only).mean" 	3.0197504340278
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"Dxps: Received Publication Messages/s (subscribed groups only).stddev" 	5.3398441160261
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"Dxps: Received Publication Bytes/s (subscribed groups only).max" 	0.24111111111111
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"Dxps: Received Publication Messages/s (subscribed groups only).mean" 	0.013391927083333
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"Dxps: Received Publication Messages/s (subscribed groups only).stddev" 	0.03176428960316
 scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"Dxps: Received Publication Messages/s (subscribed groups only).min" 	0
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"Dxps: Received Publication Messages/s (subscribed groups only).max" 	26.5675
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"Dxps: Received Publication Messages/s (subscribed groups only).max" 	0.12055555555556
 scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"SimpleTCP: Packets dropped due to network partitions.mean" 	0
 scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"SimpleTCP: Packets dropped due to network partitions.stddev" 	0
 scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"SimpleTCP: Packets dropped due to network partitions.min" 	0
@@ -424,10 +424,10 @@ scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"SimpleUDP: Packet
 scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"SimpleUDP: Packets dropped due to network partitions.stddev" 	0
 scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"SimpleUDP: Packets dropped due to network partitions.min" 	0
 scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"SimpleUDP: Packets dropped due to network partitions.max" 	0
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"SimpleUDP: Packets dropped due to queue overflows.mean" 	25.9375
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"SimpleUDP: Packets dropped due to queue overflows.stddev" 	73.218497749533
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"SimpleUDP: Packets dropped due to queue overflows.mean" 	0.640625
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"SimpleUDP: Packets dropped due to queue overflows.stddev" 	0.82360391736466
 scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"SimpleUDP: Packets dropped due to queue overflows.min" 	0
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"SimpleUDP: Packets dropped due to queue overflows.max" 	433
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"SimpleUDP: Packets dropped due to queue overflows.max" 	3
 scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"SimpleUDP: Packets dropped due to unavailable destination.mean" 	0
 scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"SimpleUDP: Packets dropped due to unavailable destination.stddev" 	0
 scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"SimpleUDP: Packets dropped due to unavailable destination.min" 	0
@@ -436,16 +436,16 @@ scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"SimpleUDP: Packet
 scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"SimpleUDP: Packets dropped with bad checksum.stddev" 	0
 scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"SimpleUDP: Packets dropped with bad checksum.min" 	0
 scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"SimpleUDP: Packets dropped with bad checksum.max" 	0
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"SimpleUDP: Packets sent.mean" 	27314.34375
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"SimpleUDP: Packets sent.stddev" 	25918.119243457
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"SimpleUDP: Packets sent.min" 	3609
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"SimpleUDP: Packets sent.max" 	99413
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"XmlPsAppMessageObserver: Looped messages/s.mean" 	2.9630555555556
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"SimpleUDP: Packets sent.mean" 	4285.296875
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"SimpleUDP: Packets sent.stddev" 	2214.6267784006
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"SimpleUDP: Packets sent.min" 	3488
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"SimpleUDP: Packets sent.max" 	20844
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"XmlPsAppMessageObserver: Looped messages/s.mean" 	0
 scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"XmlPsAppMessageObserver: Looped messages/s.stddev" 	-nan
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"XmlPsAppMessageObserver: Looped messages/s.min" 	2.9630555555556
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"XmlPsAppMessageObserver: Looped messages/s.max" 	2.9630555555556
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"XmlPsAppMessageObserver: Subscribers/Publishing.mean" 	31.059993407318
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"XmlPsAppMessageObserver: Subscribers/Publishing.stddev" 	9.0955202329305
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"XmlPsAppMessageObserver: Looped messages/s.min" 	0
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"XmlPsAppMessageObserver: Looped messages/s.max" 	0
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"XmlPsAppMessageObserver: Subscribers/Publishing.mean" 	0.22978538911771
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"XmlPsAppMessageObserver: Subscribers/Publishing.stddev" 	1.8721422297633
 scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"XmlPsAppMessageObserver: Subscribers/Publishing.min" 	0
-scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"XmlPsAppMessageObserver: Subscribers/Publishing.max" 	35
+scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"XmlPsAppMessageObserver: Subscribers/Publishing.max" 	27
 scalar SimpleUnderlayNetwork.globalObserver.globalStatistics 	"Vector: GlobalNodeList: Number of nodes.mean" 	64

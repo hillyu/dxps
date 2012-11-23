@@ -77,12 +77,24 @@ packet DxpsJoinCall extends BaseCallMessage
         OverlayKey dstLogicalNodeKey;// HACK. The key is already included in BaseRouteMessage,
                             //   but it gets lost in handleRpc
 }
+packet DxpsSubCall extends BaseCallMessage //this is the first hop subscription.
+{
+        OverlayKey srcLogicalNodeKey;
+        OverlayKey dstLogicalNodeKey;// HACK. The key is already included in BaseRouteMessage,
+                            //   but it gets lost in handleRpc
+}
 
 packet DxpsJoinResponse extends BaseResponseMessage
 {
         OverlayKey logicalNodeKey; // HACK. The key is already included in BaseRouteMessage,
                             //   but it gets lost in handleRpc
 }
+packet DxpsSubResponse extends BaseResponseMessage
+{
+        OverlayKey logicalNodeKey; // HACK. The key is already included in BaseRouteMessage,
+                            //   but it gets lost in handleRpc
+}
+ 
 
 packet DxpsPublishCall extends BaseCallMessage
 {
@@ -128,6 +140,12 @@ message DxpsTimer
 }
 
 packet DxpsDataMessage
+{
+        OverlayKey logicalNodeKey;
+        long dxpsMsgId =0;
+        bool empty = false;
+}
+packet DxpsDataDeliverMessage
 {
         OverlayKey logicalNodeKey;
         long dxpsMsgId =0;

@@ -290,6 +290,257 @@ void *DxpsJoinCallDescriptor::getFieldStructPointer(void *object, int field, int
     }
 }
 
+Register_Class(DxpsSubCall);
+
+DxpsSubCall::DxpsSubCall(const char *name, int kind) : BaseCallMessage(name,kind)
+{
+}
+
+DxpsSubCall::DxpsSubCall(const DxpsSubCall& other) : BaseCallMessage()
+{
+    setName(other.getName());
+    operator=(other);
+}
+
+DxpsSubCall::~DxpsSubCall()
+{
+}
+
+DxpsSubCall& DxpsSubCall::operator=(const DxpsSubCall& other)
+{
+    if (this==&other) return *this;
+    BaseCallMessage::operator=(other);
+    this->srcLogicalNodeKey_var = other.srcLogicalNodeKey_var;
+    this->dstLogicalNodeKey_var = other.dstLogicalNodeKey_var;
+    return *this;
+}
+
+void DxpsSubCall::parsimPack(cCommBuffer *b)
+{
+    BaseCallMessage::parsimPack(b);
+    doPacking(b,this->srcLogicalNodeKey_var);
+    doPacking(b,this->dstLogicalNodeKey_var);
+}
+
+void DxpsSubCall::parsimUnpack(cCommBuffer *b)
+{
+    BaseCallMessage::parsimUnpack(b);
+    doUnpacking(b,this->srcLogicalNodeKey_var);
+    doUnpacking(b,this->dstLogicalNodeKey_var);
+}
+
+OverlayKey& DxpsSubCall::getSrcLogicalNodeKey()
+{
+    return srcLogicalNodeKey_var;
+}
+
+void DxpsSubCall::setSrcLogicalNodeKey(const OverlayKey& srcLogicalNodeKey_var)
+{
+    this->srcLogicalNodeKey_var = srcLogicalNodeKey_var;
+}
+
+OverlayKey& DxpsSubCall::getDstLogicalNodeKey()
+{
+    return dstLogicalNodeKey_var;
+}
+
+void DxpsSubCall::setDstLogicalNodeKey(const OverlayKey& dstLogicalNodeKey_var)
+{
+    this->dstLogicalNodeKey_var = dstLogicalNodeKey_var;
+}
+
+class DxpsSubCallDescriptor : public cClassDescriptor
+{
+  public:
+    DxpsSubCallDescriptor();
+    virtual ~DxpsSubCallDescriptor();
+
+    virtual bool doesSupport(cObject *obj) const;
+    virtual const char *getProperty(const char *propertyname) const;
+    virtual int getFieldCount(void *object) const;
+    virtual const char *getFieldName(void *object, int field) const;
+    virtual int findField(void *object, const char *fieldName) const;
+    virtual unsigned int getFieldTypeFlags(void *object, int field) const;
+    virtual const char *getFieldTypeString(void *object, int field) const;
+    virtual const char *getFieldProperty(void *object, int field, const char *propertyname) const;
+    virtual int getArraySize(void *object, int field) const;
+
+    virtual std::string getFieldAsString(void *object, int field, int i) const;
+    virtual bool setFieldAsString(void *object, int field, int i, const char *value) const;
+
+    virtual const char *getFieldStructName(void *object, int field) const;
+    virtual void *getFieldStructPointer(void *object, int field, int i) const;
+};
+
+Register_ClassDescriptor(DxpsSubCallDescriptor);
+
+DxpsSubCallDescriptor::DxpsSubCallDescriptor() : cClassDescriptor("DxpsSubCall", "BaseCallMessage")
+{
+}
+
+DxpsSubCallDescriptor::~DxpsSubCallDescriptor()
+{
+}
+
+bool DxpsSubCallDescriptor::doesSupport(cObject *obj) const
+{
+    return dynamic_cast<DxpsSubCall *>(obj)!=NULL;
+}
+
+const char *DxpsSubCallDescriptor::getProperty(const char *propertyname) const
+{
+    cClassDescriptor *basedesc = getBaseClassDescriptor();
+    return basedesc ? basedesc->getProperty(propertyname) : NULL;
+}
+
+int DxpsSubCallDescriptor::getFieldCount(void *object) const
+{
+    cClassDescriptor *basedesc = getBaseClassDescriptor();
+    return basedesc ? 2+basedesc->getFieldCount(object) : 2;
+}
+
+unsigned int DxpsSubCallDescriptor::getFieldTypeFlags(void *object, int field) const
+{
+    cClassDescriptor *basedesc = getBaseClassDescriptor();
+    if (basedesc) {
+        if (field < basedesc->getFieldCount(object))
+            return basedesc->getFieldTypeFlags(object, field);
+        field -= basedesc->getFieldCount(object);
+    }
+    static unsigned int fieldTypeFlags[] = {
+        FD_ISCOMPOUND,
+        FD_ISCOMPOUND,
+    };
+    return (field>=0 && field<2) ? fieldTypeFlags[field] : 0;
+}
+
+const char *DxpsSubCallDescriptor::getFieldName(void *object, int field) const
+{
+    cClassDescriptor *basedesc = getBaseClassDescriptor();
+    if (basedesc) {
+        if (field < basedesc->getFieldCount(object))
+            return basedesc->getFieldName(object, field);
+        field -= basedesc->getFieldCount(object);
+    }
+    static const char *fieldNames[] = {
+        "srcLogicalNodeKey",
+        "dstLogicalNodeKey",
+    };
+    return (field>=0 && field<2) ? fieldNames[field] : NULL;
+}
+
+int DxpsSubCallDescriptor::findField(void *object, const char *fieldName) const
+{
+    cClassDescriptor *basedesc = getBaseClassDescriptor();
+    int base = basedesc ? basedesc->getFieldCount(object) : 0;
+    if (fieldName[0]=='s' && strcmp(fieldName, "srcLogicalNodeKey")==0) return base+0;
+    if (fieldName[0]=='d' && strcmp(fieldName, "dstLogicalNodeKey")==0) return base+1;
+    return basedesc ? basedesc->findField(object, fieldName) : -1;
+}
+
+const char *DxpsSubCallDescriptor::getFieldTypeString(void *object, int field) const
+{
+    cClassDescriptor *basedesc = getBaseClassDescriptor();
+    if (basedesc) {
+        if (field < basedesc->getFieldCount(object))
+            return basedesc->getFieldTypeString(object, field);
+        field -= basedesc->getFieldCount(object);
+    }
+    static const char *fieldTypeStrings[] = {
+        "OverlayKey",
+        "OverlayKey",
+    };
+    return (field>=0 && field<2) ? fieldTypeStrings[field] : NULL;
+}
+
+const char *DxpsSubCallDescriptor::getFieldProperty(void *object, int field, const char *propertyname) const
+{
+    cClassDescriptor *basedesc = getBaseClassDescriptor();
+    if (basedesc) {
+        if (field < basedesc->getFieldCount(object))
+            return basedesc->getFieldProperty(object, field, propertyname);
+        field -= basedesc->getFieldCount(object);
+    }
+    switch (field) {
+        default: return NULL;
+    }
+}
+
+int DxpsSubCallDescriptor::getArraySize(void *object, int field) const
+{
+    cClassDescriptor *basedesc = getBaseClassDescriptor();
+    if (basedesc) {
+        if (field < basedesc->getFieldCount(object))
+            return basedesc->getArraySize(object, field);
+        field -= basedesc->getFieldCount(object);
+    }
+    DxpsSubCall *pp = (DxpsSubCall *)object; (void)pp;
+    switch (field) {
+        default: return 0;
+    }
+}
+
+std::string DxpsSubCallDescriptor::getFieldAsString(void *object, int field, int i) const
+{
+    cClassDescriptor *basedesc = getBaseClassDescriptor();
+    if (basedesc) {
+        if (field < basedesc->getFieldCount(object))
+            return basedesc->getFieldAsString(object,field,i);
+        field -= basedesc->getFieldCount(object);
+    }
+    DxpsSubCall *pp = (DxpsSubCall *)object; (void)pp;
+    switch (field) {
+        case 0: {std::stringstream out; out << pp->getSrcLogicalNodeKey(); return out.str();}
+        case 1: {std::stringstream out; out << pp->getDstLogicalNodeKey(); return out.str();}
+        default: return "";
+    }
+}
+
+bool DxpsSubCallDescriptor::setFieldAsString(void *object, int field, int i, const char *value) const
+{
+    cClassDescriptor *basedesc = getBaseClassDescriptor();
+    if (basedesc) {
+        if (field < basedesc->getFieldCount(object))
+            return basedesc->setFieldAsString(object,field,i,value);
+        field -= basedesc->getFieldCount(object);
+    }
+    DxpsSubCall *pp = (DxpsSubCall *)object; (void)pp;
+    switch (field) {
+        default: return false;
+    }
+}
+
+const char *DxpsSubCallDescriptor::getFieldStructName(void *object, int field) const
+{
+    cClassDescriptor *basedesc = getBaseClassDescriptor();
+    if (basedesc) {
+        if (field < basedesc->getFieldCount(object))
+            return basedesc->getFieldStructName(object, field);
+        field -= basedesc->getFieldCount(object);
+    }
+    static const char *fieldStructNames[] = {
+        "OverlayKey",
+        "OverlayKey",
+    };
+    return (field>=0 && field<2) ? fieldStructNames[field] : NULL;
+}
+
+void *DxpsSubCallDescriptor::getFieldStructPointer(void *object, int field, int i) const
+{
+    cClassDescriptor *basedesc = getBaseClassDescriptor();
+    if (basedesc) {
+        if (field < basedesc->getFieldCount(object))
+            return basedesc->getFieldStructPointer(object, field, i);
+        field -= basedesc->getFieldCount(object);
+    }
+    DxpsSubCall *pp = (DxpsSubCall *)object; (void)pp;
+    switch (field) {
+        case 0: return (void *)(&pp->getSrcLogicalNodeKey()); break;
+        case 1: return (void *)(&pp->getDstLogicalNodeKey()); break;
+        default: return NULL;
+    }
+}
+
 Register_Class(DxpsJoinResponse);
 
 DxpsJoinResponse::DxpsJoinResponse(const char *name, int kind) : BaseResponseMessage(name,kind)
@@ -515,6 +766,237 @@ void *DxpsJoinResponseDescriptor::getFieldStructPointer(void *object, int field,
         field -= basedesc->getFieldCount(object);
     }
     DxpsJoinResponse *pp = (DxpsJoinResponse *)object; (void)pp;
+    switch (field) {
+        case 0: return (void *)(&pp->getLogicalNodeKey()); break;
+        default: return NULL;
+    }
+}
+
+Register_Class(DxpsSubResponse);
+
+DxpsSubResponse::DxpsSubResponse(const char *name, int kind) : BaseResponseMessage(name,kind)
+{
+}
+
+DxpsSubResponse::DxpsSubResponse(const DxpsSubResponse& other) : BaseResponseMessage()
+{
+    setName(other.getName());
+    operator=(other);
+}
+
+DxpsSubResponse::~DxpsSubResponse()
+{
+}
+
+DxpsSubResponse& DxpsSubResponse::operator=(const DxpsSubResponse& other)
+{
+    if (this==&other) return *this;
+    BaseResponseMessage::operator=(other);
+    this->logicalNodeKey_var = other.logicalNodeKey_var;
+    return *this;
+}
+
+void DxpsSubResponse::parsimPack(cCommBuffer *b)
+{
+    BaseResponseMessage::parsimPack(b);
+    doPacking(b,this->logicalNodeKey_var);
+}
+
+void DxpsSubResponse::parsimUnpack(cCommBuffer *b)
+{
+    BaseResponseMessage::parsimUnpack(b);
+    doUnpacking(b,this->logicalNodeKey_var);
+}
+
+OverlayKey& DxpsSubResponse::getLogicalNodeKey()
+{
+    return logicalNodeKey_var;
+}
+
+void DxpsSubResponse::setLogicalNodeKey(const OverlayKey& logicalNodeKey_var)
+{
+    this->logicalNodeKey_var = logicalNodeKey_var;
+}
+
+class DxpsSubResponseDescriptor : public cClassDescriptor
+{
+  public:
+    DxpsSubResponseDescriptor();
+    virtual ~DxpsSubResponseDescriptor();
+
+    virtual bool doesSupport(cObject *obj) const;
+    virtual const char *getProperty(const char *propertyname) const;
+    virtual int getFieldCount(void *object) const;
+    virtual const char *getFieldName(void *object, int field) const;
+    virtual int findField(void *object, const char *fieldName) const;
+    virtual unsigned int getFieldTypeFlags(void *object, int field) const;
+    virtual const char *getFieldTypeString(void *object, int field) const;
+    virtual const char *getFieldProperty(void *object, int field, const char *propertyname) const;
+    virtual int getArraySize(void *object, int field) const;
+
+    virtual std::string getFieldAsString(void *object, int field, int i) const;
+    virtual bool setFieldAsString(void *object, int field, int i, const char *value) const;
+
+    virtual const char *getFieldStructName(void *object, int field) const;
+    virtual void *getFieldStructPointer(void *object, int field, int i) const;
+};
+
+Register_ClassDescriptor(DxpsSubResponseDescriptor);
+
+DxpsSubResponseDescriptor::DxpsSubResponseDescriptor() : cClassDescriptor("DxpsSubResponse", "BaseResponseMessage")
+{
+}
+
+DxpsSubResponseDescriptor::~DxpsSubResponseDescriptor()
+{
+}
+
+bool DxpsSubResponseDescriptor::doesSupport(cObject *obj) const
+{
+    return dynamic_cast<DxpsSubResponse *>(obj)!=NULL;
+}
+
+const char *DxpsSubResponseDescriptor::getProperty(const char *propertyname) const
+{
+    cClassDescriptor *basedesc = getBaseClassDescriptor();
+    return basedesc ? basedesc->getProperty(propertyname) : NULL;
+}
+
+int DxpsSubResponseDescriptor::getFieldCount(void *object) const
+{
+    cClassDescriptor *basedesc = getBaseClassDescriptor();
+    return basedesc ? 1+basedesc->getFieldCount(object) : 1;
+}
+
+unsigned int DxpsSubResponseDescriptor::getFieldTypeFlags(void *object, int field) const
+{
+    cClassDescriptor *basedesc = getBaseClassDescriptor();
+    if (basedesc) {
+        if (field < basedesc->getFieldCount(object))
+            return basedesc->getFieldTypeFlags(object, field);
+        field -= basedesc->getFieldCount(object);
+    }
+    static unsigned int fieldTypeFlags[] = {
+        FD_ISCOMPOUND,
+    };
+    return (field>=0 && field<1) ? fieldTypeFlags[field] : 0;
+}
+
+const char *DxpsSubResponseDescriptor::getFieldName(void *object, int field) const
+{
+    cClassDescriptor *basedesc = getBaseClassDescriptor();
+    if (basedesc) {
+        if (field < basedesc->getFieldCount(object))
+            return basedesc->getFieldName(object, field);
+        field -= basedesc->getFieldCount(object);
+    }
+    static const char *fieldNames[] = {
+        "logicalNodeKey",
+    };
+    return (field>=0 && field<1) ? fieldNames[field] : NULL;
+}
+
+int DxpsSubResponseDescriptor::findField(void *object, const char *fieldName) const
+{
+    cClassDescriptor *basedesc = getBaseClassDescriptor();
+    int base = basedesc ? basedesc->getFieldCount(object) : 0;
+    if (fieldName[0]=='l' && strcmp(fieldName, "logicalNodeKey")==0) return base+0;
+    return basedesc ? basedesc->findField(object, fieldName) : -1;
+}
+
+const char *DxpsSubResponseDescriptor::getFieldTypeString(void *object, int field) const
+{
+    cClassDescriptor *basedesc = getBaseClassDescriptor();
+    if (basedesc) {
+        if (field < basedesc->getFieldCount(object))
+            return basedesc->getFieldTypeString(object, field);
+        field -= basedesc->getFieldCount(object);
+    }
+    static const char *fieldTypeStrings[] = {
+        "OverlayKey",
+    };
+    return (field>=0 && field<1) ? fieldTypeStrings[field] : NULL;
+}
+
+const char *DxpsSubResponseDescriptor::getFieldProperty(void *object, int field, const char *propertyname) const
+{
+    cClassDescriptor *basedesc = getBaseClassDescriptor();
+    if (basedesc) {
+        if (field < basedesc->getFieldCount(object))
+            return basedesc->getFieldProperty(object, field, propertyname);
+        field -= basedesc->getFieldCount(object);
+    }
+    switch (field) {
+        default: return NULL;
+    }
+}
+
+int DxpsSubResponseDescriptor::getArraySize(void *object, int field) const
+{
+    cClassDescriptor *basedesc = getBaseClassDescriptor();
+    if (basedesc) {
+        if (field < basedesc->getFieldCount(object))
+            return basedesc->getArraySize(object, field);
+        field -= basedesc->getFieldCount(object);
+    }
+    DxpsSubResponse *pp = (DxpsSubResponse *)object; (void)pp;
+    switch (field) {
+        default: return 0;
+    }
+}
+
+std::string DxpsSubResponseDescriptor::getFieldAsString(void *object, int field, int i) const
+{
+    cClassDescriptor *basedesc = getBaseClassDescriptor();
+    if (basedesc) {
+        if (field < basedesc->getFieldCount(object))
+            return basedesc->getFieldAsString(object,field,i);
+        field -= basedesc->getFieldCount(object);
+    }
+    DxpsSubResponse *pp = (DxpsSubResponse *)object; (void)pp;
+    switch (field) {
+        case 0: {std::stringstream out; out << pp->getLogicalNodeKey(); return out.str();}
+        default: return "";
+    }
+}
+
+bool DxpsSubResponseDescriptor::setFieldAsString(void *object, int field, int i, const char *value) const
+{
+    cClassDescriptor *basedesc = getBaseClassDescriptor();
+    if (basedesc) {
+        if (field < basedesc->getFieldCount(object))
+            return basedesc->setFieldAsString(object,field,i,value);
+        field -= basedesc->getFieldCount(object);
+    }
+    DxpsSubResponse *pp = (DxpsSubResponse *)object; (void)pp;
+    switch (field) {
+        default: return false;
+    }
+}
+
+const char *DxpsSubResponseDescriptor::getFieldStructName(void *object, int field) const
+{
+    cClassDescriptor *basedesc = getBaseClassDescriptor();
+    if (basedesc) {
+        if (field < basedesc->getFieldCount(object))
+            return basedesc->getFieldStructName(object, field);
+        field -= basedesc->getFieldCount(object);
+    }
+    static const char *fieldStructNames[] = {
+        "OverlayKey",
+    };
+    return (field>=0 && field<1) ? fieldStructNames[field] : NULL;
+}
+
+void *DxpsSubResponseDescriptor::getFieldStructPointer(void *object, int field, int i) const
+{
+    cClassDescriptor *basedesc = getBaseClassDescriptor();
+    if (basedesc) {
+        if (field < basedesc->getFieldCount(object))
+            return basedesc->getFieldStructPointer(object, field, i);
+        field -= basedesc->getFieldCount(object);
+    }
+    DxpsSubResponse *pp = (DxpsSubResponse *)object; (void)pp;
     switch (field) {
         case 0: return (void *)(&pp->getLogicalNodeKey()); break;
         default: return NULL;
@@ -2531,6 +3013,279 @@ void *DxpsDataMessageDescriptor::getFieldStructPointer(void *object, int field, 
         field -= basedesc->getFieldCount(object);
     }
     DxpsDataMessage *pp = (DxpsDataMessage *)object; (void)pp;
+    switch (field) {
+        case 0: return (void *)(&pp->getLogicalNodeKey()); break;
+        default: return NULL;
+    }
+}
+
+Register_Class(DxpsDataDeliverMessage);
+
+DxpsDataDeliverMessage::DxpsDataDeliverMessage(const char *name, int kind) : cPacket(name,kind)
+{
+    this->dxpsMsgId_var = 0;
+    this->empty_var = false;
+}
+
+DxpsDataDeliverMessage::DxpsDataDeliverMessage(const DxpsDataDeliverMessage& other) : cPacket()
+{
+    setName(other.getName());
+    operator=(other);
+}
+
+DxpsDataDeliverMessage::~DxpsDataDeliverMessage()
+{
+}
+
+DxpsDataDeliverMessage& DxpsDataDeliverMessage::operator=(const DxpsDataDeliverMessage& other)
+{
+    if (this==&other) return *this;
+    cPacket::operator=(other);
+    this->logicalNodeKey_var = other.logicalNodeKey_var;
+    this->dxpsMsgId_var = other.dxpsMsgId_var;
+    this->empty_var = other.empty_var;
+    return *this;
+}
+
+void DxpsDataDeliverMessage::parsimPack(cCommBuffer *b)
+{
+    cPacket::parsimPack(b);
+    doPacking(b,this->logicalNodeKey_var);
+    doPacking(b,this->dxpsMsgId_var);
+    doPacking(b,this->empty_var);
+}
+
+void DxpsDataDeliverMessage::parsimUnpack(cCommBuffer *b)
+{
+    cPacket::parsimUnpack(b);
+    doUnpacking(b,this->logicalNodeKey_var);
+    doUnpacking(b,this->dxpsMsgId_var);
+    doUnpacking(b,this->empty_var);
+}
+
+OverlayKey& DxpsDataDeliverMessage::getLogicalNodeKey()
+{
+    return logicalNodeKey_var;
+}
+
+void DxpsDataDeliverMessage::setLogicalNodeKey(const OverlayKey& logicalNodeKey_var)
+{
+    this->logicalNodeKey_var = logicalNodeKey_var;
+}
+
+long DxpsDataDeliverMessage::getDxpsMsgId() const
+{
+    return dxpsMsgId_var;
+}
+
+void DxpsDataDeliverMessage::setDxpsMsgId(long dxpsMsgId_var)
+{
+    this->dxpsMsgId_var = dxpsMsgId_var;
+}
+
+bool DxpsDataDeliverMessage::getEmpty() const
+{
+    return empty_var;
+}
+
+void DxpsDataDeliverMessage::setEmpty(bool empty_var)
+{
+    this->empty_var = empty_var;
+}
+
+class DxpsDataDeliverMessageDescriptor : public cClassDescriptor
+{
+  public:
+    DxpsDataDeliverMessageDescriptor();
+    virtual ~DxpsDataDeliverMessageDescriptor();
+
+    virtual bool doesSupport(cObject *obj) const;
+    virtual const char *getProperty(const char *propertyname) const;
+    virtual int getFieldCount(void *object) const;
+    virtual const char *getFieldName(void *object, int field) const;
+    virtual int findField(void *object, const char *fieldName) const;
+    virtual unsigned int getFieldTypeFlags(void *object, int field) const;
+    virtual const char *getFieldTypeString(void *object, int field) const;
+    virtual const char *getFieldProperty(void *object, int field, const char *propertyname) const;
+    virtual int getArraySize(void *object, int field) const;
+
+    virtual std::string getFieldAsString(void *object, int field, int i) const;
+    virtual bool setFieldAsString(void *object, int field, int i, const char *value) const;
+
+    virtual const char *getFieldStructName(void *object, int field) const;
+    virtual void *getFieldStructPointer(void *object, int field, int i) const;
+};
+
+Register_ClassDescriptor(DxpsDataDeliverMessageDescriptor);
+
+DxpsDataDeliverMessageDescriptor::DxpsDataDeliverMessageDescriptor() : cClassDescriptor("DxpsDataDeliverMessage", "cPacket")
+{
+}
+
+DxpsDataDeliverMessageDescriptor::~DxpsDataDeliverMessageDescriptor()
+{
+}
+
+bool DxpsDataDeliverMessageDescriptor::doesSupport(cObject *obj) const
+{
+    return dynamic_cast<DxpsDataDeliverMessage *>(obj)!=NULL;
+}
+
+const char *DxpsDataDeliverMessageDescriptor::getProperty(const char *propertyname) const
+{
+    cClassDescriptor *basedesc = getBaseClassDescriptor();
+    return basedesc ? basedesc->getProperty(propertyname) : NULL;
+}
+
+int DxpsDataDeliverMessageDescriptor::getFieldCount(void *object) const
+{
+    cClassDescriptor *basedesc = getBaseClassDescriptor();
+    return basedesc ? 3+basedesc->getFieldCount(object) : 3;
+}
+
+unsigned int DxpsDataDeliverMessageDescriptor::getFieldTypeFlags(void *object, int field) const
+{
+    cClassDescriptor *basedesc = getBaseClassDescriptor();
+    if (basedesc) {
+        if (field < basedesc->getFieldCount(object))
+            return basedesc->getFieldTypeFlags(object, field);
+        field -= basedesc->getFieldCount(object);
+    }
+    static unsigned int fieldTypeFlags[] = {
+        FD_ISCOMPOUND,
+        FD_ISEDITABLE,
+        FD_ISEDITABLE,
+    };
+    return (field>=0 && field<3) ? fieldTypeFlags[field] : 0;
+}
+
+const char *DxpsDataDeliverMessageDescriptor::getFieldName(void *object, int field) const
+{
+    cClassDescriptor *basedesc = getBaseClassDescriptor();
+    if (basedesc) {
+        if (field < basedesc->getFieldCount(object))
+            return basedesc->getFieldName(object, field);
+        field -= basedesc->getFieldCount(object);
+    }
+    static const char *fieldNames[] = {
+        "logicalNodeKey",
+        "dxpsMsgId",
+        "empty",
+    };
+    return (field>=0 && field<3) ? fieldNames[field] : NULL;
+}
+
+int DxpsDataDeliverMessageDescriptor::findField(void *object, const char *fieldName) const
+{
+    cClassDescriptor *basedesc = getBaseClassDescriptor();
+    int base = basedesc ? basedesc->getFieldCount(object) : 0;
+    if (fieldName[0]=='l' && strcmp(fieldName, "logicalNodeKey")==0) return base+0;
+    if (fieldName[0]=='d' && strcmp(fieldName, "dxpsMsgId")==0) return base+1;
+    if (fieldName[0]=='e' && strcmp(fieldName, "empty")==0) return base+2;
+    return basedesc ? basedesc->findField(object, fieldName) : -1;
+}
+
+const char *DxpsDataDeliverMessageDescriptor::getFieldTypeString(void *object, int field) const
+{
+    cClassDescriptor *basedesc = getBaseClassDescriptor();
+    if (basedesc) {
+        if (field < basedesc->getFieldCount(object))
+            return basedesc->getFieldTypeString(object, field);
+        field -= basedesc->getFieldCount(object);
+    }
+    static const char *fieldTypeStrings[] = {
+        "OverlayKey",
+        "long",
+        "bool",
+    };
+    return (field>=0 && field<3) ? fieldTypeStrings[field] : NULL;
+}
+
+const char *DxpsDataDeliverMessageDescriptor::getFieldProperty(void *object, int field, const char *propertyname) const
+{
+    cClassDescriptor *basedesc = getBaseClassDescriptor();
+    if (basedesc) {
+        if (field < basedesc->getFieldCount(object))
+            return basedesc->getFieldProperty(object, field, propertyname);
+        field -= basedesc->getFieldCount(object);
+    }
+    switch (field) {
+        default: return NULL;
+    }
+}
+
+int DxpsDataDeliverMessageDescriptor::getArraySize(void *object, int field) const
+{
+    cClassDescriptor *basedesc = getBaseClassDescriptor();
+    if (basedesc) {
+        if (field < basedesc->getFieldCount(object))
+            return basedesc->getArraySize(object, field);
+        field -= basedesc->getFieldCount(object);
+    }
+    DxpsDataDeliverMessage *pp = (DxpsDataDeliverMessage *)object; (void)pp;
+    switch (field) {
+        default: return 0;
+    }
+}
+
+std::string DxpsDataDeliverMessageDescriptor::getFieldAsString(void *object, int field, int i) const
+{
+    cClassDescriptor *basedesc = getBaseClassDescriptor();
+    if (basedesc) {
+        if (field < basedesc->getFieldCount(object))
+            return basedesc->getFieldAsString(object,field,i);
+        field -= basedesc->getFieldCount(object);
+    }
+    DxpsDataDeliverMessage *pp = (DxpsDataDeliverMessage *)object; (void)pp;
+    switch (field) {
+        case 0: {std::stringstream out; out << pp->getLogicalNodeKey(); return out.str();}
+        case 1: return long2string(pp->getDxpsMsgId());
+        case 2: return bool2string(pp->getEmpty());
+        default: return "";
+    }
+}
+
+bool DxpsDataDeliverMessageDescriptor::setFieldAsString(void *object, int field, int i, const char *value) const
+{
+    cClassDescriptor *basedesc = getBaseClassDescriptor();
+    if (basedesc) {
+        if (field < basedesc->getFieldCount(object))
+            return basedesc->setFieldAsString(object,field,i,value);
+        field -= basedesc->getFieldCount(object);
+    }
+    DxpsDataDeliverMessage *pp = (DxpsDataDeliverMessage *)object; (void)pp;
+    switch (field) {
+        case 1: pp->setDxpsMsgId(string2long(value)); return true;
+        case 2: pp->setEmpty(string2bool(value)); return true;
+        default: return false;
+    }
+}
+
+const char *DxpsDataDeliverMessageDescriptor::getFieldStructName(void *object, int field) const
+{
+    cClassDescriptor *basedesc = getBaseClassDescriptor();
+    if (basedesc) {
+        if (field < basedesc->getFieldCount(object))
+            return basedesc->getFieldStructName(object, field);
+        field -= basedesc->getFieldCount(object);
+    }
+    static const char *fieldStructNames[] = {
+        "OverlayKey",
+        NULL,
+        NULL,
+    };
+    return (field>=0 && field<3) ? fieldStructNames[field] : NULL;
+}
+
+void *DxpsDataDeliverMessageDescriptor::getFieldStructPointer(void *object, int field, int i) const
+{
+    cClassDescriptor *basedesc = getBaseClassDescriptor();
+    if (basedesc) {
+        if (field < basedesc->getFieldCount(object))
+            return basedesc->getFieldStructPointer(object, field, i);
+        field -= basedesc->getFieldCount(object);
+    }
+    DxpsDataDeliverMessage *pp = (DxpsDataDeliverMessage *)object; (void)pp;
     switch (field) {
         case 0: return (void *)(&pp->getLogicalNodeKey()); break;
         default: return NULL;

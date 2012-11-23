@@ -154,6 +154,7 @@ bool Dxps::handleRpcCall(BaseCallMessage* msg)
 {
   RPC_SWITCH_START(msg);
   RPC_DELEGATE(DxpsJoin, handleJoinCall);
+  RPC_DELEGATE(DxpsSub, handleSubCall);
   RPC_DELEGATE(DxpsPublish, handlePublishCall);
   RPC_SWITCH_END();
   return RPC_HANDLED;
@@ -193,6 +194,14 @@ void Dxps::deliver(OverlayKey& key, cMessage* msg)
   //    }
   if( DxpsDataMessage* data = dynamic_cast<DxpsDataMessage*>(msg) ){
     deliverALMDataToGroup( data );}
+  else if( DxpsDataDeliverMessage* dataMsg = dynamic_cast<DxpsDataDeliverMessage*>(msg) ){
+      //ALMMulticastMessage* mcastMsg = new ALMMulticastMessage( dataMsg->getName() );
+      //mcastMsg->setGroupId(dataMsg->getLogicalNodeKey());//FIXME:Dose not reveal teh real Group, since I don't have group at all, this is just the parent(logical) nodes.
+      //mcastMsg->encapsulate( dataMsg->decapsulate()->decapsulate());
+      RECORD_STATS(++numReceived; receivedBytes += dataMsg->getByteLength());
+      //send( mcastMsg, "to_upperTier" );
+      //delete msg;
+  }
 }
 
 void Dxps::handleUpperMessage( cMessage *msg )
@@ -369,14 +378,57 @@ void Dxps::handleTimerEvent( cMessage *msg )
   //
 }
 
-//void Dxps::handleJoinCall( DxpsJoinCall* joinMsg)
-//{
-//    handleJoinMessage( joinMsg, true );
-//}
+void Dxps::handleSubCall( DxpsSubCall* subMsg)
+{
+  RECORD_STATS(++numJoins);
+  OverlayKey key = subMsg->getDstLogicalNodeKey();
+  DxpsSubscriptionMessage* dataMsg=dynamic_cast<DxpsSubscriptionMessage*>(subMsg->decapsulate());
+  Filter* filter = dynamic_cast<Filter*>(dataMsg->getEncapsulatedPacket());
+  FilterList filterlist;
+  unsigned char  bltable[filter->getFilterArraySize()];
+  for (size_t i = 0; i < filter->getFilterArraySize(); ++i)
+  {
+    bltable[i]=filter->getFilter(i);   
+  }
+  //bloom_filter FilterKey (1024,1);
+  bloom_filter FilterKey (bltable,filter->getFilterSize());
+  filterlist.insert(FilterKey);
+  //test bloom filter defautl constructor. finally fixed with setting of a
+  //8bits 0 bit_table_.
+  //bloom_filter tmpfilter(FilterKey);
+  //tmpfilter=FilterKey;
+  //test end;
+  EV << "[Dxps::handleSubCall() @ " << overlay->getThisNode().getIp()
+      << " (" << overlay->getThisNode().getKey().toString(16) << ")]\n"
+      << "    Received a SubMsg for child's  logical Key " << key << "\n"
+      << "    msg=" << subMsg
+      << endl; 
+  // Insert group into RoutingTableList, if not already there
+  std::pair<RoutingTableList::iterator, bool> routingInserter; //TODO: to check if it is a vitural node.
+  routingInserter = routingTableList.insert( std::make_pair(key, DxpsRoutingTable(key)) );
+  OverlayKey mykey=routingInserter.first->second.getLogicalNodeKey();
+  //forward join request to parent//
+  getParents(mykey, OverlayKey::UNSPECIFIED_KEY,dataMsg);//secondkey(fromkey in handleDxpsJoin) here should always be unspec, because this is the first forwarder
+  //set forwarder, not used currently.
+  routingInserter.first->second.setSubscription(true);
+  // Add child to routingTable
+  //check if I send request to myself --> this happens when I am the subscriber so I send myself a join request.
+  //if (!(joinMsg->getSrcLogicalNodeKey()==overlay->getThisNode().getKey()))//since we have concept of virtual nodes, this is not correct way to identify a message send from it self.
+  //it maybe a message aimed at a key who also charged by the same node.
+  //if (!(joinMsg->getSrcLogicalNodeKey().isUnspecified()))
+    addChildToSubRoutingTable( std::make_pair(subMsg->getSrcLogicalNodeKey(),std::make_pair(subMsg->getSrcNode(),filterlist)), routingInserter.first->second );
+
+  // Send joinResponse
+  DxpsSubResponse* joinResponse = new DxpsSubResponse;
+  joinResponse->setLogicalNodeKey( key ); //TODO: Maybe need logicalID of parents,
+  //send it here.
+  joinResponse->setBitLength( DXPS_JOINRESPONSE_L(joinResponse) );
+  sendRpcResponse( subMsg, joinResponse );
+  delete dataMsg;
+}
 void Dxps::handleJoinCall( DxpsJoinCall* joinMsg)
 {
 
-  RECORD_STATS(++numJoins);
   OverlayKey key = joinMsg->getDstLogicalNodeKey();
   OverlayKey fromKey= joinMsg->getSrcLogicalNodeKey();
   DxpsSubscriptionMessage* dataMsg=dynamic_cast<DxpsSubscriptionMessage*>(joinMsg->decapsulate());
@@ -507,25 +559,9 @@ void Dxps::handlePublishCall( DxpsPublishCall* publishCall )
 
 void Dxps::handleJoinResponse( DxpsJoinResponse* joinResponse )
 {
-  //    RoutingTableList::iterator it = routingTableList.find( joinResponse->getLogicalNodeKey() );
-  //    if( it == routingTableList.end() ) {
-  //        EV << "[Dxps::handleJoinResponse() @ " << overlay->getThisNode().getIp()
-  //            << " (" << overlay->getThisNode().getKey().toString(16) << ")]\n"
-  //            << "Getting join response for an unknown group!\n";
-  //        return;
-  //    }
-  //    it->second.setParent( joinResponse->getSrcNode() );
-  //
-  //    // Create new heartbeat timer
-  //    DxpsTimer* parentTimeout = new DxpsTimer("ParentTimeoutTimer");
-  //    parentTimeout->setTimerType( DXPS_PARENT_TIMEOUT );
-  //    parentTimeout->setGroup( it->second.getLogicalNodeKey() );
-  //    startTimer( parentTimeout );
-  //    if( DxpsTimer* t = it->second.getParentTimer() ){
-  //        // delete old timer, if any
-  //        if( t ) cancelAndDelete( t );
-  //    }
-  //    it->second.setParentTimer( parentTimeout );
+}
+void Dxps::handleSubResponse( DxpsSubResponse* joinResponse )
+{
 }
 
 void Dxps::handlePublishResponse( DxpsPublishResponse* publishResponse )
@@ -562,39 +598,44 @@ void Dxps::subscribeToGroup( ALMSubscribeMessage* subMsg )
   //DxpsSubscriptionMessage;
   DxpsSubscriptionMessage* dataMsg = new DxpsSubscriptionMessage( subMsg->getName() );//get the name of upper message and use it.
   dataMsg->setLogicalNodeKey(overlay->getThisNode().getKey());//For later User. use subscriber's key to add to its RN's routing table as a child.
-  dataMsg->setBitLength( DXPS_SUBSCRIPTIONMESSAGE_L( dataMsg ));
+  dataMsg->setBitLength( DXPS_SUBSCRIPTIONMESSAGE_L( subMsg ));
   dataMsg->encapsulate( subMsg->decapsulate() );
-  Filter* filter = dynamic_cast<Filter*>(dataMsg->getEncapsulatedPacket());
-  //std::cout<<"test getencap inside"<<filter->getFilterArraySize();
+  //test purpose only;
+  //Filter* filter = dynamic_cast<Filter*>(dataMsg->getEncapsulatedPacket());
+  ////std::cout<<"test getencap inside"<<filter->getFilterArraySize();
   //std::cout<<"got sub filter \n";
-  unsigned char  bltable[filter->getFilterArraySize()];
+  //unsigned char  bltable[filter->getFilterArraySize()];
 
-  for (size_t i = 0; i < filter->getFilterArraySize(); ++i)
-  {
-    bltable[i]=filter->getFilter(i);   
+  //for (size_t i = 0; i < filter->getFilterArraySize(); ++i)
+  //{
+    //bltable[i]=filter->getFilter(i);   
     //std::cout<<"bloom filter is:"<<(int)bltable[i];
-  }
-  //std::cout<<"fitlersize is:"<<filter->getFilterSize();
-  bloom_filter FilterKey (bltable,filter->getFilterSize());
+  //}
+  //std::cout<<"\n";
+  ////std::cout<<"fitlersize is:"<<filter->getFilterSize();
+  //bloom_filter FilterKey (bltable,filter->getFilterSize());
 
   //std::cout<< "I am here";
 
   // Using DxpsJoinCall (RPC) to send supscriptions in KBR layer. Uses KBR
   // routing.
-  DxpsJoinCall* msg = new DxpsJoinCall;
+  // test end!
+  DxpsSubCall* msg = new DxpsSubCall;
   //msg->setSrcLogicalNodeKey( overlay->getThisNode().getKey());
-  msg->setSrcLogicalNodeKey(OverlayKey());//using unspecified key, needed for spanning tree generation.
+  msg->setSrcLogicalNodeKey(overlay->getThisNode().getKey());//using unspecified key, needed for spanning tree generation.
   msg->setDstLogicalNodeKey(subMsg->getGroupId());
   msg->setBitLength(  DXPS_JOINCALL_L(msg) );
   msg->encapsulate( dataMsg );
 
 
   //    TODO: set subscription flag, create routingtable if not exists.
-  std::pair<RoutingTableList::iterator, bool> groupInserter;
-  OverlayKey mykey=overlay->getThisNode().getKey();
-  groupInserter = routingTableList.insert( std::make_pair(mykey, DxpsRoutingTable(mykey)) );
-  groupInserter.first->second.setSubscription(true);
-  groupInserter.first->second.insertToOwnFilterList(FilterKey);
+  //std::pair<RoutingTableList::iterator, bool> groupInserter;
+  //OverlayKey mykey=overlay->getThisNode().getKey();
+  //groupInserter = routingTableList.insert( std::make_pair(mykey, DxpsRoutingTable(mykey)) );
+  //groupInserter.first->second.setSubscription(true);
+  //will not use ownfilter as I have this handled by my RN node.I will say yes
+  //to everything he send me.
+  //groupInserter.first->second.insertToOwnFilterList(FilterKey);
 
   //    if( !groupInserter.first->second.getRendezvousPoint().isUnspecified() ) {
   //        // ... directly to the rendevouz point, if known ...
@@ -627,6 +668,32 @@ void Dxps::addChildToRoutingTable( const Children& child, DxpsRoutingTable& rout
   std::pair<std::map<OverlayKey, NfPair>::iterator, bool> inserter = routingTable.addChild( child );
   if (!inserter.second){
     routingTable.modChild( child);
+  }
+
+  //    if( inserter.second ) {
+  //        // if child has not been in the list, create new timeout msg
+  //        DxpsTimer* timeoutMsg = new DxpsTimer;
+  //        timeoutMsg->setTimerType( DXPS_CHILD_TIMEOUT );
+
+  //        // Remember child and group
+  //        timeoutMsg->setChild( *inserter.first );
+  //        timeoutMsg->setGroup( group.getLogicalNodeKey() );
+  //
+  //        startTimer( timeoutMsg );
+  //        childTimeoutList.insert( std::make_pair(child, timeoutMsg) );
+  //    }
+}
+void Dxps::addChildToSubRoutingTable( const Children& child, DxpsRoutingTable& routingTable )
+{
+  //    if( child == overlay->getThisNode()) ) {
+  //        // Join from ourself, ignore
+  //        return;
+  //    }
+
+  // add child to group's children list
+  std::pair<std::map<OverlayKey, NfPair>::iterator, bool> inserter = routingTable.addSubChild( child );
+  if (!inserter.second){
+    routingTable.modSubChild( child);
   }
 
   //    if( inserter.second ) {
@@ -857,28 +924,58 @@ void Dxps::deliverALMDataToGroup( DxpsDataMessage* dataMsg )
       callRoute( OverlayKey::UNSPECIFIED_KEY, newMsg, cit->second.first );//TODO: tweak this to route through KBR.
     }
   }
+    //deliver data to subscriber for each entry in subChildren list
+ for( std::map<OverlayKey, NfPair>::iterator cit = it->second.getSubChildrenBegin();
+      cit != it->second.getSubChildrenEnd(); ++cit ) {
+    bool ismatched=false; //reset evaluation result to false
+    //do matching here!if subscriptionfilter is set to true;
 
-  // deliver to myself if I'm subscribed to that group //TODO: create a new talbe for subscribers and check that talbe here. and deliver.
-  bool ismatched=false;//above ismatch in for is temparary variable
-  if( it->second.getSubscription() ) {
-    if (subscriptionfilter){
+    if (subscriptionfilter)
+    {
       Filter* filter = dynamic_cast<Filter*>(dataMsg->getEncapsulatedPacket()->getEncapsulatedPacket());
       unsigned char  bltable[filter->getFilterArraySize()];
       for (size_t i = 0; i < filter->getFilterArraySize(); ++i) {
+      //for (size_t i = 0; i < 128; ++i) {
         bltable[i]=filter->getFilter(i);   
-      } 
-      //std::cout<<"gonna compare for final destination\n";
-      ismatched=matchit(it->second.getOwnFilterList(),bloom_filter(bltable,filter->getFilterSize()));
+        //std::cout<<std::hex<<(int) bltable[i];
+      }
+      //std::cout<<"\n";
+      ismatched=matchit(cit->second.second,bloom_filter(bltable,filter->getFilterSize()));
     }
 
     if(!subscriptionfilter || ismatched){
-      ALMMulticastMessage* mcastMsg = new ALMMulticastMessage( dataMsg->getName() );
-      mcastMsg->setGroupId(dataMsg->getLogicalNodeKey());//FIXME:Dose not reveal teh real Group, since I don't have group at all, this is just the parent(logical) nodes.
-      mcastMsg->encapsulate( dataMsg->decapsulate() );
-      RECORD_STATS(++numReceived; receivedBytes += dataMsg->getByteLength());
-      send( mcastMsg, "to_upperTier" );
+      DxpsDataDeliverMessage* newMsg = new DxpsDataDeliverMessage();
+      DxpsDataMessage* tmpMsg = new DxpsDataMessage( *dataMsg );
+      newMsg->setDxpsMsgId(dataMsg->getId());//keep the same dxpsMsgId;
+      newMsg->setLogicalNodeKey(cit->first);
+      newMsg->encapsulate(tmpMsg);
+
+    //std::cout<<"I am here \n"<<cit->second.first<<"";
+      //RECORD_STATS(++numForward; forwardBytes += newMsg->getByteLength());
+      callRoute( OverlayKey::UNSPECIFIED_KEY, newMsg, cit->second.first );//TODO: tweak this to route through KBR.
     }
-  }
+  }  
+  // deliver to myself if I'm subscribed to that group //TODO: create a new talbe for subscribers and check that talbe here. and deliver.//this method has been replaced with subChildren table solution
+  //bool ismatched=false;//above ismatch in for is temparary variable
+  //if( it->second.getSubscription() ) {
+    //if (subscriptionfilter){
+      //Filter* filter = dynamic_cast<Filter*>(dataMsg->getEncapsulatedPacket()->getEncapsulatedPacket());
+      //unsigned char  bltable[filter->getFilterArraySize()];
+      //for (size_t i = 0; i < filter->getFilterArraySize(); ++i) {
+        //bltable[i]=filter->getFilter(i);   
+      //} 
+      ////std::cout<<"gonna compare for final destination\n";
+      //ismatched=matchit(it->second.getOwnFilterList(),bloom_filter(bltable,filter->getFilterSize()));
+    //}
+
+    //if(!subscriptionfilter || ismatched){
+      //ALMMulticastMessage* mcastMsg = new ALMMulticastMessage( dataMsg->getName() );
+      //mcastMsg->setGroupId(dataMsg->getLogicalNodeKey());//FIXME:Dose not reveal teh real Group, since I don't have group at all, this is just the parent(logical) nodes.
+      //mcastMsg->encapsulate( dataMsg->decapsulate() );
+      //RECORD_STATS(++numReceived; receivedBytes += dataMsg->getByteLength());
+      //send( mcastMsg, "to_upperTier" );
+    //}
+  //}
 
   delete dataMsg;
 }
@@ -932,5 +1029,5 @@ bool Dxps::keycompare(bloom_filter subKey,bloom_filter pubKey){
   //}
   //std::cout<<"\n";
   if ((pubKey & subKey ^ subKey).isZero()) return true;
-  return true;
+  return false;
 }

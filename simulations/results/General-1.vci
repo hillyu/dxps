@@ -1,8 +1,8 @@
-file 3109 1352444625                                            
+file 2978 1353401938                                            
 version 2
-run General-1-20121109-14:49:31-11478
+run General-1-20121120-16:53:38-8772
 attr configname General
-attr datetime 20121109-14:49:31
+attr datetime 20121120-16:53:38
 attr experiment General
 attr inifile dxps.ini
 attr iterationvars $n=6
@@ -10,7 +10,7 @@ attr iterationvars2 "$n=6, $repetition=0"
 attr measurement $n=6
 attr n 6
 attr network oversim.underlay.simpleunderlay.SimpleUnderlayNetwork
-attr processid 11478
+attr processid 8772
 attr repetition 0
 attr replication #0
 attr resultdir results
@@ -18,4 +18,4 @@ attr runnumber 1
 attr seedset 1
 
 vector 1  SimpleUnderlayNetwork.globalObserver.globalStatistics  "GlobalNodeList: Number of nodes"  ETV
-1	533 2576 95371 9718466 1050 8200 144 64 64 9216 589824
+1	531 2447 92512 967336 1050 8200 144 64 64 9216 589824

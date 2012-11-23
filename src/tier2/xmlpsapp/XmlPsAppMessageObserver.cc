@@ -177,26 +177,26 @@ void XmlPsAppMessageObserver::sentMessage(XmlPsAppTracedMessage* msg) {
  * Counts one received message for group
  */
 void XmlPsAppMessageObserver::receivedMessage(XmlPsAppTracedMessage* msg) {
-  if (msg->getSenderId() != msg->getReceiverId()) {//TODO: test if this is useful. normally should consider self publication.
+  //if (msg->getSenderId() != msg->getReceiverId()) {//TODO: test if this is useful. normally should consider self publication.
 
-    std::map<int, Subscription>::iterator iSubList;
-    iSubList = subList.find(msg->getReceiverId());
-            NodeMessagePair nmp = NodeMessagePair( msg->getMcastId(),msg->getReceiverId());
-            if (receivedAt.find(nmp) == receivedAt.end()) {
-                iSubList->second.received += 1;
-                if (msg->getFalse_positive()) {
-                	iSubList->second.false_positive += 1;
-				}
+  std::map<int, Subscription>::iterator iSubList;
+  iSubList = subList.find(msg->getReceiverId());
+  NodeMessagePair nmp = NodeMessagePair( msg->getMcastId(),msg->getReceiverId());
+  if (receivedAt.find(nmp) == receivedAt.end()) {
+  iSubList->second.received += 1;
+  if (msg->getFalse_positive()) {
+    iSubList->second.false_positive += 1;
+    }
 
-      NodeMessagePair nmp2=NodeMessagePair( msg->getMcastId(),msg->getSenderId());
-      msgList[nmp2].subSize+=1;
-      msgList[nmp2].subscriber.insert(msg->getReceiverId());
-                receivedAt[nmp] = msg->getTimestamp();
-            }
-    }
-    else {
-        RECORD_STATS(++numLooped);
-    }
+  NodeMessagePair nmp2=NodeMessagePair( msg->getMcastId(),msg->getSenderId());
+  msgList[nmp2].subSize+=1;
+  msgList[nmp2].subscriber.insert(msg->getReceiverId());
+  receivedAt[nmp] = msg->getTimestamp();
+}
+//}
+//else {
+//RECORD_STATS(++numLooped);
+//}
 }
 
 /**

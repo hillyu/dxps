@@ -10,6 +10,7 @@ public:
   SubGen(OverlayKey key, std::string myxpe);
 	SubGen(bloom_filter& filter);
   SubGen(int l,int k, OverlayKey mykey, std::string xpelist);
+  SubGen(int l,int k, std::string xpelist);
    //    std::ifstream file (filepath.c_str());
 	OverlayKey getBloom() const {return bloom;}
   static std::vector<SubGen> getPool(int l, int k,OverlayKey mykey, std::string  xpelist); 

@@ -53,12 +53,24 @@ std::pair<std::map<OverlayKey, NfPair>::iterator, bool> DxpsRoutingTable::addChi
 {
     return children.insert(nodepair);
 }
+std::pair<std::map<OverlayKey, NfPair>::iterator, bool> DxpsRoutingTable::addSubChild( const Children& nodepair )
+{
+    return subChildren.insert(nodepair);
+}
 //modify the childern list if the request indicates the insertion of an known child.
 //only update the filter list/routing table.
 void DxpsRoutingTable::modChild( const Children& nodepair )
 {
    std::map<OverlayKey, NfPair>::iterator it;
    it=children.find(nodepair.first);
+   it->second.second.insert(*(nodepair.second.second.begin()));
+
+    return;
+}
+void DxpsRoutingTable::modSubChild( const Children& nodepair )
+{
+   std::map<OverlayKey, NfPair>::iterator it;
+   it=subChildren.find(nodepair.first);
    it->second.second.insert(*(nodepair.second.second.begin()));
 
     return;
@@ -85,4 +97,14 @@ std::map<OverlayKey, NfPair>::iterator DxpsRoutingTable::getChildrenEnd()
 {
     return children.end();
 }
+std::map<OverlayKey, NfPair>::iterator DxpsRoutingTable::getSubChildrenBegin()
+{
+    return subChildren.begin();
+}
+
+std::map<OverlayKey, NfPair>::iterator DxpsRoutingTable::getSubChildrenEnd()
+{
+    return subChildren.end();
+}
+ 
 

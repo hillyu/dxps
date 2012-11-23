@@ -103,6 +103,47 @@ inline void doUnpacking(cCommBuffer *b, DxpsJoinCall& obj) {obj.parsimUnpack(b);
 /**
  * Class generated from <tt>applications/dxps/DxpsMessage.msg</tt> by opp_msgc.
  * <pre>
+ * packet DxpsSubCall extends BaseCallMessage 
+ * {
+ *         OverlayKey srcLogicalNodeKey;
+ *         OverlayKey dstLogicalNodeKey;
+ *                             
+ * }
+ * </pre>
+ */
+class DxpsSubCall : public ::BaseCallMessage
+{
+  protected:
+    ::OverlayKey srcLogicalNodeKey_var;
+    ::OverlayKey dstLogicalNodeKey_var;
+
+    // protected and unimplemented operator==(), to prevent accidental usage
+    bool operator==(const DxpsSubCall&);
+
+  public:
+    DxpsSubCall(const char *name=NULL, int kind=0);
+    DxpsSubCall(const DxpsSubCall& other);
+    virtual ~DxpsSubCall();
+    DxpsSubCall& operator=(const DxpsSubCall& other);
+    virtual DxpsSubCall *dup() const {return new DxpsSubCall(*this);}
+    virtual void parsimPack(cCommBuffer *b);
+    virtual void parsimUnpack(cCommBuffer *b);
+
+    // field getter/setter methods
+    virtual OverlayKey& getSrcLogicalNodeKey();
+    virtual const OverlayKey& getSrcLogicalNodeKey() const {return const_cast<DxpsSubCall*>(this)->getSrcLogicalNodeKey();}
+    virtual void setSrcLogicalNodeKey(const OverlayKey& srcLogicalNodeKey_var);
+    virtual OverlayKey& getDstLogicalNodeKey();
+    virtual const OverlayKey& getDstLogicalNodeKey() const {return const_cast<DxpsSubCall*>(this)->getDstLogicalNodeKey();}
+    virtual void setDstLogicalNodeKey(const OverlayKey& dstLogicalNodeKey_var);
+};
+
+inline void doPacking(cCommBuffer *b, DxpsSubCall& obj) {obj.parsimPack(b);}
+inline void doUnpacking(cCommBuffer *b, DxpsSubCall& obj) {obj.parsimUnpack(b);}
+
+/**
+ * Class generated from <tt>applications/dxps/DxpsMessage.msg</tt> by opp_msgc.
+ * <pre>
  * packet DxpsJoinResponse extends BaseResponseMessage
  * {
  *         OverlayKey logicalNodeKey; 
@@ -135,6 +176,42 @@ class DxpsJoinResponse : public ::BaseResponseMessage
 
 inline void doPacking(cCommBuffer *b, DxpsJoinResponse& obj) {obj.parsimPack(b);}
 inline void doUnpacking(cCommBuffer *b, DxpsJoinResponse& obj) {obj.parsimUnpack(b);}
+
+/**
+ * Class generated from <tt>applications/dxps/DxpsMessage.msg</tt> by opp_msgc.
+ * <pre>
+ * packet DxpsSubResponse extends BaseResponseMessage
+ * {
+ *         OverlayKey logicalNodeKey; 
+ *                             
+ * }
+ * </pre>
+ */
+class DxpsSubResponse : public ::BaseResponseMessage
+{
+  protected:
+    ::OverlayKey logicalNodeKey_var;
+
+    // protected and unimplemented operator==(), to prevent accidental usage
+    bool operator==(const DxpsSubResponse&);
+
+  public:
+    DxpsSubResponse(const char *name=NULL, int kind=0);
+    DxpsSubResponse(const DxpsSubResponse& other);
+    virtual ~DxpsSubResponse();
+    DxpsSubResponse& operator=(const DxpsSubResponse& other);
+    virtual DxpsSubResponse *dup() const {return new DxpsSubResponse(*this);}
+    virtual void parsimPack(cCommBuffer *b);
+    virtual void parsimUnpack(cCommBuffer *b);
+
+    // field getter/setter methods
+    virtual OverlayKey& getLogicalNodeKey();
+    virtual const OverlayKey& getLogicalNodeKey() const {return const_cast<DxpsSubResponse*>(this)->getLogicalNodeKey();}
+    virtual void setLogicalNodeKey(const OverlayKey& logicalNodeKey_var);
+};
+
+inline void doPacking(cCommBuffer *b, DxpsSubResponse& obj) {obj.parsimPack(b);}
+inline void doUnpacking(cCommBuffer *b, DxpsSubResponse& obj) {obj.parsimUnpack(b);}
 
 /**
  * Class generated from <tt>applications/dxps/DxpsMessage.msg</tt> by opp_msgc.
@@ -454,6 +531,49 @@ class DxpsDataMessage : public ::cPacket
 
 inline void doPacking(cCommBuffer *b, DxpsDataMessage& obj) {obj.parsimPack(b);}
 inline void doUnpacking(cCommBuffer *b, DxpsDataMessage& obj) {obj.parsimUnpack(b);}
+
+/**
+ * Class generated from <tt>applications/dxps/DxpsMessage.msg</tt> by opp_msgc.
+ * <pre>
+ * packet DxpsDataDeliverMessage
+ * {
+ *         OverlayKey logicalNodeKey;
+ *         long dxpsMsgId =0;
+ *         bool empty = false;
+ * }
+ * </pre>
+ */
+class DxpsDataDeliverMessage : public ::cPacket
+{
+  protected:
+    ::OverlayKey logicalNodeKey_var;
+    long dxpsMsgId_var;
+    bool empty_var;
+
+    // protected and unimplemented operator==(), to prevent accidental usage
+    bool operator==(const DxpsDataDeliverMessage&);
+
+  public:
+    DxpsDataDeliverMessage(const char *name=NULL, int kind=0);
+    DxpsDataDeliverMessage(const DxpsDataDeliverMessage& other);
+    virtual ~DxpsDataDeliverMessage();
+    DxpsDataDeliverMessage& operator=(const DxpsDataDeliverMessage& other);
+    virtual DxpsDataDeliverMessage *dup() const {return new DxpsDataDeliverMessage(*this);}
+    virtual void parsimPack(cCommBuffer *b);
+    virtual void parsimUnpack(cCommBuffer *b);
+
+    // field getter/setter methods
+    virtual OverlayKey& getLogicalNodeKey();
+    virtual const OverlayKey& getLogicalNodeKey() const {return const_cast<DxpsDataDeliverMessage*>(this)->getLogicalNodeKey();}
+    virtual void setLogicalNodeKey(const OverlayKey& logicalNodeKey_var);
+    virtual long getDxpsMsgId() const;
+    virtual void setDxpsMsgId(long dxpsMsgId_var);
+    virtual bool getEmpty() const;
+    virtual void setEmpty(bool empty_var);
+};
+
+inline void doPacking(cCommBuffer *b, DxpsDataDeliverMessage& obj) {obj.parsimPack(b);}
+inline void doUnpacking(cCommBuffer *b, DxpsDataDeliverMessage& obj) {obj.parsimUnpack(b);}
 
 /**
  * Class generated from <tt>applications/dxps/DxpsMessage.msg</tt> by opp_msgc.
