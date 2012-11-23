@@ -2,6 +2,7 @@ images/
 *.[oa] 
 out/*
 *~
+*.log
 
 src/OverSim
 
