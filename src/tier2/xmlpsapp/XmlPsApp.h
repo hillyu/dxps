@@ -71,6 +71,7 @@ private:
   
 	std::vector<SubGen> subscribeList;
 	std::vector<SubGen> subPool;
+  int subSize;
  //std::vector<bloom_filter *> subscribeList;
 	bool joinGroups;
   std::string xpepath;

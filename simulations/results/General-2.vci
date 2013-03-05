@@ -1,21 +1,28 @@
-file 3011 1353402273                                            
+file 25091 1354782278                                           
 version 2
-run General-2-20121120-16:58:59-8919
+run General-2-20121206-16:15:12-28272
+attr b 600s
 attr configname General
-attr datetime 20121120-16:58:59
+attr datetime 20121206-16:15:12
 attr experiment General
 attr inifile dxps.ini
-attr iterationvars $n=8
-attr iterationvars2 "$n=8, $repetition=0"
-attr measurement $n=8
+attr iterationvars "$n=8, $b=600s"
+attr iterationvars2 "$n=8, $b=600s, $repetition=0"
+attr measurement "$n=8, $b=600s"
 attr n 8
 attr network oversim.underlay.simpleunderlay.SimpleUnderlayNetwork
-attr processid 8919
+attr processid 28272
 attr repetition 0
 attr replication #0
 attr resultdir results
 attr runnumber 2
 attr seedset 2
 
-vector 1  SimpleUnderlayNetwork.globalObserver.globalStatistics  "GlobalNodeList: Number of nodes"  ETV
-1	531 2480 126329 1246656 1050 8200 144 64 64 9216 589824
+vector 1  SimpleUnderlayNetwork.globalObserver.globalStatistics  "LifetimeChurn: Time between deletes"  ETV
+vector 2  SimpleUnderlayNetwork.globalObserver.globalStatistics  "LifetimeChurn: Session Time"  ETV
+vector 3  SimpleUnderlayNetwork.globalObserver.globalStatistics  "LifetimeChurn: Time between creates"  ETV
+vector 4  SimpleUnderlayNetwork.globalObserver.globalStatistics  "GlobalNodeList: Number of nodes"  ETV
+1	892 7047 531227 4989142 1023.144160552 8173.549807571 188 0.050587229 214.965530462 7211.003859054 546609.4356448
+2	7939 7444 549071 4976156 1039.164327906 8159.951951378 186 97.669381111 45881.220241094 1974161.9048882 39323061194.221
+3	15383 6979 549071 4976156 1039.164327906 8159.951951378 186 0.125502254 203.821396327 7244.397808053 547451.44213895
+4	22362 2729 560152 5002413 1050 8200 144 240 266 35975 8992505

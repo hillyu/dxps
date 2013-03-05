@@ -679,25 +679,20 @@ $O/applications/dxps/DxpsMessage_m.o: applications/dxps/DxpsMessage_m.cc \
   common/BinaryValue.h \
   applications/dxps/DxpsRoutingTable.h \
   common/Vector2D.h \
+  applications/dxps/../../tier2/xmlpsapp/bloom_filter.h \
   ../../INET-OverSim-20101019/src/networklayer/contract/IPAddress.h \
   common/OverSimMessage_m.h
 $O/applications/dxps/DxpsRoutingTable.o: applications/dxps/DxpsRoutingTable.cc \
   ../../INET-OverSim-20101019/src/base/INETDefs.h \
   ../../INET-OverSim-20101019/src/networklayer/contract/IPvXAddress.h \
-  common/OverSimMessage.h \
   common/oversim_mapset.h \
-  applications/dxps/DxpsMessage_m.h \
   common/OverlayKey.h \
   ../../INET-OverSim-20101019/src/networklayer/contract/IPv6Address.h \
   common/TransportAddress.h \
-  common/CommonMessages_m.h \
   common/NodeHandle.h \
-  common/BinaryValue.h \
   applications/dxps/DxpsRoutingTable.h \
   applications/dxps/../../tier2/xmlpsapp/bloom_filter.h \
-  common/Vector2D.h \
-  ../../INET-OverSim-20101019/src/networklayer/contract/IPAddress.h \
-  common/OverSimMessage_m.h
+  ../../INET-OverSim-20101019/src/networklayer/contract/IPAddress.h
 $O/applications/giasearchapp/GIASearchApp.o: applications/giasearchapp/GIASearchApp.cc \
   ../../INET-OverSim-20101019/src/base/INETDefs.h \
   ../../INET-OverSim-20101019/src/networklayer/contract/IPvXAddress.h \

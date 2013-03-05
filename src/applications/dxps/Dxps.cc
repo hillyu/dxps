@@ -48,6 +48,8 @@ Dxps::Dxps()
   heartbeatBytes = 0;
   numSubscriptionRefresh = 0;
   subscriptionRefreshBytes = 0;
+  numReplica = 3;
+  numUpdateRTEntry  = 0;
 }
 
 Dxps::~Dxps()
@@ -96,6 +98,10 @@ void Dxps::finishApp()
                               numReceived / time);
   globalStatistics->addStdDev("Dxps: Received Publication Bytes/s (subscribed groups only)",
                               receivedBytes / time);
+  globalStatistics->addStdDev("Dxps: sent Routing Update Message Count)",
+                              numUpdateRTEntry  );
+  globalStatistics->addStdDev("Dxps: Routing List Entry Count)",
+                              routingTableList.size()  );
   //globalStatistics->addStdDev("Dxps: Send Heartbeat Messages/s",
   //numHeartbeat / time);
   //globalStatistics->addStdDev("Dxps: Send Heartbeat Bytes/s",
@@ -126,8 +132,56 @@ void Dxps::finishApp()
 //    *msg = NULL;
 //}
 void Dxps::forward(OverlayKey* key, cPacket** msg, NodeHandle* nextHopNode){}
-void Dxps::update(NodeHandle const&, bool){}
 
+void Dxps::update(NodeHandle const& node, bool joined){
+  bool err;
+  RoutingTableList::iterator it;
+  for ( it = routingTableList.begin(); it != routingTableList.end(); ++it)
+  {
+    if (joined)
+    {
+      if(it->second.getIsResponsible())
+      {
+        NodeVector* siblings = overlay->local_lookup(it->first,numReplica,false);
+        if (siblings->size()==0){
+          delete siblings;
+          continue;
+        }
+        if (overlay->distance(node.getKey(), it->first) < overlay->distance(overlay->getThisNode().getKey(), it->first)) 
+        {
+
+          sendPutCall(node,  it->second);
+          it->second.setIsResponsible(false);
+        }
+
+        if (overlay->distance(node.getKey(), it->first) <= overlay->distance(siblings->back().getKey(), it->first)) 
+        {
+
+          sendPutReplicaCall(node,  it->second);
+        }
+      }
+    }
+    else{
+      it->second.setIsResponsible(overlay->isSiblingFor(overlay->getThisNode(), it->first, 1, &err));
+    }
+
+  }
+
+}
+void Dxps::sendPutCall(const NodeHandle& node,  const DxpsRoutingTable & entry)
+{
+  DxpsPutCall* dxpsMsg= new DxpsPutCall();
+  dxpsMsg->setRoutingTableEntry(entry);
+  sendRouteRpcCall(TIER1_COMP,node,dxpsMsg);
+  numUpdateRTEntry++;
+}
+
+void Dxps::sendPutReplicaCall(const NodeHandle& node,  const DxpsRoutingTable & entry)
+{
+  DxpsRoutingTable tmpEntry=entry;
+  tmpEntry.setIsResponsible(false);
+  sendPutCall(node,tmpEntry);
+}
 
 
 //void Dxps::update( const NodeHandle& node, bool joined )
@@ -154,6 +208,7 @@ bool Dxps::handleRpcCall(BaseCallMessage* msg)
 {
   RPC_SWITCH_START(msg);
   RPC_DELEGATE(DxpsJoin, handleJoinCall);
+  RPC_DELEGATE(DxpsPut, handlePutCall);
   RPC_DELEGATE(DxpsSub, handleSubCall);
   RPC_DELEGATE(DxpsPublish, handlePublishCall);
   RPC_SWITCH_END();
@@ -195,12 +250,14 @@ void Dxps::deliver(OverlayKey& key, cMessage* msg)
   if( DxpsDataMessage* data = dynamic_cast<DxpsDataMessage*>(msg) ){
     deliverALMDataToGroup( data );}
   else if( DxpsDataDeliverMessage* dataMsg = dynamic_cast<DxpsDataDeliverMessage*>(msg) ){
-      ALMMulticastMessage* mcastMsg = new ALMMulticastMessage( dataMsg->getName() );
-      mcastMsg->setGroupId(dataMsg->getLogicalNodeKey());//FIXME:Dose not reveal teh real Group, since I don't have group at all, this is just the parent(logical) nodes.
-      mcastMsg->encapsulate( dataMsg->decapsulate()->decapsulate());
-      RECORD_STATS(++numReceived; receivedBytes += dataMsg->getByteLength());
-      send( mcastMsg, "to_upperTier" );
-      delete msg;
+    ALMMulticastMessage* mcastMsg = new ALMMulticastMessage( dataMsg->getName() );
+    mcastMsg->setGroupId(dataMsg->getLogicalNodeKey());//FIXME:Dose not reveal teh real Group, since I don't have group at all, this is just the parent(logical) nodes.
+    DxpsDataMessage* tmpMsg=dynamic_cast<DxpsDataMessage*>(dataMsg->decapsulate());
+    mcastMsg->encapsulate( tmpMsg->decapsulate());
+    RECORD_STATS(++numReceived; receivedBytes += dataMsg->getByteLength());
+    send( mcastMsg, "to_upperTier" );
+    delete tmpMsg;
+    delete dataMsg;
   }
 }
 
@@ -411,13 +468,15 @@ void Dxps::handleSubCall( DxpsSubCall* subMsg)
   getParents(mykey, OverlayKey::UNSPECIFIED_KEY,dataMsg);//secondkey(fromkey in handleDxpsJoin) here should always be unspec, because this is the first forwarder
   //set forwarder, not used currently.
   routingInserter.first->second.setSubscription(true);
+  routingInserter.first->second.setIsResponsible(true);
   // Add child to routingTable
   //check if I send request to myself --> this happens when I am the subscriber so I send myself a join request.
   //if (!(joinMsg->getSrcLogicalNodeKey()==overlay->getThisNode().getKey()))//since we have concept of virtual nodes, this is not correct way to identify a message send from it self.
   //it maybe a message aimed at a key who also charged by the same node.
   //if (!(joinMsg->getSrcLogicalNodeKey().isUnspecified()))
-    addChildToSubRoutingTable( std::make_pair(subMsg->getSrcLogicalNodeKey(),std::make_pair(subMsg->getSrcNode(),filterlist)), routingInserter.first->second );
+  addChildToSubRoutingTable( std::make_pair(subMsg->getSrcLogicalNodeKey(),std::make_pair(subMsg->getSrcNode(),filterlist)), routingInserter.first->second );
 
+  notifySiblings();
   // Send joinResponse
   DxpsSubResponse* joinResponse = new DxpsSubResponse;
   joinResponse->setLogicalNodeKey( key ); //TODO: Maybe need logicalID of parents,
@@ -460,13 +519,16 @@ void Dxps::handleJoinCall( DxpsJoinCall* joinMsg)
   getParents(mykey, fromKey,dataMsg);
   //set forwarder, not used currently.
   routingInserter.first->second.setForwarder(true);
+  routingInserter.first->second.setIsResponsible(true);  
   // Add child to routingTable
   //check if I send request to myself --> this happens when I am the subscriber so I send myself a join request.
   //if (!(joinMsg->getSrcLogicalNodeKey()==overlay->getThisNode().getKey()))//since we have concept of virtual nodes, this is not correct way to identify a message send from it self.
   //it maybe a message aimed at a key who also charged by the same node.
   if (!(joinMsg->getSrcLogicalNodeKey().isUnspecified()))
+  {
     addChildToRoutingTable( std::make_pair(joinMsg->getSrcLogicalNodeKey(),std::make_pair(joinMsg->getSrcNode(),filterlist)), routingInserter.first->second );
-
+    notifySiblings();
+  }
   // Send joinResponse
   DxpsJoinResponse* joinResponse = new DxpsJoinResponse;
   joinResponse->setLogicalNodeKey( key ); //TODO: Maybe need logicalID of parents,
@@ -523,38 +585,25 @@ void Dxps::handleJoinCall( DxpsJoinCall* joinMsg)
 
 void Dxps::handlePublishCall( DxpsPublishCall* publishCall )
 {
-  // find logicalnodekey and according table.
-  RoutingTableList::iterator it = routingTableList.find( publishCall->getLogicalNodeKey() );//This is actally expected behavior, don't send to those how have no subscriber yet and be informed of this.
-  // if I don't know this logicalnodekey (because no subscriber yet) inform sender I am wrong root.
-  if( it == routingTableList.end()){
+  DxpsDataMessage* data = dynamic_cast<DxpsDataMessage*>(publishCall->decapsulate());//decapsulate thedata for later use.
+  data->setDxpsMsgId(data->getId());//hack: to use a unique identifier at dxps routing layer, delete msg with same id at intermidiate nodes.
+  //inform sender that  publish is successful.
+  //TODO: need test here
+  DxpsPublishResponse* msg = new DxpsPublishResponse("Publish Successful");
+  msg->setLogicalNodeKey( publishCall->getLogicalNodeKey() );
+  msg->setBitLength( DXPS_PUBLISHRESPONSE_L(msg) );
+  sendRpcResponse( publishCall, msg );
 
-    // TODO: low priority: forward message when I'm not root but know the rendevous point?
-    DxpsPublishResponse* msg = new DxpsPublishResponse("Wrong Root");
-    msg->setLogicalNodeKey( publishCall->getLogicalNodeKey() );
-    msg->setWrongRoot( true );
-    msg->setBitLength( DXPS_PUBLISHRESPONSE_L(msg) );
-    sendRpcResponse( publishCall, msg );
-  } else {
-    DxpsDataMessage* data = dynamic_cast<DxpsDataMessage*>(publishCall->decapsulate());//decapsulate thedata for later use.
-    data->setDxpsMsgId(data->getId());//hack: to use a unique identifier at dxps routing layer, delete msg with same id at intermidiate nodes.
-    //inform sender that  publish is successful.
-    //TODO: need test here
-    DxpsPublishResponse* msg = new DxpsPublishResponse("Publish Successful");
-    msg->setLogicalNodeKey( publishCall->getLogicalNodeKey() );
-    msg->setBitLength( DXPS_PUBLISHRESPONSE_L(msg) );
-    sendRpcResponse( publishCall, msg );
-
-    if( !data ) {
-      // TODO: throw exception? this should never happen
-      EV << "[Dxps::handlePublishCall() @ " << overlay->getThisNode().getIp()
-          << " (" << overlay->getThisNode().getKey().toString(16) << ")]\n"
-          << "    PublishCall for group " << msg->getLogicalNodeKey()
-          << "    does not contain a valid ALM data message!\n"
-          << endl;
-      return;
-    }
-    deliverALMDataToGroup( data );
+  if( !data ) {
+    // TODO: throw exception? this should never happen
+    EV << "[Dxps::handlePublishCall() @ " << overlay->getThisNode().getIp()
+        << " (" << overlay->getThisNode().getKey().toString(16) << ")]\n"
+        << "    PublishCall for group " << msg->getLogicalNodeKey()
+        << "    does not contain a valid ALM data message!\n"
+        << endl;
+    return;
   }
+  deliverALMDataToGroup( data );
 }
 
 void Dxps::handleJoinResponse( DxpsJoinResponse* joinResponse )
@@ -581,6 +630,37 @@ void Dxps::handlePublishResponse( DxpsPublishResponse* publishResponse )
   //    } //Since we use
 }
 
+void Dxps::handlePutCall( DxpsPutCall* putMsg)
+{
+  //TODO: remove old entry, insert new entry, send response.
+  DxpsRoutingTable entry=putMsg->getRoutingTableEntry();
+  OverlayKey key=entry.getLogicalNodeKey();
+  if (!entry.getIsResponsible())
+  {
+    routingTableList[key]=entry;
+  }
+  else{
+
+    std::pair<RoutingTableList::iterator, bool> routingInserter; //TODO: to check if it is a vitural node.
+    routingInserter = routingTableList.insert( std::make_pair(key, entry) );
+    if (!routingInserter.second)
+    {
+      for (std::map<OverlayKey,NfPair>::iterator iter=entry.getChildrenBegin() ; iter != entry.getChildrenEnd(); ++iter)
+      {
+      addChildToRoutingTable(  *iter, routingInserter.first->second);
+      }
+
+      //throw new cRuntimeError("got an routing table entry renew request for an existing routing entry that is responsible");
+    }
+  }
+  //send response, so far no feed back embeded.
+  DxpsPutResponse* pRsp= new DxpsPutResponse;
+  pRsp->setLogicalNodeKey(entry.getLogicalNodeKey());
+  pRsp->setBitLength( DXPS_JOINRESPONSE_L(joinResponse) );
+  sendRpcResponse(putMsg,pRsp);
+}
+void Dxps::handlePutResponse( DxpsPutResponse* putRsp)
+{}
 //void Dxps::handleLeaveMessage( DxpsLeaveMessage* leaveMsg )
 //{
 //    RoutingTableList::iterator it = routingTableList.find( leaveMsg->getLogicalNodeKey() );
@@ -608,8 +688,8 @@ void Dxps::subscribeToGroup( ALMSubscribeMessage* subMsg )
 
   //for (size_t i = 0; i < filter->getFilterArraySize(); ++i)
   //{
-    //bltable[i]=filter->getFilter(i);   
-    //std::cout<<"bloom filter is:"<<(int)bltable[i];
+  //bltable[i]=filter->getFilter(i);   
+  //std::cout<<"bloom filter is:"<<(int)bltable[i];
   //}
   //std::cout<<"\n";
   ////std::cout<<"fitlersize is:"<<filter->getFilterSize();
@@ -709,7 +789,24 @@ void Dxps::addChildToSubRoutingTable( const Children& child, DxpsRoutingTable& r
   //        childTimeoutList.insert( std::make_pair(child, timeoutMsg) );
   //    }
 }
+void Dxps::notifySiblings(){
+  RoutingTableList::iterator it;
+  for (it = routingTableList.begin(); it != routingTableList.end(); it++) {
+    if (it->second.getIsResponsible()) {
+      NodeVector* siblings = overlay->local_lookup(it->first, numReplica, false); 
+      if (siblings->size() == 0) {
+        delete siblings;
+        continue;
+      }
+      for (size_t i = 1; i < siblings->size(); ++i)
+      {
 
+        sendPutReplicaCall((*siblings)[i],it->second);
+      }
+      delete siblings;
+    }
+  }
+}
 //void Dxps::removeChildFromGroup( const NodeHandle& child, DxpsRoutingTable& group )
 //{
 //    // find timer
@@ -861,14 +958,6 @@ void Dxps::deliverALMDataToRoot( ALMMulticastMessage* mcastMsg )
 
 void Dxps::deliverALMDataToGroup( DxpsDataMessage* dataMsg )
 {
-  //Important to delete duplicate msg and avoid osilicate.
-
-  //	for ( size_t i = 0;  i < msgLog.size(); ++ i) {
-  //		if (msgLog[i]==dataMsg->getDxpsMsgId()) {
-  //			delete dataMsg;
-  //			return;
-  //		}
-  //	}
 
   // find logicalNodeKey.
   RoutingTableList::iterator it = routingTableList.find( dataMsg->getLogicalNodeKey() );
@@ -876,6 +965,7 @@ void Dxps::deliverALMDataToGroup( DxpsDataMessage* dataMsg )
     EV << "[Dxps::deliverALMDataToGroup() @ " << overlay->getThisNode().getIp()
         << "Getting publication message for an unknown group,maybe no subscriber yet!\n";
     delete dataMsg;
+    //std::cout<<"deleted: no sub\n";
     return;
   }
   //TODO: when one of my logical node is the child of the other logical node. maybe do not need to send it to kbr.
@@ -896,138 +986,113 @@ void Dxps::deliverALMDataToGroup( DxpsDataMessage* dataMsg )
     return;
   }
 
-
-  // deliver data to children TODO: LinkActivation only delliver to child that is "activated"
-  for( std::map<OverlayKey, NfPair>::iterator cit = it->second.getChildrenBegin();
-      cit != it->second.getChildrenEnd(); ++cit ) {
-    bool ismatched=false; //reset evaluation result to false
-    //do matching here!if subscriptionfilter is set to true;
-
-    if (subscriptionfilter)
+  if(it->second.getIsResponsible())
+  //if(0)
+  {
+    // deliver data to children TODO: LinkActivation only delliver to child that is "activated"
+    for( std::map<OverlayKey, NfPair>::iterator cit = it->second.getChildrenBegin(); cit != it->second.getChildrenEnd(); ++cit ) 
     {
-      Filter* filter = dynamic_cast<Filter*>(dataMsg->getEncapsulatedPacket()->getEncapsulatedPacket());
-      unsigned char  bltable[filter->getFilterArraySize()];
-      for (size_t i = 0; i < filter->getFilterArraySize(); ++i) {
-      //for (size_t i = 0; i < 128; ++i) {
-        bltable[i]=filter->getFilter(i);   
-        //std::cout<<std::hex<<(int) bltable[i];
-      }
-      //std::cout<<"\n";
-      ismatched=matchit(cit->second.second,bloom_filter(bltable,filter->getFilterSize()));
-    }
+      bool ismatched=false; //reset evaluation result to false
+      //do matching here!if subscriptionfilter is set to true;
 
-    if(!subscriptionfilter || ismatched){
-      DxpsDataMessage* newMsg = new DxpsDataMessage( *dataMsg );
-      newMsg->setDxpsMsgId(dataMsg->getId());//keep the same dxpsMsgId;
-      newMsg->setLogicalNodeKey(cit->first);
-      RECORD_STATS(++numForward; forwardBytes += newMsg->getByteLength());
-      callRoute( OverlayKey::UNSPECIFIED_KEY, newMsg, cit->second.first );//TODO: tweak this to route through KBR.
+      if (subscriptionfilter)
+      {
+        Filter* filter = dynamic_cast<Filter*>(dataMsg->getEncapsulatedPacket()->getEncapsulatedPacket());
+        unsigned char  bltable[filter->getFilterArraySize()];
+        for (size_t i = 0; i < filter->getFilterArraySize(); ++i) 
+        {
+          bltable[i]=filter->getFilter(i);   
+        }
+        ismatched=matchit(cit->second.second,bloom_filter(bltable,filter->getFilterSize()));
+      }
+
+      if(!subscriptionfilter || ismatched)
+      {
+        DxpsDataMessage* newMsg = new DxpsDataMessage( *dataMsg );
+        newMsg->setDxpsMsgId(dataMsg->getId());//keep the same dxpsMsgId;
+        newMsg->setLogicalNodeKey(cit->first);
+        RECORD_STATS(++numForward; forwardBytes += newMsg->getByteLength());
+        callRoute( cit->first, newMsg );//TODO: tweak this to route through KBR.
+        //callRoute( OverlayKey::UNSPECIFIED_KEY, newMsg, cit->second.first );//TODO: tweak this to route through KBR.
+      }
+    }
+    //deliver data to subscriber for each entry in subChildren list
+    for( std::map<OverlayKey, NfPair>::iterator cit = it->second.getSubChildrenBegin(); cit != it->second.getSubChildrenEnd(); ++cit ) 
+    {
+      bool ismatched=false; //reset evaluation result to false
+      //do matching here!if subscriptionfilter is set to true;
+
+      if (subscriptionfilter)
+      {
+        Filter* filter = dynamic_cast<Filter*>(dataMsg->getEncapsulatedPacket()->getEncapsulatedPacket());
+        unsigned char  bltable[filter->getFilterArraySize()];
+        for (size_t i = 0; i < filter->getFilterArraySize(); ++i) {
+          bltable[i]=filter->getFilter(i);   
+        }
+        ismatched=matchit(cit->second.second,bloom_filter(bltable,filter->getFilterSize()));
+      }
+
+      if(!subscriptionfilter || ismatched){
+        DxpsDataDeliverMessage* newMsg = new DxpsDataDeliverMessage();
+        DxpsDataMessage* tmpMsg = new DxpsDataMessage( *dataMsg );
+        newMsg->setDxpsMsgId(dataMsg->getId());//keep the same dxpsMsgId;
+        newMsg->setLogicalNodeKey(cit->first);
+        newMsg->encapsulate(tmpMsg);
+        callRoute( OverlayKey::UNSPECIFIED_KEY, newMsg, cit->second.first );//TODO: tweak this to route through KBR.
+      }
     }
   }
-    //deliver data to subscriber for each entry in subChildren list
- for( std::map<OverlayKey, NfPair>::iterator cit = it->second.getSubChildrenBegin();
-      cit != it->second.getSubChildrenEnd(); ++cit ) {
-    bool ismatched=false; //reset evaluation result to false
-    //do matching here!if subscriptionfilter is set to true;
-
-    if (subscriptionfilter)
-    {
-      Filter* filter = dynamic_cast<Filter*>(dataMsg->getEncapsulatedPacket()->getEncapsulatedPacket());
-      unsigned char  bltable[filter->getFilterArraySize()];
-      for (size_t i = 0; i < filter->getFilterArraySize(); ++i) {
-      //for (size_t i = 0; i < 128; ++i) {
-        bltable[i]=filter->getFilter(i);   
-        //std::cout<<std::hex<<(int) bltable[i];
-      }
-      //std::cout<<"\n";
-      ismatched=matchit(cit->second.second,bloom_filter(bltable,filter->getFilterSize()));
-    }
-
-    if(!subscriptionfilter || ismatched){
-      DxpsDataDeliverMessage* newMsg = new DxpsDataDeliverMessage();
-      DxpsDataMessage* tmpMsg = new DxpsDataMessage( *dataMsg );
-      newMsg->setDxpsMsgId(dataMsg->getId());//keep the same dxpsMsgId;
-      newMsg->setLogicalNodeKey(cit->first);
-      newMsg->encapsulate(tmpMsg);
-
-    //std::cout<<"I am here \n"<<cit->second.first<<"";
-      //RECORD_STATS(++numForward; forwardBytes += newMsg->getByteLength());
-      callRoute( OverlayKey::UNSPECIFIED_KEY, newMsg, cit->second.first );//TODO: tweak this to route through KBR.
-    }
-  }  
-  // deliver to myself if I'm subscribed to that group //TODO: create a new talbe for subscribers and check that talbe here. and deliver.//this method has been replaced with subChildren table solution
-  //bool ismatched=false;//above ismatch in for is temparary variable
-  //if( it->second.getSubscription() ) {
-    //if (subscriptionfilter){
-      //Filter* filter = dynamic_cast<Filter*>(dataMsg->getEncapsulatedPacket()->getEncapsulatedPacket());
-      //unsigned char  bltable[filter->getFilterArraySize()];
-      //for (size_t i = 0; i < filter->getFilterArraySize(); ++i) {
-        //bltable[i]=filter->getFilter(i);   
-      //} 
-      ////std::cout<<"gonna compare for final destination\n";
-      //ismatched=matchit(it->second.getOwnFilterList(),bloom_filter(bltable,filter->getFilterSize()));
-    //}
-
-    //if(!subscriptionfilter || ismatched){
-      //ALMMulticastMessage* mcastMsg = new ALMMulticastMessage( dataMsg->getName() );
-      //mcastMsg->setGroupId(dataMsg->getLogicalNodeKey());//FIXME:Dose not reveal teh real Group, since I don't have group at all, this is just the parent(logical) nodes.
-      //mcastMsg->encapsulate( dataMsg->decapsulate() );
-      //RECORD_STATS(++numReceived; receivedBytes += dataMsg->getByteLength());
-      //send( mcastMsg, "to_upperTier" );
-    //}
-  //}
-
   delete dataMsg;
 }
 
-bool  Dxps::matchit(FilterList fromTable, bloom_filter pubKey)
-{
-  FilterList::iterator Filter_it=fromTable.begin();
-  for (size_t i = 0; i < fromTable.size(); ++i) {
-    if (keycompare(*Filter_it,pubKey)) return true;    
-    //start of debuging code
-    //std::cout<<"subkey After to\n";
-              //for (size_t ii = 0; ii < Filter_it->size()/bits_per_char; ++ii)
-              //{
-                ////std::cout<<std::hex<<(int) (Filter_it->table()[ii]);
-              //}
-              //std::cout<<"\n vs pub size:"<<pubKey.size()<<"\n";
-              //for (size_t ij = 0; ij < pubKey.size()/bits_per_char; ++ij)
-              //{
-                //std::cout<<std::hex<<(int) (pubKey.table()[ij]);
-              //}
-              //std::cout<<"\n";
-              //end of testing.
-    Filter_it++;
-  }
-  //std::cout<<"EpicFailAll\n";
-  return false;
+    bool  Dxps::matchit(FilterList fromTable, bloom_filter pubKey)
+    {
+      FilterList::iterator Filter_it=fromTable.begin();
+      for (size_t i = 0; i < fromTable.size(); ++i) {
+        if (keycompare(*Filter_it,pubKey)) return true;    
+        //start of debuging code
+        //std::cout<<"subkey After to\n";
+        //for (size_t ii = 0; ii < Filter_it->size()/bits_per_char; ++ii)
+        //{
+        ////std::cout<<std::hex<<(int) (Filter_it->table()[ii]);
+        //}
+        //std::cout<<"\n vs pub size:"<<pubKey.size()<<"\n";
+        //for (size_t ij = 0; ij < pubKey.size()/bits_per_char; ++ij)
+        //{
+        //std::cout<<std::hex<<(int) (pubKey.table()[ij]);
+        //}
+        //std::cout<<"\n";
+        //end of testing.
+        Filter_it++;
+      }
+      //std::cout<<"EpicFailAll\n";
+      return false;
 
 
-  //this is the function to compare two filter(OverlayKey type)
+      //this is the function to compare two filter(OverlayKey type)
 
-}  
-bool Dxps::keycompare(bloom_filter subKey,bloom_filter pubKey){
-  //if (subKey.ZERO
-  //for (size_t ii = 0; ii < pubKey.getLength(); ++ii)
-  //{
-  //if (subKey.getBit(i)==1 && pubKey(i)==1) return false;
-  //}
-  //return true;
-//std::cout<<"pubkeyafter:\n";
-  //for (size_t ij = 0; ij < pubKey.size()/bits_per_char; ++ij)
-    //{
+    }  
+    bool Dxps::keycompare(bloom_filter subKey,bloom_filter pubKey){
+      //if (subKey.ZERO
+      //for (size_t ii = 0; ii < pubKey.getLength(); ++ii)
+      //{
+      //if (subKey.getBit(i)==1 && pubKey(i)==1) return false;
+      //}
+      //return true;
+      //std::cout<<"pubkeyafter:\n";
+      //for (size_t ij = 0; ij < pubKey.size()/bits_per_char; ++ij)
+      //{
       ////std::cout<<std::hex<<(int) (pubKey.table()[ij]);
-    //}
-  //std::cout<<"\n";
-  //std::cout<<"matching result should be 128 0 \n";
-  //for (size_t ii = 0; ii < pubKey.size()/bits_per_char; ++ii)
-  //{
-    
-    ////std::cout<<std::hex<<(int) ((pubKey.table()[ii]&subKey.table()[ii])^subKey.table()[ii]);
-    ////if ((pubKey.table()[ii]&subKey.table()[ii])^subKey.table()[ii]!=0) return false;
-  //}
-  //std::cout<<"\n";
-  if ((pubKey & subKey ^ subKey).isZero()) return true;
-  return false;
-}
+      //}
+      //std::cout<<"\n";
+      //std::cout<<"matching result should be 128 0 \n";
+      //for (size_t ii = 0; ii < pubKey.size()/bits_per_char; ++ii)
+      //{
+
+      ////std::cout<<std::hex<<(int) ((pubKey.table()[ii]&subKey.table()[ii])^subKey.table()[ii]);
+      ////if ((pubKey.table()[ii]&subKey.table()[ii])^subKey.table()[ii]!=0) return false;
+      //}
+      //std::cout<<"\n";
+      if ((pubKey & subKey ^ subKey).isZero()) return true;
+      return false;
+    }

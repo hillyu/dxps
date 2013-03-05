@@ -41,7 +41,7 @@ std::ostream& operator<< (std::ostream& o, std::map<OverlayKey, DxpsRoutingTable
     for (std::map<OverlayKey, DxpsRoutingTable>::iterator it = m.begin(); it != m.end(); ++it) {
         o << it->first << "\n";
        // o << "  Parent: " << it->second.getParent() << "\n";
-        o << "  Status: " << (it->second.getSubscription() ? "subscriber\n" : "\n")<< (it->second.getIsForwarder() ? "Forwarder\n" : "\n");
+        o << "  Status: " << (it->second.getSubscription() ? "subscriber\n" : "\n")<< (it->second.getIsForwarder() ? "Forwarder\n" : "\n")<<(it->second.getIsResponsible() ? "responsible\n" : "\n");
         o << "  Children (" << it->second.numChildren() << "):\n";
         typedef std::set <bloom_filter> FilterList;//OverlayKey type is used to represent the bit-array.
                 typedef std::pair<NodeHandle, FilterList> NfPair;
@@ -103,6 +103,7 @@ class Dxps : public BaseApp
         int childTimeout;
         int parentTimeout;
         bool  subscriptionfilter; 
+        int numReplica;
         DxpsTimer* subscriptionTimer;
 
         // statistics
@@ -117,6 +118,8 @@ class Dxps : public BaseApp
         int heartbeatBytes;
         int numSubscriptionRefresh;
         int subscriptionRefreshBytes;
+        int numUpdateRTEntry;  
+        
         std::vector<long int> msgLog;
         //bool isForwarder;// in routingTable already.
         bool keycompare(bloom_filter subKey,bloom_filter pubKey);
@@ -143,7 +146,9 @@ class Dxps : public BaseApp
 
         virtual void deliver(OverlayKey& key, cMessage* msg);
         virtual void update( const NodeHandle& node, bool joined );
-
+        void sendPutCall(const NodeHandle& node,  const DxpsRoutingTable & entry);
+        void sendPutReplicaCall(const NodeHandle& node,  const DxpsRoutingTable & entry);
+        void notifySiblings();
         virtual void finishApp( );
 
         bool  matchit(FilterList fromTable, bloom_filter pubKey);
@@ -153,7 +158,7 @@ class Dxps : public BaseApp
          */
         void handleJoinResponse( DxpsJoinResponse* joinResponse );
         void handleSubResponse( DxpsSubResponse* joinResponse );
-
+        void handlePutResponse( DxpsPutResponse* putRsp);
         /**
          * Handles a join request from another node
          *
@@ -170,7 +175,9 @@ class Dxps : public BaseApp
          * parameter set to "true"
         */
         void handleSubCall( DxpsSubCall* subMsg);
- 
+        //Handles a DxpsputCall to update publication;
+        void handlePutCall( DxpsPutCall* putMsg);
+        void handlePutResponse( DxpsPutCall* putRsp);
         /**
          * Handles a publish call from another node
          *

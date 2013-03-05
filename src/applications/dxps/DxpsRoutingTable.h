@@ -31,7 +31,7 @@
 #include "../../tier2/xmlpsapp/bloom_filter.h"
 class DxpsRoutingTable;
 
-#include "DxpsMessage_m.h"
+//#include "DxpsMessage_m.h"
 
 /**
  * Capsulates the informations of a dxps multicast group
@@ -51,13 +51,12 @@ class DxpsRoutingTable
         std::map<OverlayKey, NfPair> subChildren;//used for subscription, like children list
         bool subscription;
         bool amISource;
+        bool isResponsible;
         bool isForwarder;
         FilterList ownFilterList;//TODO: put this in side sublist
 
         
 
-//        DxpsTimer* parentTimer;
-        DxpsTimer* heartbeatTimer;
 
     public:
         /**
@@ -65,6 +64,7 @@ class DxpsRoutingTable
          *
          * @param id The group ID of the new group
          */
+        DxpsRoutingTable( );
         DxpsRoutingTable( OverlayKey id );
         ~DxpsRoutingTable( );
 
@@ -159,6 +159,8 @@ class DxpsRoutingTable
          * @param subscribe True if the node is interested in multicast messages for the group, false else
          */
         void setSubscription( bool subscribe ) { subscription = subscribe; }
+       bool getIsResponsible() const {return isResponsible; }
+       void setIsResponsible(bool Responsible) {isResponsible =Responsible;}
 
         /**
          * Return the parent in the multicast tree
@@ -221,7 +223,6 @@ class DxpsRoutingTable
          *
          * @return The heratbetTimer
          */
-        DxpsTimer* getHeartbeatTimer() { return heartbeatTimer; }
 
         /**
          * Sets the heartbeat timer.
@@ -231,7 +232,6 @@ class DxpsRoutingTable
          *
          * @param t The heartbeatTimer
          */
-        void setHeartbeatTimer(DxpsTimer* t ) { heartbeatTimer = t; }
 
         /**
          * Checks whether the group has a certain logicalNodeKey

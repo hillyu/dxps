@@ -28,15 +28,24 @@
 typedef std::set <bloom_filter> FilterList;//OverlayKey type is used to represent the bit-array.
         typedef std::pair<NodeHandle, FilterList> NfPair;
         typedef std::pair<OverlayKey, NfPair> Children;
+DxpsRoutingTable::DxpsRoutingTable(){
+    logicalNodeKey = OverlayKey::UNSPECIFIED_KEY;
+    rendezvousPoint = NodeHandle::UNSPECIFIED_NODE;
+    subscription = false;
+    amISource = false;
+    isResponsible =false;
+    isForwarder = false;
+//    parentTimer = NULL;
+}
 DxpsRoutingTable::DxpsRoutingTable( OverlayKey id ) : logicalNodeKey(id)
 {
 //    parent = NodeHandle::UNSPECIFIED_NODE;
     rendezvousPoint = NodeHandle::UNSPECIFIED_NODE;
     subscription = false;
     amISource = false;
+    isResponsible =false;
     isForwarder = false;
 //    parentTimer = NULL;
-    heartbeatTimer = NULL;
 }
 
 DxpsRoutingTable::~DxpsRoutingTable( )

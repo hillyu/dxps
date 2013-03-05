@@ -1398,10 +1398,12 @@ void Chord::updateTooltip()
                                  "m=m,50,100,50,100;ls=green,1");
     }
 }
-void Chord::setOwnNodeID()
-{
-    thisNode.setKey(OverlayKey(thisTerminal->getIndex()));
-}
+//FIXME: my own solution to small key space confliction problem.
+//void Chord::setOwnNodeID()
+//{
+    //thisNode.setKey(OverlayKey(thisTerminal->getIndex()));
+//}
+//solution end!
 
 // TODO: The following should be removed, since Chord doesn't have a simple metric
 OverlayKey Chord::distance(const OverlayKey& x,

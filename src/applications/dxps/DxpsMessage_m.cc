@@ -1003,6 +1003,468 @@ void *DxpsSubResponseDescriptor::getFieldStructPointer(void *object, int field, 
     }
 }
 
+Register_Class(DxpsPutCall);
+
+DxpsPutCall::DxpsPutCall(const char *name, int kind) : BaseCallMessage(name,kind)
+{
+}
+
+DxpsPutCall::DxpsPutCall(const DxpsPutCall& other) : BaseCallMessage()
+{
+    setName(other.getName());
+    operator=(other);
+}
+
+DxpsPutCall::~DxpsPutCall()
+{
+}
+
+DxpsPutCall& DxpsPutCall::operator=(const DxpsPutCall& other)
+{
+    if (this==&other) return *this;
+    BaseCallMessage::operator=(other);
+    this->routingTableEntry_var = other.routingTableEntry_var;
+    return *this;
+}
+
+void DxpsPutCall::parsimPack(cCommBuffer *b)
+{
+    BaseCallMessage::parsimPack(b);
+    doPacking(b,this->routingTableEntry_var);
+}
+
+void DxpsPutCall::parsimUnpack(cCommBuffer *b)
+{
+    BaseCallMessage::parsimUnpack(b);
+    doUnpacking(b,this->routingTableEntry_var);
+}
+
+DxpsRoutingTable& DxpsPutCall::getRoutingTableEntry()
+{
+    return routingTableEntry_var;
+}
+
+void DxpsPutCall::setRoutingTableEntry(const DxpsRoutingTable& routingTableEntry_var)
+{
+    this->routingTableEntry_var = routingTableEntry_var;
+}
+
+class DxpsPutCallDescriptor : public cClassDescriptor
+{
+  public:
+    DxpsPutCallDescriptor();
+    virtual ~DxpsPutCallDescriptor();
+
+    virtual bool doesSupport(cObject *obj) const;
+    virtual const char *getProperty(const char *propertyname) const;
+    virtual int getFieldCount(void *object) const;
+    virtual const char *getFieldName(void *object, int field) const;
+    virtual int findField(void *object, const char *fieldName) const;
+    virtual unsigned int getFieldTypeFlags(void *object, int field) const;
+    virtual const char *getFieldTypeString(void *object, int field) const;
+    virtual const char *getFieldProperty(void *object, int field, const char *propertyname) const;
+    virtual int getArraySize(void *object, int field) const;
+
+    virtual std::string getFieldAsString(void *object, int field, int i) const;
+    virtual bool setFieldAsString(void *object, int field, int i, const char *value) const;
+
+    virtual const char *getFieldStructName(void *object, int field) const;
+    virtual void *getFieldStructPointer(void *object, int field, int i) const;
+};
+
+Register_ClassDescriptor(DxpsPutCallDescriptor);
+
+DxpsPutCallDescriptor::DxpsPutCallDescriptor() : cClassDescriptor("DxpsPutCall", "BaseCallMessage")
+{
+}
+
+DxpsPutCallDescriptor::~DxpsPutCallDescriptor()
+{
+}
+
+bool DxpsPutCallDescriptor::doesSupport(cObject *obj) const
+{
+    return dynamic_cast<DxpsPutCall *>(obj)!=NULL;
+}
+
+const char *DxpsPutCallDescriptor::getProperty(const char *propertyname) const
+{
+    cClassDescriptor *basedesc = getBaseClassDescriptor();
+    return basedesc ? basedesc->getProperty(propertyname) : NULL;
+}
+
+int DxpsPutCallDescriptor::getFieldCount(void *object) const
+{
+    cClassDescriptor *basedesc = getBaseClassDescriptor();
+    return basedesc ? 1+basedesc->getFieldCount(object) : 1;
+}
+
+unsigned int DxpsPutCallDescriptor::getFieldTypeFlags(void *object, int field) const
+{
+    cClassDescriptor *basedesc = getBaseClassDescriptor();
+    if (basedesc) {
+        if (field < basedesc->getFieldCount(object))
+            return basedesc->getFieldTypeFlags(object, field);
+        field -= basedesc->getFieldCount(object);
+    }
+    static unsigned int fieldTypeFlags[] = {
+        FD_ISCOMPOUND,
+    };
+    return (field>=0 && field<1) ? fieldTypeFlags[field] : 0;
+}
+
+const char *DxpsPutCallDescriptor::getFieldName(void *object, int field) const
+{
+    cClassDescriptor *basedesc = getBaseClassDescriptor();
+    if (basedesc) {
+        if (field < basedesc->getFieldCount(object))
+            return basedesc->getFieldName(object, field);
+        field -= basedesc->getFieldCount(object);
+    }
+    static const char *fieldNames[] = {
+        "routingTableEntry",
+    };
+    return (field>=0 && field<1) ? fieldNames[field] : NULL;
+}
+
+int DxpsPutCallDescriptor::findField(void *object, const char *fieldName) const
+{
+    cClassDescriptor *basedesc = getBaseClassDescriptor();
+    int base = basedesc ? basedesc->getFieldCount(object) : 0;
+    if (fieldName[0]=='r' && strcmp(fieldName, "routingTableEntry")==0) return base+0;
+    return basedesc ? basedesc->findField(object, fieldName) : -1;
+}
+
+const char *DxpsPutCallDescriptor::getFieldTypeString(void *object, int field) const
+{
+    cClassDescriptor *basedesc = getBaseClassDescriptor();
+    if (basedesc) {
+        if (field < basedesc->getFieldCount(object))
+            return basedesc->getFieldTypeString(object, field);
+        field -= basedesc->getFieldCount(object);
+    }
+    static const char *fieldTypeStrings[] = {
+        "DxpsRoutingTable",
+    };
+    return (field>=0 && field<1) ? fieldTypeStrings[field] : NULL;
+}
+
+const char *DxpsPutCallDescriptor::getFieldProperty(void *object, int field, const char *propertyname) const
+{
+    cClassDescriptor *basedesc = getBaseClassDescriptor();
+    if (basedesc) {
+        if (field < basedesc->getFieldCount(object))
+            return basedesc->getFieldProperty(object, field, propertyname);
+        field -= basedesc->getFieldCount(object);
+    }
+    switch (field) {
+        default: return NULL;
+    }
+}
+
+int DxpsPutCallDescriptor::getArraySize(void *object, int field) const
+{
+    cClassDescriptor *basedesc = getBaseClassDescriptor();
+    if (basedesc) {
+        if (field < basedesc->getFieldCount(object))
+            return basedesc->getArraySize(object, field);
+        field -= basedesc->getFieldCount(object);
+    }
+    DxpsPutCall *pp = (DxpsPutCall *)object; (void)pp;
+    switch (field) {
+        default: return 0;
+    }
+}
+
+std::string DxpsPutCallDescriptor::getFieldAsString(void *object, int field, int i) const
+{
+    cClassDescriptor *basedesc = getBaseClassDescriptor();
+    if (basedesc) {
+        if (field < basedesc->getFieldCount(object))
+            return basedesc->getFieldAsString(object,field,i);
+        field -= basedesc->getFieldCount(object);
+    }
+    DxpsPutCall *pp = (DxpsPutCall *)object; (void)pp;
+    switch (field) {
+        case 0: {std::stringstream out; out << pp->getRoutingTableEntry(); return out.str();}
+        default: return "";
+    }
+}
+
+bool DxpsPutCallDescriptor::setFieldAsString(void *object, int field, int i, const char *value) const
+{
+    cClassDescriptor *basedesc = getBaseClassDescriptor();
+    if (basedesc) {
+        if (field < basedesc->getFieldCount(object))
+            return basedesc->setFieldAsString(object,field,i,value);
+        field -= basedesc->getFieldCount(object);
+    }
+    DxpsPutCall *pp = (DxpsPutCall *)object; (void)pp;
+    switch (field) {
+        default: return false;
+    }
+}
+
+const char *DxpsPutCallDescriptor::getFieldStructName(void *object, int field) const
+{
+    cClassDescriptor *basedesc = getBaseClassDescriptor();
+    if (basedesc) {
+        if (field < basedesc->getFieldCount(object))
+            return basedesc->getFieldStructName(object, field);
+        field -= basedesc->getFieldCount(object);
+    }
+    static const char *fieldStructNames[] = {
+        "DxpsRoutingTable",
+    };
+    return (field>=0 && field<1) ? fieldStructNames[field] : NULL;
+}
+
+void *DxpsPutCallDescriptor::getFieldStructPointer(void *object, int field, int i) const
+{
+    cClassDescriptor *basedesc = getBaseClassDescriptor();
+    if (basedesc) {
+        if (field < basedesc->getFieldCount(object))
+            return basedesc->getFieldStructPointer(object, field, i);
+        field -= basedesc->getFieldCount(object);
+    }
+    DxpsPutCall *pp = (DxpsPutCall *)object; (void)pp;
+    switch (field) {
+        case 0: return (void *)(&pp->getRoutingTableEntry()); break;
+        default: return NULL;
+    }
+}
+
+Register_Class(DxpsPutResponse);
+
+DxpsPutResponse::DxpsPutResponse(const char *name, int kind) : BaseResponseMessage(name,kind)
+{
+}
+
+DxpsPutResponse::DxpsPutResponse(const DxpsPutResponse& other) : BaseResponseMessage()
+{
+    setName(other.getName());
+    operator=(other);
+}
+
+DxpsPutResponse::~DxpsPutResponse()
+{
+}
+
+DxpsPutResponse& DxpsPutResponse::operator=(const DxpsPutResponse& other)
+{
+    if (this==&other) return *this;
+    BaseResponseMessage::operator=(other);
+    this->logicalNodeKey_var = other.logicalNodeKey_var;
+    return *this;
+}
+
+void DxpsPutResponse::parsimPack(cCommBuffer *b)
+{
+    BaseResponseMessage::parsimPack(b);
+    doPacking(b,this->logicalNodeKey_var);
+}
+
+void DxpsPutResponse::parsimUnpack(cCommBuffer *b)
+{
+    BaseResponseMessage::parsimUnpack(b);
+    doUnpacking(b,this->logicalNodeKey_var);
+}
+
+OverlayKey& DxpsPutResponse::getLogicalNodeKey()
+{
+    return logicalNodeKey_var;
+}
+
+void DxpsPutResponse::setLogicalNodeKey(const OverlayKey& logicalNodeKey_var)
+{
+    this->logicalNodeKey_var = logicalNodeKey_var;
+}
+
+class DxpsPutResponseDescriptor : public cClassDescriptor
+{
+  public:
+    DxpsPutResponseDescriptor();
+    virtual ~DxpsPutResponseDescriptor();
+
+    virtual bool doesSupport(cObject *obj) const;
+    virtual const char *getProperty(const char *propertyname) const;
+    virtual int getFieldCount(void *object) const;
+    virtual const char *getFieldName(void *object, int field) const;
+    virtual int findField(void *object, const char *fieldName) const;
+    virtual unsigned int getFieldTypeFlags(void *object, int field) const;
+    virtual const char *getFieldTypeString(void *object, int field) const;
+    virtual const char *getFieldProperty(void *object, int field, const char *propertyname) const;
+    virtual int getArraySize(void *object, int field) const;
+
+    virtual std::string getFieldAsString(void *object, int field, int i) const;
+    virtual bool setFieldAsString(void *object, int field, int i, const char *value) const;
+
+    virtual const char *getFieldStructName(void *object, int field) const;
+    virtual void *getFieldStructPointer(void *object, int field, int i) const;
+};
+
+Register_ClassDescriptor(DxpsPutResponseDescriptor);
+
+DxpsPutResponseDescriptor::DxpsPutResponseDescriptor() : cClassDescriptor("DxpsPutResponse", "BaseResponseMessage")
+{
+}
+
+DxpsPutResponseDescriptor::~DxpsPutResponseDescriptor()
+{
+}
+
+bool DxpsPutResponseDescriptor::doesSupport(cObject *obj) const
+{
+    return dynamic_cast<DxpsPutResponse *>(obj)!=NULL;
+}
+
+const char *DxpsPutResponseDescriptor::getProperty(const char *propertyname) const
+{
+    cClassDescriptor *basedesc = getBaseClassDescriptor();
+    return basedesc ? basedesc->getProperty(propertyname) : NULL;
+}
+
+int DxpsPutResponseDescriptor::getFieldCount(void *object) const
+{
+    cClassDescriptor *basedesc = getBaseClassDescriptor();
+    return basedesc ? 1+basedesc->getFieldCount(object) : 1;
+}
+
+unsigned int DxpsPutResponseDescriptor::getFieldTypeFlags(void *object, int field) const
+{
+    cClassDescriptor *basedesc = getBaseClassDescriptor();
+    if (basedesc) {
+        if (field < basedesc->getFieldCount(object))
+            return basedesc->getFieldTypeFlags(object, field);
+        field -= basedesc->getFieldCount(object);
+    }
+    static unsigned int fieldTypeFlags[] = {
+        FD_ISCOMPOUND,
+    };
+    return (field>=0 && field<1) ? fieldTypeFlags[field] : 0;
+}
+
+const char *DxpsPutResponseDescriptor::getFieldName(void *object, int field) const
+{
+    cClassDescriptor *basedesc = getBaseClassDescriptor();
+    if (basedesc) {
+        if (field < basedesc->getFieldCount(object))
+            return basedesc->getFieldName(object, field);
+        field -= basedesc->getFieldCount(object);
+    }
+    static const char *fieldNames[] = {
+        "logicalNodeKey",
+    };
+    return (field>=0 && field<1) ? fieldNames[field] : NULL;
+}
+
+int DxpsPutResponseDescriptor::findField(void *object, const char *fieldName) const
+{
+    cClassDescriptor *basedesc = getBaseClassDescriptor();
+    int base = basedesc ? basedesc->getFieldCount(object) : 0;
+    if (fieldName[0]=='l' && strcmp(fieldName, "logicalNodeKey")==0) return base+0;
+    return basedesc ? basedesc->findField(object, fieldName) : -1;
+}
+
+const char *DxpsPutResponseDescriptor::getFieldTypeString(void *object, int field) const
+{
+    cClassDescriptor *basedesc = getBaseClassDescriptor();
+    if (basedesc) {
+        if (field < basedesc->getFieldCount(object))
+            return basedesc->getFieldTypeString(object, field);
+        field -= basedesc->getFieldCount(object);
+    }
+    static const char *fieldTypeStrings[] = {
+        "OverlayKey",
+    };
+    return (field>=0 && field<1) ? fieldTypeStrings[field] : NULL;
+}
+
+const char *DxpsPutResponseDescriptor::getFieldProperty(void *object, int field, const char *propertyname) const
+{
+    cClassDescriptor *basedesc = getBaseClassDescriptor();
+    if (basedesc) {
+        if (field < basedesc->getFieldCount(object))
+            return basedesc->getFieldProperty(object, field, propertyname);
+        field -= basedesc->getFieldCount(object);
+    }
+    switch (field) {
+        default: return NULL;
+    }
+}
+
+int DxpsPutResponseDescriptor::getArraySize(void *object, int field) const
+{
+    cClassDescriptor *basedesc = getBaseClassDescriptor();
+    if (basedesc) {
+        if (field < basedesc->getFieldCount(object))
+            return basedesc->getArraySize(object, field);
+        field -= basedesc->getFieldCount(object);
+    }
+    DxpsPutResponse *pp = (DxpsPutResponse *)object; (void)pp;
+    switch (field) {
+        default: return 0;
+    }
+}
+
+std::string DxpsPutResponseDescriptor::getFieldAsString(void *object, int field, int i) const
+{
+    cClassDescriptor *basedesc = getBaseClassDescriptor();
+    if (basedesc) {
+        if (field < basedesc->getFieldCount(object))
+            return basedesc->getFieldAsString(object,field,i);
+        field -= basedesc->getFieldCount(object);
+    }
+    DxpsPutResponse *pp = (DxpsPutResponse *)object; (void)pp;
+    switch (field) {
+        case 0: {std::stringstream out; out << pp->getLogicalNodeKey(); return out.str();}
+        default: return "";
+    }
+}
+
+bool DxpsPutResponseDescriptor::setFieldAsString(void *object, int field, int i, const char *value) const
+{
+    cClassDescriptor *basedesc = getBaseClassDescriptor();
+    if (basedesc) {
+        if (field < basedesc->getFieldCount(object))
+            return basedesc->setFieldAsString(object,field,i,value);
+        field -= basedesc->getFieldCount(object);
+    }
+    DxpsPutResponse *pp = (DxpsPutResponse *)object; (void)pp;
+    switch (field) {
+        default: return false;
+    }
+}
+
+const char *DxpsPutResponseDescriptor::getFieldStructName(void *object, int field) const
+{
+    cClassDescriptor *basedesc = getBaseClassDescriptor();
+    if (basedesc) {
+        if (field < basedesc->getFieldCount(object))
+            return basedesc->getFieldStructName(object, field);
+        field -= basedesc->getFieldCount(object);
+    }
+    static const char *fieldStructNames[] = {
+        "OverlayKey",
+    };
+    return (field>=0 && field<1) ? fieldStructNames[field] : NULL;
+}
+
+void *DxpsPutResponseDescriptor::getFieldStructPointer(void *object, int field, int i) const
+{
+    cClassDescriptor *basedesc = getBaseClassDescriptor();
+    if (basedesc) {
+        if (field < basedesc->getFieldCount(object))
+            return basedesc->getFieldStructPointer(object, field, i);
+        field -= basedesc->getFieldCount(object);
+    }
+    DxpsPutResponse *pp = (DxpsPutResponse *)object; (void)pp;
+    switch (field) {
+        case 0: return (void *)(&pp->getLogicalNodeKey()); break;
+        default: return NULL;
+    }
+}
+
 Register_Class(DxpsPublishCall);
 
 DxpsPublishCall::DxpsPublishCall(const char *name, int kind) : BaseCallMessage(name,kind)

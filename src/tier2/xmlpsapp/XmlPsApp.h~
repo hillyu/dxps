@@ -70,7 +70,8 @@ private:
  ***************************************************************************/
   
 	std::vector<SubGen> subscribeList;
-	//std::vector<bloom_filter *> subscribeList;
+	std::vector<SubGen> subPool;
+ //std::vector<bloom_filter *> subscribeList;
 	bool joinGroups;
   std::string xpepath;
   std::string xmllist;

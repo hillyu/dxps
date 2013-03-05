@@ -51,6 +51,7 @@ void XmlPsApp::initializeApp(int stage)
   pubRate=par("pubRate");
   unsubRate=par("unsubRate");
   groupNum=0;
+  subSize=0;
   expandJoin=par("expandJoin");
   WATCH_VECTOR(subscribeList);
   WATCH(ov_key);
@@ -96,6 +97,7 @@ void XmlPsApp::handleTimerEvent( cMessage* msg )
   if( msg == timer ) {
     double random = uniform( 0, 1 );
     if (subscribeList.size()>=maxSubscription)
+    //if (subSize>=maxSubscription)
       joinGroups=false;
     //if (subscribeList.empty()) {
     if ( random < subRate && joinGroups) {
@@ -106,31 +108,30 @@ void XmlPsApp::handleTimerEvent( cMessage* msg )
       std::vector<SubGen>::iterator it;
       it =find(subscribeList.begin(),subscribeList.end(),sub);
       if (!filter.isUnspecified() && it==subscribeList.end())
+      //if (!filter.isUnspecified() )
       {
         //EV <<"the bloom filter from list is:"<<subscribeList.back().getBloom().toString()<<"\n";
         joinGroup(filter,sub.getXpe());
         subscribeList.push_back (sub);
+        //subSize++;
       }
     }
     else if (random < subRate+pubRate && sendMessages ) {//FIXME only let 15 send.
       //else if (0 ) {//FIXME only let 15 send.
       //int i=(intuniform(1, subscribeList.size())-1);
       //sendDataToGroup( subscribeList[i].getBloom());
-      while (1){
+      //while (1){
         std::string xmlfile=xmlGen();
         //std::cout<<"I got the file to bloom"<<xmlfile<<"\n";
         OverlayKey tmpkey=xml2bloom(xmlfile,bloom_l, bloom_k);
         if (!tmpkey.isUnspecified()){
           sendDataToGroup(tmpkey,xmlfile);
-          break;
+          //break;
         }
-      }
-
-
+      //}
     }
     scheduleAt( simTime() + 10, timer );
     }
-
   }
 //{
   //if( msg == timer ) {

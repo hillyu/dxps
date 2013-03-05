@@ -54,6 +54,7 @@ class noncobject ChildPointer;
 class noncobject NodeHandle;
 
 class noncobject OverlayKey;
+class noncobject DxpsRoutingTable;
 
 class BaseCallMessage;
 
@@ -94,7 +95,14 @@ packet DxpsSubResponse extends BaseResponseMessage
         OverlayKey logicalNodeKey; // HACK. The key is already included in BaseRouteMessage,
                             //   but it gets lost in handleRpc
 }
- 
+ packet DxpsPutCall extends BaseCallMessage
+{
+    DxpsRoutingTable routingTableEntry;
+}
+ packet DxpsPutResponse extends BaseResponseMessage
+{
+OverlayKey logicalNodeKey;
+}
 
 packet DxpsPublishCall extends BaseCallMessage
 {
